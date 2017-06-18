@@ -1,0 +1,111 @@
+<?php
+
+namespace Tests\Feature;
+
+use App\Menu;
+use App\Schedule;
+use App\Vendor;
+use Carbon\Carbon;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Tests\TestCase;
+
+/**
+ * To Assert
+ * - requires authentication
+ * - user cannot see past meal schedule
+ * - user cannot see not scheduled meal with wrong id and date combination
+ * - can see by category etc
+ */
+class ViewMealScheduleTest extends TestCase
+{
+    use DatabaseMigrations;
+
+    private function validParams($overrides = [])
+    {
+        return array_merge([
+            'name' => 'Example Meal',
+            'price' => 25000,
+            'description' => 'Example meal description',
+            'contents' => 'Example meal',
+        ], $overrides);
+    }
+
+    /** @test */
+    public function user_can_view_meal_schedule_list_for_a_specific_date()
+    {
+        $vendor = factory(Vendor::class)->create([
+            'name' => 'Dapur Lulu',
+            'capacity' => 200,
+        ]);
+
+        $menuA = factory(Menu::class)->create($this->validParams([
+            'name' => 'Nasi Padang',
+            'vendor_id' => $vendor->id,
+        ]));
+
+        $menuB = factory(Menu::class)->create($this->validParams([
+            'name' => 'Nasi Kuning',
+            'vendor_id' => $vendor->id,
+        ]));
+
+        $scheduleA = factory(Schedule::class)->create([
+            'date' => Carbon::parse('2017-06-12'),
+            'menu_id' => $menuA->id,
+        ]);
+
+        $scheduleB = factory(Schedule::class)->create([
+            'date' => Carbon::parse('2017-06-13'),
+            'menu_id' => $menuB->id,
+        ]);
+
+        $responseDayOne = $this->json('GET', '/api/v1/meals?date=2017-06-12');
+        $responseDayTwo = $this->json('GET', '/api/v1/meals?date=2017-06-13');
+
+        $responseDayOne
+            ->assertStatus(200)
+            ->assertJsonFragment([
+                'name' => 'Nasi Padang',
+            ])
+            ->assertJsonMissing([
+                'name' => 'Nasi Kuning',
+            ]);
+
+        $responseDayTwo
+            ->assertStatus(200)
+            ->assertJsonFragment([
+                'name' => 'Nasi Kuning',
+            ])
+            ->assertJsonMissing([
+                'name' => 'Nasi Padang',
+            ]);
+    }
+
+    /** @test */
+    public function user_can_see_a_scheduled_meal()
+    {
+        // date and meal id should be present
+        $vendor = factory(Vendor::class)->create([
+            'name' => 'Dapur Lulu',
+            'capacity' => 200,
+        ]);
+
+        $menu = factory(Menu::class)->create($this->validParams([
+            'name' => 'Nasi Padang',
+            'price' => 30000,
+            'vendor_id' => $vendor->id,
+        ]));
+
+        $schedule = factory(Schedule::class)->create([
+            'date' => Carbon::parse('2017-06-12'),
+            'menu_id' => $menu->id,
+        ]);
+
+        $response = $this->get("/meals/2017-06-12/{$menu->id}");
+
+        $this->assertEquals('Nasi Padang', $response->data('menu')->name);
+        $this->assertEquals('Dapur Lulu', $response->data('menu')->vendor->name);
+        $this->assertEquals(30000, $response->data('menu')->price);
+    }
+}
