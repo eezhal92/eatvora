@@ -1,0 +1,7 @@
+@import 'navbar';
+
+.container--small {
+    @media (min-width: 768px) {
+        width: 990px; 
+    }
+}

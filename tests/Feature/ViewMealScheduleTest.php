@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Menu;
 use App\Schedule;
+use App\User;
 use App\Vendor;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -33,8 +34,23 @@ class ViewMealScheduleTest extends TestCase
     }
 
     /** @test */
+    public function requires_authentication_and_company_session()
+    {
+        $this->withExceptionHandling();
+        $response = $this->get('/meals');
+
+        $response->assertStatus(302);
+
+        $user = factory(User::class)->create();
+        $response = $this->actingAs($user)->get('/meals');
+
+        $response->assertStatus(302);
+    }
+
+    /** @test */
     public function user_can_view_meal_schedule_list_for_a_specific_date()
     {
+        $user = factory(User::class)->create();
         $vendor = factory(Vendor::class)->create([
             'name' => 'Dapur Lulu',
             'capacity' => 200,
@@ -60,8 +76,8 @@ class ViewMealScheduleTest extends TestCase
             'menu_id' => $menuB->id,
         ]);
 
-        $responseDayOne = $this->json('GET', '/api/v1/meals?date=2017-06-12');
-        $responseDayTwo = $this->json('GET', '/api/v1/meals?date=2017-06-13');
+        $responseDayOne = $this->actingAs($user)->json('GET', '/api/v1/meals?date=2017-06-12');
+        $responseDayTwo = $this->actingAs($user)->json('GET', '/api/v1/meals?date=2017-06-13');
 
         $responseDayOne
             ->assertStatus(200)

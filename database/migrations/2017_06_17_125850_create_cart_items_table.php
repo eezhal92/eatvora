@@ -17,7 +17,7 @@ class CreateCartItemsTable extends Migration
             $table->increments('id');
             $table->integer('cart_id')->unsigned();
             $table->integer('menu_id')->unsigned();
-            $table->dateTime('date');
+            $table->date('date');
             $table->integer('qty')->unsigned();
             $table->timestamps();
         });

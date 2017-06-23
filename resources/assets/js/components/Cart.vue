@@ -1,24 +1,36 @@
 <template>
   <div class="cart">
-    <h3>In cart</h3>
-    <p v-for="item in items">{{ item }}</p>
+    <cart-item-by-date 
+      v-for="group in groupedItems"
+      :items="group.items"
+      :date="group.date"
+      :key="group.date"
+    ></cart-item-by-date>
   </div>
 </template>
 
 <script>
-import bus from './bus';
+import CartItemByDate from './CartItemByDate';
 
 export default {
   data() {
     return {
-      items: [],
+      groupedItems: [],
     };
   },
-  created() {
-    bus.$on('cart:adding-item', (meal) => {
-      console.log('receiving', meal);
-      this.items = this.items.concat(meal);
-    });
-  }
+  mounted() {
+    axios.get('/api/v1/cart')
+      .then(({ data }) => {
+        const groupedItems = Object.keys(data).map(date => ({
+          date,
+          items: data[date],
+        }))
+
+        this.groupedItems = groupedItems;
+      });
+  },
+  components: {
+    'cart-item-by-date': CartItemByDate,
+  },
 }
 </script>

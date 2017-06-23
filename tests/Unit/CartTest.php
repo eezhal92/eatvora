@@ -76,7 +76,7 @@ class CartTest extends TestCase
         $this->assertDatabaseHas('cart_items', [
             'menu_id' => $menuA->id,
             'qty' => 5,
-            'date' => $nextMonday->format('Y-m-d H:i:s'),
+            'date' => $nextMonday->format('Y-m-d'),
         ]);
     }
 
@@ -113,12 +113,12 @@ class CartTest extends TestCase
             [
                 'menu_id' => $menuA->id,
                 'qty' => 5,
-                'date' => $nextMonday->format('Y-m-d H:i:s'),
+                'date' => $nextMonday->format('Y-m-d'),
             ],
             [
                 'menu_id' => $menuB->id,
                 'qty' => 1,
-                'date' => $nextTuesday->format('Y-m-d H:i:s'),
+                'date' => $nextTuesday->format('Y-m-d'),
             ],
         ], $items);
     }

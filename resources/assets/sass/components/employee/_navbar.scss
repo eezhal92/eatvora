@@ -1,0 +1,44 @@
+.navbar {
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 10;
+  background: #fff;
+  transition: all .3s ease;
+
+  &__container {
+    padding: 20px 0;
+    overflow: hidden;
+  }
+
+  &__logo {
+    float: left;
+    font-weight: bold;
+    margin-right: 15px;
+    font-size: 18px;
+    
+    a {
+      color: #2196f3;
+    }
+  }
+
+  &__menu {
+    float: left;
+    &--right {
+      float: right;
+    }
+
+    padding: 0;
+    margin: 0;
+
+    li {
+      list-style: none;
+      display: inline-block;
+
+      a {
+        margin: 0 15px;
+        color: #86919F;
+      }
+    }
+  }
+}

@@ -17,7 +17,7 @@ class Cart extends Model
     {
         $foundItem = $this->cartItems()
             ->where('menu_id', $menuId)
-            ->where('date', $date)
+            ->where('date', $date->format('Y-m-d'))
             ->first();
 
         if (!$foundItem) {
@@ -25,7 +25,7 @@ class Cart extends Model
                 'cart_id' => $this->id,
                 'menu_id' => $menuId,
                 'qty' => $qty,
-                'date' => $date,
+                'date' => $date->format('Y-m-d'),
             ]);
 
             return;

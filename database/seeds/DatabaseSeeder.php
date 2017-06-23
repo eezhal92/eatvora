@@ -1,5 +1,7 @@
 <?php
 
+use App\Company;
+use App\Employee;
 use App\Menu;
 use App\Schedule;
 use App\Services\ScheduleService;
@@ -37,11 +39,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        factory(User::class)->create(['email' => 'john@example.com']);
+        $user = factory(User::class)->create(['email' => 'john@mail.com', 'password' => bcrypt('password')]);
+        $company = factory(Company::class)->create(['name' => 'Traveloka']);
+        factory(Employee::class)->create([
+            'user_id' => $user->id,
+            'company_id' => $company->id,
+        ]);
+
         // senin-jum'at lihat hari bsok
         $weekDays = (new ScheduleService())->nextWeekDayDates();
 
-        $vendors = $this->createVendors(3);
+        $vendors = $this->createVendors(9);
 
         $vendors->each(function ($vendor) use ($weekDays) {
             $menus = $this->createMenuByVendor($vendor->id, 5);

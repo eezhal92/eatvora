@@ -4,29 +4,50 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Cart;
 use App\CartItem;
+use App\Employee;
 use App\Http\Controllers\Controller;
+use Auth;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
-    public function store(Request $request)
+    public function store()
     {
-        $menuId = $request->get('menuId');
-        $date = $request->get('date');
-        $qty = $request->get('qty');
-        $employeeId = $request->get('employeeId');
+        $employee = Employee::where('user_id', Auth::user()->id)
+            ->where('company_id', session('company_id'))
+            ->first();
 
-        // @todo: should check whether current user has matching employee id
-        // Auth::user()->employees()->where('id', $employeeId)->first()
+        // todo: make test and refactor
+        $cart = Cart::of($employee);
 
-        $cart = Cart::create([
-            'employee_id' => $employeeId,
-        ]);
+        if (!$cart) {
+            $cart = Cart::create([
+                'employee_id' => $employee->id,
+            ]);
+        }
 
-        $cart->addItem($menuId, $qty, Carbon::parse($date));
+        $cart->addItem(request('menuId'), request('qty'), Carbon::parse(request('date')));
 
         $items = $cart->items();
+
+        return response()->json($items)
+            ->cookie('cart_id', $cart->id);
+    }
+
+    public function index()
+    {
+        $employee = Employee::where('user_id', Auth::user()->id)
+            ->where('company_id', session('company_id'))
+            ->first();
+
+        $cart = Cart::of($employee);
+
+        if (!$cart) {
+            return response()->json([]);
+        }
+
+        $items = $cart->items()->groupBy('date');
 
         return response()->json($items);
     }

@@ -1,6 +1,6 @@
-@extends('layouts.app')
+@extends('layouts.employee')
 
-@section('content')
+@section('body')
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
@@ -8,7 +8,7 @@
                 <div class="panel-heading">Dashboard</div>
 
                 <div class="panel-body">
-                    You are logged in!
+                    You are logged in! {{ session('company_id') }}
                 </div>
             </div>
         </div>

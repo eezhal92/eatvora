@@ -1,18 +1,14 @@
 <template>
-  <div>
-    <select v-model="date" @change="fetchMeals({ date: date })">
+  <div class="meal-list">
+    <select v-model="date" @change="fetchMeals({ date: date, category: category })">
       <option v-for="day in weekdays" :value="day">{{ day }}</option>
     </select>
     <br />
-    <select v-model="category">
-      <option value="all">Semua</option>
-      <option value="diet">Diet</option>
-      <option value="veggie">Veggie</option>
-    </select>
-    <button @click="reFetch">Cari</button>
-    <p>meal list</p>
-    <hr />
-    <meal-item v-for="meal in meals" :meal="meal" :key="meal.id"></meal-item>
+    <br />
+    <div class="row">
+      <meal-item :date="date" v-for="meal in meals" :meal="meal" :key="meal.id"></meal-item>
+    </div>
+    <div v-show="isLoading" class="col-sm-12">Memuat...</div>
     <div v-if="remaining">
       <button @click="loadMore">Load More</button>
     </div>
@@ -20,8 +16,8 @@
 </template>
 
 <script>
-// import axios from 'axios';
 import { stringify as qsStringify } from 'querystring';
+import bus from './bus';
 
 import MealItem from './MealItem';
 
@@ -30,11 +26,18 @@ export default {
   data() {
     return {
       meals: [],
+      isLoading: false,
       category: 'all',
       date: this.weekdays[0],
       currentPage: 1,
       lastPage: 1,
     };
+  },
+  created() {
+    bus.$on('meal-filter:update', (query) => {
+      this.category = query.category;
+      this.reFetch();
+    });
   },
   mounted() {
     this.fetchMeals({ date: this.date });
@@ -42,16 +45,22 @@ export default {
   methods: {
     fetchMeals(query = {}, push = false) {
       query = qsStringify(query);
-      axios.get(`/something?${query}`)
+      this.isLoading = true;
+      axios.get(`/api/v1/meals?${query}`)
         .then(({ data }) => {
+          this.isLoading = false;
           if (push) {
             this.meals = this.meals.concat(data.entries);
           } else {
             this.meals = data.entries;
           }
+
           this.currentPage = +data.query.page;
           this.lastPage = +data.query.lastPage;
         })
+        .catch(() => {
+          this.isLoading = false;
+        });
     },
     reFetch() {
       this.resetPagination();
