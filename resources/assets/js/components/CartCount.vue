@@ -10,33 +10,20 @@
 </template>
 
 <script>
-import bus from './bus';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
-  data() {
-    return { count: 0 };
-  },
-  created() {
-    bus.$on('cart:item-added', (qty) => {
-      this.count += qty;
-    });
+  computed: {
+    ...mapGetters({
+      count: 'cartItemsCount',
+    })
   },
   mounted() {
-    this.fetchCart();
+    this.fetchCartItems();
   },
   methods: {
-    fetchCart() {
-      axios.get('/api/v1/cart').then(({ data }) => {
-        const count = Object.keys(data).reduce((total, date) => {
-            const subTotal = data[date].reduce((tot, item) => tot + item.qty, 0);
-
-            return subTotal + total;
-        }, 0)
-
-        this.count = count;
-      });
-    }
-  }
+    ...mapActions(['fetchCartItems']),
+  },
 }
 </script>
 

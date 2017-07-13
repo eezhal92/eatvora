@@ -1,17 +1,16 @@
-@extends('layouts.employee')
+@extends('layouts.landing')
 
-@section('body')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Dashboard</div>
-
-                <div class="panel-body">
-                    You are logged in! {{ session('company_id') }}
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+@section('content')
+  <section>
+    Hero
+  </section>
+  <section>
+    Feature
+  </section>
+  <section>
+    Quote
+  </section>
+  <section>
+    CTA
+  </section>
 @endsection

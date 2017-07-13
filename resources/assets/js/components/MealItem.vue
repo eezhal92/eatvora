@@ -1,7 +1,7 @@
 <template>
   <div class="col-xs-12 col-sm-4 meal-item">
     <div class="meal-card">
-      <a href="#something" class="meal-card__image">
+      <a :href="'/meals/' + date + '/' + meal.id" class="meal-card__image">
         <img class="img-responsive" src="http://lorempixel.com/375/240" alt="">
       </a>
       <div class="meal-card__container">
@@ -22,8 +22,6 @@
 </template>
 
 <script>
-import bus from './bus';
-
 export default {
   data() {
     return { adding: false };
@@ -32,13 +30,21 @@ export default {
   methods: {
     addToCart() {
       const item = this.meal.name;
-      
+
       axios.post('/api/v1/cart', {
         qty: 1,
         menuId: this.meal.id,
         date: this.date,
-      }).then(() => {
-        bus.$emit('cart:item-added', 1);
+      }).then(({ data }) => {
+        // Currently endpoint response is an array
+        // It might be a single object in the future
+        // If so, update this code
+        const meal = data.find(m => m.id === this.meal.id);
+
+        this.$store.commit('@cart/ADD_CART_ITEM', {
+          date: this.date,
+          meal,
+        });
       });
     }
   }
@@ -55,7 +61,7 @@ export default {
     margin-bottom: 20px;
     width: 100%;
     border-radius: 4px;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     background: #fff;
   }
 
@@ -76,6 +82,10 @@ export default {
     position: relative;
   }
 
+  .meal-card__detail {
+    margin-bottom: 10px;
+  }
+
   .meal-card__meal-name {
     font-size: 16px;
     font-weight: bold;
@@ -90,6 +100,7 @@ export default {
   }
 
   .meal-card__button {
+    border-radius: 3px;
     background: #FD8421;
     color: #fff;
     font-weight: bold;

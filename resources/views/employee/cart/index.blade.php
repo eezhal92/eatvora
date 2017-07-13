@@ -1,11 +1,19 @@
 @extends('layouts.employee')
 
 @section('body')
-  <div class="meal-list" style="padding-top: 40px">
+  <div class="meal-list">
     <div class="container container--small">
       <div class="row">
-        <div class="col-xs-12 col-sm-offset-3 col-sm-9">
+        <div class="col-xs-12">
+          <h1 class="page-title">Keranjang</h1>
+        </div>
+      </div>
+      <div class="row" style="margin-top: 22px;">
+        <div class="col-xs-12 col-sm-9">
           <cart></cart>
+        </div>
+        <div class="col-xs-12 col-sm-3">
+          <cart-summary></cart-summary>
         </div>
       </div>
     </div>

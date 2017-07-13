@@ -19,7 +19,9 @@
     "vue": "^2.1.10"
   },
   "dependencies": {
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "moment": "^2.18.1",
-    "sass-loader": "^6.0.6"
+    "sass-loader": "^6.0.6",
+    "vuex": "^2.3.1"
   }
 }

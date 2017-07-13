@@ -25,11 +25,15 @@ class MealController extends Controller
 
     public function show($date, $menuId)
     {
-        $menu = Menu::with('vendor')
-            ->join('schedules', 'schedules.menu_id', '=', 'menus.id')
-            ->where('date', Carbon::parse($date))
-            ->where('menus.id', $menuId)
-            ->first();
+        try {
+            $menu = Menu::with('vendor')
+                ->join('schedules', 'schedules.menu_id', '=', 'menus.id')
+                ->where('schedules.date', Carbon::parse($date))
+                ->where('menus.id', $menuId)
+                ->firstOrFail();
+        } catch (\Exception $e) {
+            return 'Not found!';
+        }
 
         return view('employee.meals.show', [
             'menu' => $menu,

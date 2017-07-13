@@ -1,7 +1,10 @@
 <template>
   <div class="meal-list">
-    <select v-model="date" @change="fetchMeals({ date: date, category: category })">
-      <option v-for="day in weekdays" :value="day">{{ day }}</option>
+    <label for="meal-date">
+      Tanggal
+    </label>
+    <select id="meal-date" v-model="date" @change="fetchMeals({ date: date, category: category })">
+      <option v-for="day in weekdays" :value="day">{{ day | date }}</option>
     </select>
     <br />
     <br />
@@ -9,8 +12,8 @@
       <meal-item :date="date" v-for="meal in meals" :meal="meal" :key="meal.id"></meal-item>
     </div>
     <div v-show="isLoading" class="col-sm-12">Memuat...</div>
-    <div v-if="remaining">
-      <button @click="loadMore">Load More</button>
+    <div v-if="remaining" class="text-center">
+      <button @click="loadMore" class="btn btn--primary-outline">Muat Lebih Banyak</button>
     </div>
   </div>
 </template>

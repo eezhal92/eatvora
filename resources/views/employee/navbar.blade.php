@@ -18,6 +18,23 @@
               <cart-count></cart-count>
             </a>
           </li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" id="account-btn" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+              <img src="http://lorempixel.com/32/32" class="img-circle" />
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="account-btn">
+              <li>
+                <a href="#">
+                  M. Rizki Rijal
+                  <br/>
+                  Balance: Rp. 125,000
+                </a>
+              </li>
+              <li><a href="#">Pengaturan</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a href="/logout">Logout</a></li>
+            </ul>
+          </li>
         </ul>
       </div>
     </div>

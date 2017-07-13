@@ -16,7 +16,41 @@ class ScheduleServiceTest extends TestCase
         $service = new ScheduleService();
 
         // When today is less than Friday 3 PM
+        $pretendedCurrentDate = Carbon::create(2017, 6, 9, 15);
+
+        Carbon::setTestNow($pretendedCurrentDate);
+
+        $nextWeekDayDates = $service->nextWeekDayDates()->map(function ($day) {
+            return $day->format('Y-m-d');
+        });
+
+        $this->assertEquals([
+            '2017-06-19',
+            '2017-06-20',
+            '2017-06-21',
+            '2017-06-22',
+            '2017-06-23',
+        ], $nextWeekDayDates->toArray());
+
+        // When today is less than Friday 3 PM
         $pretendedCurrentDate = Carbon::create(2017, 6, 12);
+
+        Carbon::setTestNow($pretendedCurrentDate);
+
+        $nextWeekDayDates = (new ScheduleService())->nextWeekDayDates()->map(function ($day) {
+            return $day->format('Y-m-d');
+        });
+
+        $this->assertEquals([
+            '2017-06-19',
+            '2017-06-20',
+            '2017-06-21',
+            '2017-06-22',
+            '2017-06-23',
+        ], $nextWeekDayDates->toArray());
+
+        // Set to Friday before 3 PM
+        $pretendedCurrentDate = Carbon::create(2017, 6, 16, 14);
 
         Carbon::setTestNow($pretendedCurrentDate);
 
@@ -33,7 +67,7 @@ class ScheduleServiceTest extends TestCase
         ], $nextWeekDayDates->toArray());
 
         // Set to Friday 3 PM
-        $pretendedCurrentDate = Carbon::create(2017, 6, 17, 15);
+        $pretendedCurrentDate = Carbon::create(2017, 6, 16, 15);
 
         Carbon::setTestNow($pretendedCurrentDate);
 

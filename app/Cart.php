@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Cart extends Model
 {
     protected $fillable = ['employee_id'];
-    
+
     public static function of(Employee $employee)
     {
         return static::where('employee_id', $employee->id)->first();
@@ -39,7 +39,8 @@ class Cart extends Model
     {
         return static::join('cart_items', 'carts.id', '=', 'cart_items.cart_id')
             ->join('menus', 'cart_items.menu_id', '=', 'menus.id')
-            ->select('menus.*', 'cart_items.qty', 'cart_items.date')
+            ->join('vendors', 'menus.vendor_id', '=', 'vendors.id')
+            ->select('menus.*', 'cart_items.qty', 'cart_items.date', 'vendors.name as vendorName')
             ->get();
     }
 

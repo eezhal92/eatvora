@@ -47,7 +47,7 @@ class CartController extends Controller
             return response()->json([]);
         }
 
-        $items = $cart->items()->groupBy('date');
+        $items = $cart->items()->sortByDesc('date')->groupBy('date');
 
         return response()->json($items);
     }

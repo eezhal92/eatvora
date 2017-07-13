@@ -1,6 +1,9 @@
 <template>
   <div class="cart">
-    <cart-item-by-date 
+    <p v-if="!cartItemsCount">
+      Ooops! Keranjang Anda Masih Kosong
+    </p>
+    <cart-item-by-date
       v-for="group in groupedItems"
       :items="group.items"
       :date="group.date"
@@ -10,24 +13,15 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import CartItemByDate from './CartItemByDate';
 
 export default {
-  data() {
-    return {
-      groupedItems: [],
-    };
-  },
-  mounted() {
-    axios.get('/api/v1/cart')
-      .then(({ data }) => {
-        const groupedItems = Object.keys(data).map(date => ({
-          date,
-          items: data[date],
-        }))
-
-        this.groupedItems = groupedItems;
-      });
+  computed: {
+    ...mapGetters({
+      groupedItems: 'groupedCartItems',
+      cartItemsCount:  'cartItemsCount',
+    }),
   },
   components: {
     'cart-item-by-date': CartItemByDate,

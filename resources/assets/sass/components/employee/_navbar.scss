@@ -8,7 +8,7 @@
 
   &__container {
     padding: 20px 0;
-    overflow: hidden;
+    height: 68px;
   }
 
   &__logo {
@@ -16,28 +16,45 @@
     font-weight: bold;
     margin-right: 15px;
     font-size: 18px;
-    
+
     a {
-      color: #2196f3;
+      color: #FD8421;
     }
   }
 
   &__menu {
     float: left;
-    &--right {
-      float: right;
-    }
-
     padding: 0;
     margin: 0;
+    margin-top: 4px;
 
-    li {
+    .dropdown-menu {
+        // box-shadow: 0 0 0 1px rgba(99, 114, 130, 0.16), 0 8px 16px rgba(27, 39, 51, 0.08);
+        outline: none;
+        border-radius: 4px;
+        border: 1px solid #E6E8EB;
+    }
+
+    &--right {
+      float: right;
+
+      .dropdown-menu {
+        right: 0;
+        left: auto;
+      }
+    }
+
+    a {
+      color: #86919F !important;
+    }
+
+    > li {
       list-style: none;
       display: inline-block;
+      height: 44px;
 
-      a {
+      > a {
         margin: 0 15px;
-        color: #86919F;
       }
     }
   }

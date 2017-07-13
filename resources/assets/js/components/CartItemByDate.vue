@@ -5,15 +5,24 @@
     </div>
     <div class="cart-items-by-date__items">
       <div v-for="item in items" style="margin: 10px 0">
-        <div style="display: inline-block; width: 20%">
-          <img src="http://lorempixel.com/60/60" alt="meal" />
-        </div>
-        <div style="display: inline-block; width: 70%; text-align: right">
-          <span class="pull-left">{{ item.name }}</span>
-          <span class="pull-right">
-            Qty <input type="number" min="1" max="3" :value="item.qty" />
-            {{ item.qty * item.price | rupiah }}
-          </span>
+        <div>
+          <div class="row" style="display: flex; align-items: flex-start;">
+            <div class="col-xs-8">
+              <div style="overflow: hidden">
+                <img src="http://lorempixel.com/60/60" alt="meal" class="pull-left" />
+                <div style="display: inline-block;margin-left: 10px;">
+                  <p style="margin-bottom: 4px">{{ item.name }}</p>
+                  <small>{{ item.vendorName }}</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-2">
+              <div>Qty <input class="cart-item-qty" type="number" min="1" max="3" :value="item.qty" /></div>
+            </div>
+            <div class="col-xs-2">
+              <div style="text-align: right; padding-top: 6px">{{ item.qty * item.price | rupiah }}</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -39,7 +48,8 @@ export default {
   .cart-items-by-date {
     background: #fff;
     padding: 15px 20px;
-    border-radius: 3px;
+    border-radius: 4px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
     margin-bottom: 20px;
   }
 
@@ -47,5 +57,11 @@ export default {
     border-bottom: 1px solid #e6e6e6;
     padding: 10px 0;
     font-weight: bold;
+  }
+
+  .cart-item-qty {
+    border: 1px solid #eeeeee;
+    padding: 4px;
+    border-radius: 4px;
   }
 </style>

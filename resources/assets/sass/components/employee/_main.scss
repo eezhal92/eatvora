@@ -1,7 +1,15 @@
 @import 'navbar';
 
 .container--small {
-    @media (min-width: 768px) {
-        width: 990px; 
-    }
+  @media (min-width: 768px) {
+    width: 990px;
+  }
+}
+
+.page-title {
+  font-size: 22px;
+}
+
+.page-sub-title {
+  font-size: 18px;
 }

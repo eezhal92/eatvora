@@ -8,8 +8,7 @@
         <option value="veggie">Veggie</option>
       </select>
     </div>
-    
-    <button class="btn btn-primary" type="submit">
+    <button class="btn btn--primary" type="submit">
       Cari
     </button>
   </form>
@@ -17,6 +16,7 @@
 
 <script>
 import bus from './bus';
+import store from '../vuex/store';
 
 export default {
   data() {

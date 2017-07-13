@@ -15,7 +15,10 @@ class ScheduleService
     {
         $now = Carbon::now();
 
-        if ($now->dayOfWeek <= Carbon::FRIDAY && $now->hour < 15) {
+        // Set to Friday 3pm
+        $weekBoundary = $now->copy()->startOfWeek()->addDay(4)->setTime(15, 00, 00);
+
+        if ($now->lt($weekBoundary)) {
             $nextMonday = $now->copy()->addWeek()->startOfWeek();
 
             return collect([
