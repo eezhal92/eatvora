@@ -19,6 +19,8 @@ Route::get('/meals/{date}/{menuId}', 'Employee\MealController@show');
 
 Auth::routes();
 
+Route::get('/logout', 'Auth\LoginController@logout');
+
 Route::group(['middleware' => ['auth', 'company']], function () {
 
     Route::get('/cart', 'Employee\CartController@index');
@@ -31,7 +33,30 @@ Route::group(['middleware' => ['auth', 'company']], function () {
 
 });
 
+Route::group(['prefix' => '/ap'], function () {
 
+    Route::get('/login', 'Admin\AuthController@showLoginForm');
+
+    Route::post('/login', 'Admin\AuthController@login');
+
+    Route::group(['middleware' => ['eatvora-admin']], function () {
+
+        Route::get('/dashboard', 'Admin\DashboardController@index');
+
+        Route::get('/companies/create', 'Admin\CompanyController@create');
+
+        Route::get('/companies', 'Admin\CompanyController@index');
+
+        Route::post('/companies', 'Admin\CompanyController@store');
+
+        Route::get('/companies/{id}', 'Admin\CompanyController@show');
+
+        Route::get('/companies/{id}/edit', 'Admin\CompanyController@edit');
+
+        Route::patch('/companies/{id}', 'Admin\CompanyController@update');
+
+    });
+});
 
 Route::group(['prefix' => 'api/v1', 'namespace' => 'Api\V1', 'middleware' => 'auth'], function () {
 

@@ -6445,6 +6445,18 @@ const getters = {
     }, 0);
 
     return total;
+  },
+  allCartItemIds: state => {
+    const { cartItems } = state;
+    let allIds = [];
+
+    Object.keys(cartItems).forEach(date => {
+      const itemsByDate = cartItems[date];
+
+      allIds = allIds.concat(itemsByDate.map(item => item.id));
+    });
+
+    return allIds;
   }
 };
 
@@ -28425,12 +28437,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data() {
     return { adding: false };
   },
   props: ['meal', 'date'],
+  computed: {
+    isInCart() {
+      return this.$store.getters.allCartItemIds.indexOf(this.meal.id) !== -1;
+    }
+  },
   methods: {
     addToCart() {
       const item = this.meal.name;
@@ -59413,7 +59432,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": _vm.addToCart
     }
-  }, [_vm._v("\n        Ingin Ini\n      ")])])])])
+  }, [_vm._v("\n        Ingin Ini\n      ")]), _vm._v(" "), _c('br'), _vm._v(" "), _c('small', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.isInCart),
+      expression: "isInCart"
+    }]
+  }, [_vm._v("Sudah Ada di Keranjang")])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "meal-card__meal-category"

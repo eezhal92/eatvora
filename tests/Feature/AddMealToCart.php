@@ -25,6 +25,7 @@ use Tests\TestCase;
  * - It should not able to add 3 item in one day
  * - It should not able to add item when vendor capacity is exceeded (It should be in dedicated CheckoutTest)
  * - It should not able to checkout when the cart is less than 3 day (It should be in dedicated CheckoutTest)
+ * - It should not able to checkout when user balance is not enough total order (It should be in dedicated CheckoutTest)
  */
 class AddMealToCart extends TestCase
 {
@@ -59,7 +60,7 @@ class AddMealToCart extends TestCase
         $nextWeekDayDates = $scheduleService->nextWeekDayDates();
 
         $nextMonday = $nextWeekDayDates->first();
-        
+
         $vendor = factory(Vendor::class)->create();
 
         $user = factory(User::class)->create([
@@ -123,7 +124,7 @@ class AddMealToCart extends TestCase
         $nextWeekDayDates = $this->nextWeekDayDates;
 
         $nextMonday = $nextWeekDayDates->first();
-        
+
         $vendor = factory(Vendor::class)->create();
 
         $menu = factory(Menu::class)->create($this->validParams([

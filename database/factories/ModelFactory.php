@@ -1,12 +1,13 @@
 <?php
 
 use App\Cart;
-use App\Company;
-use App\Employee;
 use App\Menu;
-use App\Schedule;
 use App\User;
 use App\Vendor;
+use App\Company;
+use App\Office;
+use App\Employee;
+use App\Schedule;
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 $factory->define(User::class, function (Faker\Generator $faker) {
@@ -17,6 +18,18 @@ $factory->define(User::class, function (Faker\Generator $faker) {
         'email' => $faker->unique()->safeEmail,
         'password' => $password ?: $password = bcrypt('secret'),
         'remember_token' => str_random(10),
+    ];
+});
+
+$factory->state(User::class, 'admin', function ($faker) {
+    static $password;
+
+    return [
+        'name' => $faker->name,
+        'email' => $faker->unique()->safeEmail,
+        'password' => $password ?: $password = bcrypt('secret'),
+        'remember_token' => str_random(10),
+        'is_admin' => 1,
     ];
 });
 
@@ -45,13 +58,34 @@ $factory->define(Company::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->define(Office::class, function (Faker\Generator $faker) {
+    return [
+        'company_id' => function () {
+            return factory(Company::class)->create()->id;
+        },
+        'name' => $faker->company,
+        'address' => 'Some address',
+    ];
+});
+
+$factory->state(Office::class, 'main', function (Faker\Generator $faker) {
+    return [
+        'company_id' => function () {
+            return factory(Company::class)->create()->id;
+        },
+        'name' => $faker->company,
+        'address' => 'Some address',
+        'is_main' => true,
+    ];
+});
+
 $factory->define(Employee::class, function (Faker\Generator $faker) {
     return [
         'user_id' => function () {
             return factory(User::class)->create()->id;
         },
-        'company_id' => function () {
-            return factory(Company::class)->create()->id;
+        'office_id' => function () {
+            return factory(Office::class)->create()->id;
         },
     ];
 });
@@ -66,6 +100,6 @@ $factory->define(Cart::class, function (Faker\Generator $faker) {
 
 $factory->define(Schedule::class, function (Faker\Generator $faker) {
     return [
-        
+
     ];
 });

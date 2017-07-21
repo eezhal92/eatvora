@@ -16,7 +16,6 @@ use Tests\TestCase;
  * To Assert
  * - requires authentication
  * - user cannot see past meal schedule
- * - user cannot see not scheduled meal with wrong id and date combination
  * - can see by category etc
  */
 class ViewMealScheduleTest extends TestCase
@@ -123,5 +122,34 @@ class ViewMealScheduleTest extends TestCase
         $this->assertEquals('Nasi Padang', $response->data('menu')->name);
         $this->assertEquals('Dapur Lulu', $response->data('menu')->vendor->name);
         $this->assertEquals(30000, $response->data('menu')->price);
+    }
+
+    /** @test */
+    public function user_can_not_see_meal_detail_with_wrong_date_and_meal_id_combination()
+    {
+        // date and meal id should be present
+        $vendor = factory(Vendor::class)->create([
+            'name' => 'Dapur Lulu',
+            'capacity' => 200,
+        ]);
+
+        $menu = factory(Menu::class)->create($this->validParams([
+            'name' => 'Nasi Padang',
+            'price' => 30000,
+            'vendor_id' => $vendor->id,
+        ]));
+
+        $schedule = factory(Schedule::class)->create([
+            'date' => Carbon::parse('2017-06-12'),
+            'menu_id' => $menu->id,
+        ]);
+
+        $response = $this->get("/meals/2017-06-12/100");
+
+        $response->assertSee('Not found!');
+
+        $response = $this->get("/meals/2017-06-13/{$menu->id}");
+
+        $response->assertSee('Not found!');
     }
 }

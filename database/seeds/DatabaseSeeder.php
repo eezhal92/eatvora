@@ -7,6 +7,7 @@ use App\Schedule;
 use App\Services\ScheduleService;
 use App\User;
 use App\Vendor;
+use App\Office;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
@@ -39,11 +40,22 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        factory(User::class)->states('admin')
+            ->create(['email' => 'admin@mail.com', 'password' => bcrypt('password')]);
+
         $user = factory(User::class)->create(['email' => 'john@mail.com', 'password' => bcrypt('password')]);
+
         $company = factory(Company::class)->create(['name' => 'Traveloka']);
+        $office = factory(Office::class)->create([
+            'company_id' => $company->id,
+            'name' => 'Traveloka HQ',
+            'address' => 'Rasuna Said',
+            'is_main' => true,
+        ]);
+
         factory(Employee::class)->create([
             'user_id' => $user->id,
-            'company_id' => $company->id,
+            'office_id' => $office->id,
         ]);
 
         // senin-jum'at lihat hari bsok

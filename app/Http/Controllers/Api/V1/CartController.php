@@ -15,7 +15,7 @@ class CartController extends Controller
     public function store()
     {
         $employee = Employee::where('user_id', Auth::user()->id)
-            ->where('company_id', session('company_id'))
+            ->where('office_id', session('office_id'))
             ->first();
 
         // todo: make test and refactor
@@ -38,7 +38,7 @@ class CartController extends Controller
     public function index()
     {
         $employee = Employee::where('user_id', Auth::user()->id)
-            ->where('company_id', session('company_id'))
+            ->where('office_id', session('office_id'))
             ->first();
 
         $cart = Cart::of($employee);

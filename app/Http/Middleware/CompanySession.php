@@ -27,7 +27,11 @@ class CompanySession
                 ->withSession('error', 'Maaf, Anda tidak terdaftar di perusahaan mana pun.');
         }
 
-        session(['company_id' => $employees->first()->company_id]);
+        $office = $employees->first()->office;
+        session([
+            'office_id' => $office->id,
+            'company_id' => $office->company_id,
+        ]);
 
         return $next($request);
     }

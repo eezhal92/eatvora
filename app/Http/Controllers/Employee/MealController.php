@@ -37,6 +37,7 @@ class MealController extends Controller
 
         return view('employee.meals.show', [
             'menu' => $menu,
+            'date' => $date,
         ]);
     }
 }

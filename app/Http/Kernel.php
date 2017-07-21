@@ -57,5 +57,6 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'company' => \App\Http\Middleware\CompanySession::class,
+        'eatvora-admin' => \App\Http\Middleware\EatvoraAdmin::class,
     ];
 }

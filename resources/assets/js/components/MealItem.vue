@@ -16,6 +16,8 @@
         <button @click="addToCart" :disabled="adding" class="btn btn-default meal-card__button">
           Ingin Ini
         </button>
+        <br>
+        <small v-show="isInCart">Sudah Ada di Keranjang</small>
       </div>
     </div>
   </div>
@@ -27,6 +29,11 @@ export default {
     return { adding: false };
   },
   props: ['meal', 'date'],
+  computed: {
+    isInCart() {
+      return this.$store.getters.allCartItemIds.indexOf(this.meal.id) !== -1;
+    },
+  },
   methods: {
     addToCart() {
       const item = this.meal.name;

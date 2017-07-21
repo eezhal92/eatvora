@@ -60,6 +60,18 @@ const getters = {
 
     return total;
   },
+  allCartItemIds: state => {
+    const { cartItems } = state;
+    let allIds = [];
+
+    Object.keys(cartItems).forEach(date => {
+      const itemsByDate = cartItems[date];
+
+      allIds = allIds.concat(itemsByDate.map(item => item.id));
+    });
+
+    return allIds;
+  },
 };
 
 const mutations = {

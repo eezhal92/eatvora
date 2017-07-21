@@ -21,7 +21,7 @@ abstract class TestCase extends BaseTestCase
      * @var string
      */
     protected $baseUrl = 'http://localhost';
-  
+
     protected function setUp()
     {
         parent::setUp();
@@ -46,7 +46,7 @@ abstract class TestCase extends BaseTestCase
     protected function disableExceptionHandling()
     {
         $this->oldExceptionHandler = $this->app->make(ExceptionHandler::class);
-        
+
         $this->app->instance(ExceptionHandler::class, new class extends Handler {
             public function __construct() {}
             public function report(\Exception $e) {}
@@ -60,6 +60,12 @@ abstract class TestCase extends BaseTestCase
     {
         $this->app->instance(ExceptionHandler::class, $this->oldExceptionHandler);
 
+        return $this;
+    }
+
+    protected function from($url)
+    {
+        session()->setPreviousUrl(url($url));
         return $this;
     }
 }
