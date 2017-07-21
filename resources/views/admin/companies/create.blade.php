@@ -1,37 +1,51 @@
-<h1>Create New Company</h1>
+@extends('layouts.admin')
 
-<form action="{{ url('/ap/companies') }}" method="post">
-  {{ csrf_field() }}
+@section('title', 'Eatvora - Create New Company')
 
-  @if($errors->any())
-    {{ dump($errors) }}
-  @endif
+@section('content')
 
-  <h3>Company</h3>
+  <div class="app-content-container">
+    <div class="container-fluid container-fluid--narrow">
+      <div class="row">
 
-  <div class="form-group">
-    <label for="company_name">Name</label>
-    <input id="company_name" type="text" name="company_name" class="form-control">
+        @include('admin.top-navigation', ['header' => 'Create New Company'])
+
+        <div class="col-lg-6">
+          <form action="{{ url('/ap/companies') }}" method="post">
+            {{ csrf_field() }}
+
+            <h3 class="form-sub-header">Company</h3>
+
+            <div class="form-group">
+              <label for="company_name">Name</label>
+              <input id="company_name" type="text" name="company_name" class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label for="company_address">Address</label>
+              <textarea name="company_address" id="company_address" class="form-control"></textarea>
+            </div>
+
+            <h3 class="form-sub-header">Admin of Company</h3>
+
+            <div class="form-group">
+              <label for="admin_name">Name</label>
+              <input id="admin_name" type="text" name="admin_name" class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label for="admin_email">Email</label>
+              <input id="admin_email" type="text" name="admin_email" class="form-control">
+            </div>
+
+            <button class="btn btn-primary">
+              Create New Company
+            </button>
+          </form>
+        </div>
+
+      </div>
+    </div>
   </div>
 
-  <div class="form-group">
-    <label for="company_address">Address</label>
-    <textarea name="company_address" id="company_address" class="form-control"></textarea>
-  </div>
-
-  <h3>Admin of Company</h3>
-
-  <div class="form-group">
-    <label for="admin_name">Name</label>
-    <input id="admin_name" type="text" name="admin_name" class="form-control">
-  </div>
-
-  <div class="form-group">
-    <label for="admin_email">Email</label>
-    <input id="admin_email" type="text" name="admin_email" class="form-control">
-  </div>
-
-  <button class="btn btn-primary">
-    Create New Company
-  </button>
-</form>
+@endsection

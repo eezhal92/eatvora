@@ -76,8 +76,9 @@ class CompanyController extends Controller
     public function edit(Request $request, $id)
     {
         $company = Company::find($id);
+        $mainOffice = $company->mainOffice();
 
-        return view('admin.companies.edit', compact('company'));
+        return view('admin.companies.edit', compact('company', 'mainOffice'));
     }
 
     public function update(Request $request, $id)

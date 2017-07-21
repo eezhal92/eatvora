@@ -84,6 +84,7 @@ class EditCompanyTest extends TestCase
 
         $response->assertStatus(200);
         $this->assertTrue($response->data('company')->is($company));
+        $this->assertTrue($response->data('mainOffice')->is($mainOffice));
     }
 
     /** @test */
