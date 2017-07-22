@@ -12,7 +12,13 @@ class Employee extends Model
         'is_admin' => 'boolean',
     ];
 
-    public function office() {
+    public function office()
+    {
         return $this->belongsTo(Office::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

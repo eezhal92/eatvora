@@ -18,6 +18,8 @@ class CreateOfficesTable extends Migration
             $table->integer('company_id')->unsigned();
             $table->string('name');
             $table->string('address');
+            $table->string('phone')->nullable();
+            $table->string('email')->nullable();
             $table->tinyInteger('is_main')->default(0);
             $table->timestamps();
         });

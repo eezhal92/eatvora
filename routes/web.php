@@ -55,6 +55,10 @@ Route::group(['prefix' => '/ap'], function () {
 
         Route::patch('/companies/{id}', 'Admin\CompanyController@update');
 
+        Route::get('/companies/{id}/offices/create', 'Admin\OfficeController@create');
+
+        Route::post('/companies/{id}/offices', 'Admin\OfficeController@store');
+
     });
 });
 
@@ -66,4 +70,5 @@ Route::group(['prefix' => 'api/v1', 'namespace' => 'Api\V1', 'middleware' => 'au
 
     Route::get('/cart', 'CartController@index');
 
+    Route::get('/employees', 'EmployeeController@index');
 });

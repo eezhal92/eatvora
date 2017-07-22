@@ -90,6 +90,19 @@ $factory->define(Employee::class, function (Faker\Generator $faker) {
     ];
 });
 
+
+$factory->state(Employee::class, 'admin', function (Faker\Generator $faker) {
+    return [
+        'user_id' => function () {
+            return factory(User::class)->create()->id;
+        },
+        'office_id' => function () {
+            return factory(Office::class)->create()->id;
+        },
+        'is_admin' => true,
+    ];
+});
+
 $factory->define(Cart::class, function (Faker\Generator $faker) {
     return [
         'employee_id' => function () {

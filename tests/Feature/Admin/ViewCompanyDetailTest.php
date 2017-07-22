@@ -3,8 +3,9 @@
 namespace Tests\Feature;
 
 use App\User;
-use App\Company;
 use App\Office;
+use App\Company;
+use App\Employee;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -44,6 +45,16 @@ class ViewCompanyDetailTest extends TestCase
 
         $company = factory(Company::class)->create([
             'name' => 'Traveloka',
+        ]);
+
+        $office = factory(Office::class)->states('main')->create([
+            'company_id' => $company->id,
+        ]);
+
+        $user = factory(User::class)->create();
+        $companyAdmin = factory(Employee::class)->states('admin')->create([
+            'office_id' => $office->id,
+            'user_id' => $user->id,
         ]);
 
         factory(Office::class)->create([

@@ -13,8 +13,9 @@
     @stack('head')
   </head>
   <body>
-
-    @yield('content')
+    <div id="app">
+      @yield('content')
+    </div>
 
     <div class="eatvora-nav__container">
       <div class="eatvora-nav__panel">

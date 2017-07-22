@@ -56,11 +56,11 @@ class DatabaseSeeder extends Seeder
             'company_id' => $company->id,
             'name' => 'Development HQ',
             'address' => 'Wisma 77 Tower 2, 21st floor Jl. S. Parman Kav. 77',
-            'is_main' => false,
         ]);
 
         factory(Employee::class)->create([
             'user_id' => $user->id,
+            'is_admin' => true,
             'office_id' => $office->id,
         ]);
 

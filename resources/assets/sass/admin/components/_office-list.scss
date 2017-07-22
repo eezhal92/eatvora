@@ -51,8 +51,12 @@
     }
   }
 
-  &__address-header {
+  &__section-header {
     font-weight: bold;
+  }
+
+  &__admin {
+    margin-bottom: 16px;
   }
 
   &__contact {
