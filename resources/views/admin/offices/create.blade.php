@@ -35,7 +35,7 @@
             </div>
 
             <button class="btn btn-primary">
-              Create New Company
+              Create New Office
             </button>
           </form>
         </div>
