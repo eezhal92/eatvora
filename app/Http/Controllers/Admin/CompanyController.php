@@ -99,6 +99,8 @@ class CompanyController extends Controller
         $mainOffice->update([
             'name' => $request->get('main_office_name'),
             'address' => $request->get('main_office_address'),
+            'email' => $request->get('main_office_email'),
+            'phone' => $request->get('main_office_phone'),
         ]);
 
         return redirect("/ap/companies/{$company->id}");

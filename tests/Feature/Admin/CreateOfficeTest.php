@@ -103,6 +103,7 @@ class CreateOfficeTest extends TestCase
         $this->assertEquals($office->address, 'Non-Exists St.');
         $this->assertEquals($office->phone, '+62 451 483350');
         $this->assertEquals($office->email, 'another_office@company.com');
+        $this->assertEquals($office->is_main, false);
         $this->assertEquals($office->company_id, $company->id);
     }
 

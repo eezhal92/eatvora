@@ -42,6 +42,8 @@ class EditCompanyTest extends TestCase
             'name' => 'New Company Name',
             'main_office_name' => 'New Company Main Office Name',
             'main_office_address' => 'New Company Main Office Address',
+            'main_office_phone' => '081 223 000',
+            'main_office_email' => 'office@mail.com',
         ], $overrides);
     }
 
@@ -102,6 +104,8 @@ class EditCompanyTest extends TestCase
             'company_id' => $company->id,
             'name' => 'Another Company Office',
             'address' => 'Another Company Office Address',
+            'phone' => '085 225 756 999',
+            'email' => 'office@mail.com',
             'is_main' => false,
         ]);
 
@@ -109,6 +113,8 @@ class EditCompanyTest extends TestCase
             'name' => 'New Company Name',
             'main_office_name' => 'New Company Office Name',
             'main_office_address' => 'New Company Office Address',
+            'main_office_phone' => '085 111 111',
+            'main_office_email' => 'updated_office@mail.com',
         ]);
 
         $response->assertRedirect("/ap/companies/{$company->id}");
@@ -120,6 +126,47 @@ class EditCompanyTest extends TestCase
         $this->assertEquals($company->id, $office->id);
         $this->assertEquals('New Company Office Name', $office->name);
         $this->assertEquals('New Company Office Address', $office->address);
+        $this->assertEquals('085 111 111', $office->phone);
+        $this->assertEquals('updated_office@mail.com', $office->email);
+        $this->assertTrue($office->is_main);
+    }
+
+    /** @test */
+    public function admin_can_update_existing_company_without_optional_fields()
+    {
+        $admin = $this->createAdmin();
+
+        $company = factory(Company::class)->create($this->oldCompanyAttributes());
+
+        $office = factory(Office::class)->create($this->oldMainOfficeAttributes([
+            'company_id' => $company->id,
+        ]));
+
+        factory(Office::class)->create([
+            'company_id' => $company->id,
+            'name' => 'Another Company Office',
+            'address' => 'Another Company Office Address',
+            'phone' => '085 225 756 999',
+            'email' => 'office@mail.com',
+            'is_main' => false,
+        ]);
+
+        $response = $this->actingAs($admin)->patch("/ap/companies/{$company->id}", $this->validParams([
+            'main_office_email' => '',
+            'main_office_phone' => '',
+        ]));
+
+        $response->assertRedirect("/ap/companies/{$company->id}");
+
+        $company->refresh();
+        $office->refresh();
+
+        $this->assertEquals('New Company Name', $company->name);
+        $this->assertEquals($company->id, $office->id);
+        $this->assertEquals('New Company Main Office Name', $office->name);
+        $this->assertEquals('New Company Main Office Address', $office->address);
+        $this->assertNull($office->phone);
+        $this->assertNull($office->email);
         $this->assertTrue($office->is_main);
     }
 
