@@ -8,6 +8,11 @@
 
     $mainOffice = $company->mainOffice();
 
+    $firstOffice = $offices->first();
+
+    $firstOfficeId = !is_null($firstOffice) ? $firstOffice->id : 0;
+    $firstOfficeName = !is_null($firstOffice) ? $firstOffice->name : '';
+
     $admin = $mainOffice->admin()->user;
 
   @endphp
@@ -101,8 +106,8 @@
 
         <div class="col-md-offset-1 col-md-6">
           <employee-list
-            :default-office-id="{{ $mainOffice->id }}"
-            default-office-name="{{ $mainOffice->name }}"
+            :default-office-id="{{ $firstOfficeId }}"
+            default-office-name="{{ $firstOfficeName }}"
           ></employee-list>
         </div>
 
