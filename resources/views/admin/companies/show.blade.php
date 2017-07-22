@@ -11,7 +11,7 @@
     $firstOffice = $offices->first();
 
     $firstOfficeId = !is_null($firstOffice) ? $firstOffice->id : 0;
-    $firstOfficeName = !is_null($firstOffice) ? $firstOffice->name : '';
+    $firstOfficeName = !is_null($firstOffice) ? addslashes($firstOffice->name) : '';
 
     $admin = $mainOffice->admin()->user;
 
@@ -33,9 +33,6 @@
 
         <div class="col-lg-4">
           <div class="office-list">
-            <div class="text-center">
-              {{ $offices->render() }}
-            </div>
             <div class="office-list__header">
               {{ $company->name }} Offices
             </div>
@@ -92,7 +89,7 @@
                     <a href="{{ $office->is_main ? url('/ap/companies/' . $company->id . '/edit') : url('/ap/companies/' . $company->id . '/offices/' . $office->id . '/edit') }}">Edit</a>
                     <employee-list-button
                       :office-id="{{ $office->id }}"
-                      :office-name="'{{ $office->name }}'"
+                      :office-name="'{{ addslashes($office->name) }}'"
                     ></employee-list-button>
                   </div>
                 </div>
@@ -104,7 +101,7 @@
           </div>
         </div>
 
-        <div class="col-md-offset-1 col-md-6">
+        <div class="col-md-offset-1 col-md-7">
           <employee-list
             :default-office-id="{{ $firstOfficeId }}"
             default-office-name="{{ $firstOfficeName }}"

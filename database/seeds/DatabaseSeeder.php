@@ -44,6 +44,7 @@ class DatabaseSeeder extends Seeder
             ->create(['email' => 'admin@mail.com', 'password' => bcrypt('password')]);
 
         $user = factory(User::class)->create(['email' => 'john@mail.com', 'password' => bcrypt('password')]);
+        $userB = factory(User::class)->create(['email' => 'jane@mail.com', 'password' => bcrypt('password')]);
 
         $company = factory(Company::class)->create(['name' => 'Traveloka']);
         $office = factory(Office::class)->create([
@@ -53,7 +54,7 @@ class DatabaseSeeder extends Seeder
             'is_main' => true,
         ]);
 
-        factory(Office::class)->create([
+        $officeB = factory(Office::class)->create([
             'company_id' => $company->id,
             'name' => 'Development HQ',
             'address' => 'Wisma 77 Tower 2, 21st floor Jl. S. Parman Kav. 77',
@@ -63,12 +64,24 @@ class DatabaseSeeder extends Seeder
             factory(Office::class)->create([
                 'company_id' => $company->id,
             ]);
-         }
+        }
+
+        foreach (range(1, 25) as $number) {
+            $u = factory(User::class)->create();
+            factory(Employee::class)->create([
+                'user_id' => $u->id,
+                'office_id' => $office->id,
+            ]);
+        }
 
         factory(Employee::class)->create([
             'user_id' => $user->id,
             'is_admin' => true,
             'office_id' => $office->id,
+        ]);
+        factory(Employee::class)->create([
+            'user_id' => $user->id,
+            'office_id' => $officeB->id,
         ]);
 
         // senin-jum'at lihat hari bsok

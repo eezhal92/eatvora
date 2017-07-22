@@ -14,14 +14,34 @@ class EmployeeController extends Controller
             'office_id' => 'required|integer',
         ]);
 
+        $limit = $request->get('limit', 20);
+        $page = $request->get('page', 1);
+        $offset = ($page * $limit) - $limit;
+
         $officeId = $request->get('office_id');
 
-        $employees = User::join('employees', 'users.id', '=', 'employees.user_id')
+        $query = User::join('employees', 'users.id', '=', 'employees.user_id')
             ->join('offices', 'employees.office_id', '=', 'offices.id')
             ->select('users.*')
-            ->where('offices.id', $officeId)
+            ->where('offices.id', $officeId);
+
+        if ($q = $request->get('query')) {
+            $query->where('users.name', 'like', "%{$q}%");
+        }
+
+        $totalEmployees = $query->count();
+
+        $employees = $query
+            ->limit($limit)
+            ->skip($offset)
             ->get();
 
-        return $employees;
+        $pageCount = ceil($totalEmployees / $limit);
+
+        return response()->json([
+            'current_page' => (int) $page,
+            'page_count' => $pageCount,
+            'employees' => $employees,
+        ]);
     }
 }

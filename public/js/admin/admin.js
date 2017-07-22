@@ -10235,6 +10235,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -10244,7 +10258,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     return {
       officeId: this.defaultOfficeId,
       officeName: this.defaultOfficeName,
-      employees: []
+      employees: [],
+      currentPage: 1,
+      pageCount: 1,
+      query: ''
     };
   },
   created() {
@@ -10258,11 +10275,34 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   mounted() {
     this.fetchEmployees();
   },
+  computed: {
+    isPrevAvailable() {
+      return this.currentPage > 1;
+    },
+    isNextAvailable() {
+      return this.currentPage < this.pageCount;
+    }
+  },
   methods: {
-    fetchEmployees() {
-      axios.get(`/api/v1/employees?office_id=${this.officeId}`).then(res => {
-        this.employees = res.data;
+    fetchEmployees({ page = 1 } = {}) {
+      const query = this.query;
+
+      axios.get(`/api/v1/employees?office_id=${this.officeId}&query=${query}&page=${page}`).then(res => {
+        const { employees, page_count, current_page } = res.data;
+        this.employees = employees;
+        this.pageCount = page_count;
+        this.currentPage = current_page;
       });
+    },
+    getNextPage() {
+      if (this.currentPage < this.pageCount) {
+        this.fetchEmployees({ page: this.currentPage + 1 });
+      }
+    },
+    getPrevPage() {
+      if (this.currentPage > 1) {
+        this.fetchEmployees({ page: this.currentPage - 1 });
+      }
     }
   }
 });
@@ -10522,13 +10562,13 @@ var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(163),
   /* template */
-  __webpack_require__(211),
+  __webpack_require__(215),
   /* scopeId */
   null,
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/eezhal/eatvora/eatvora-api/resources/assets/js/admin/modules/company/EmployeeList.vue"
+Component.options.__file = "/Users/eezhal/eatvora/eatvora-web/resources/assets/js/admin/modules/company/EmployeeList.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] EmployeeList.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -10539,9 +10579,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-41813d4c", Component.options)
+    hotAPI.createRecord("data-v-6f7483e0", Component.options)
   } else {
-    hotAPI.reload("data-v-41813d4c", Component.options)
+    hotAPI.reload("data-v-6f7483e0", Component.options)
   }
 })()}
 
@@ -10563,7 +10603,7 @@ var Component = __webpack_require__(2)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/eezhal/eatvora/eatvora-api/resources/assets/js/admin/modules/company/EmployeeListButton.vue"
+Component.options.__file = "/Users/eezhal/eatvora/eatvora-web/resources/assets/js/admin/modules/company/EmployeeListButton.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] EmployeeListButton.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -10574,9 +10614,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-0006e22c", Component.options)
+    hotAPI.createRecord("data-v-18dd8832", Component.options)
   } else {
-    hotAPI.reload("data-v-0006e22c", Component.options)
+    hotAPI.reload("data-v-18dd8832", Component.options)
   }
 })()}
 
@@ -10747,7 +10787,7 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-0006e22c", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-18dd8832", module.exports)
   }
 }
 
@@ -10780,15 +10820,48 @@ module.exports = function enhanceError(error, config, code, response) {
 
 /***/ }),
 
-/***/ 211:
+/***/ 215:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('div', [_vm._v("Employee of "), _c('strong', [_vm._v(_vm._s(_vm.officeName))])]), _vm._v(" "), _c('div', {
+  return _c('div', [_c('div', [_vm._v("Employee of "), _c('strong', [_vm._v(_vm._s(_vm.officeName))]), _vm._v(" Office")]), _vm._v(" "), _c('div', {
     staticStyle: {
       "margin-top": "25px"
     }
   }, [_c('div', {
+    staticClass: "search",
+    staticStyle: {
+      "margin-bottom": "15px"
+    }
+  }, [_c('form', {
+    on: {
+      "submit": function($event) {
+        $event.preventDefault();
+        _vm.fetchEmployees()
+      }
+    }
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.query),
+      expression: "query"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "placeholder": "Search employee name"
+    },
+    domProps: {
+      "value": (_vm.query)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.query = $event.target.value
+      }
+    }
+  })])]), _vm._v(" "), _c('div', {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -10798,13 +10871,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticStyle: {
       "display": "none"
     }
-  }, [_vm._v("No Employee Yet")]), _vm._v(" "), _c('table', {
+  }, [_vm._v("No employee was found...")]), _vm._v(" "), _c('div', {
     directives: [{
       name: "show",
       rawName: "v-show",
       value: (_vm.employees.length),
       expression: "employees.length"
-    }],
+    }]
+  }, [_c('table', {
     staticClass: "table"
   }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.employees), function(employee) {
     return _c('tr', [_c('td'), _vm._v(" "), _c('td', [_vm._v(_vm._s(employee.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(employee.email))]), _vm._v(" "), _c('td', [_vm._v("Yes")]), _vm._v(" "), _c('td', [_c('a', {
@@ -10850,7 +10924,35 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "r": "1.5"
       }
     })])])])])])])
-  }))])])])
+  }))]), _vm._v(" "), _c('div', {
+    staticClass: "list-pagination"
+  }, [_c('ul', {
+    staticClass: "pager"
+  }, [_c('li', {
+    staticStyle: {
+      "margin-right": "10px"
+    }
+  }, [_vm._v("Page " + _vm._s(_vm.currentPage) + " / " + _vm._s(_vm.pageCount))]), _vm._v(" "), _c('li', {
+    class: {
+      disabled: !_vm.isPrevAvailable
+    }
+  }, [_c('a', {
+    on: {
+      "click": function($event) {
+        _vm.getPrevPage()
+      }
+    }
+  }, [_vm._v("Previous")])]), _vm._v(" "), _c('li', {
+    class: {
+      disabled: !_vm.isNextAvailable
+    }
+  }, [_c('a', {
+    on: {
+      "click": function($event) {
+        _vm.getNextPage()
+      }
+    }
+  }, [_vm._v("Next")])])])])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('thead', [_c('tr', [_c('th'), _vm._v(" "), _c('th', [_vm._v("Name")]), _vm._v(" "), _c('th', [_vm._v("Email")]), _vm._v(" "), _c('th', [_vm._v("Active?")]), _vm._v(" "), _c('th', [_vm._v("Action")])])])
 }]}
@@ -10858,7 +10960,7 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-41813d4c", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-6f7483e0", module.exports)
   }
 }
 

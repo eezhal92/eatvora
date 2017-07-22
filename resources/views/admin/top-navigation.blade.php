@@ -16,6 +16,9 @@
           </div>
         </div>
       </div>
+      <div>
+        <a href="{{ url('/logout') }}" style="margin-top: 5px; height: 32px; display: inline-block;padding: 0 10px;">Logout</a>
+      </div>
     </div>
   </div>
 </div>
