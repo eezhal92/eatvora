@@ -37,9 +37,7 @@
                 <td>+62 21 994 411</td>
                 <td>hello@ms.com</td>
                 <td>
-                  <a href="{{ url('/ap/companies/' . $company->id) }}">
-                    <i class="glyphicon glyphicon-pencil"></i>
-                  </a>
+                  <a href="{{ url('/ap/companies/' . $company->id) }}">View</a>
                   <a href="{{ url('/ap/companies/' . $company->id . '/edit') }}">Edit</a>
                 </td>
               </tr>

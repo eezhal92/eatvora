@@ -4,6 +4,7 @@ namespace Tests\Feature\Admin;
 
 use App\User;
 use App\Company;
+use App\Office;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -31,7 +32,11 @@ class ViewCompanyListTest extends TestCase
         ]);
 
         $companies = $companies->map(function ($company) {
-            return factory(Company::class)->create(['name' => $company]);
+            $company = factory(Company::class)->create(['name' => $company]);
+
+            factory(Office::class)->states('main')->create(['company_id' => $company->id]);
+
+            return $company;
         });
 
         return $companies;

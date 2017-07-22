@@ -48,9 +48,15 @@ class DatabaseSeeder extends Seeder
         $company = factory(Company::class)->create(['name' => 'Traveloka']);
         $office = factory(Office::class)->create([
             'company_id' => $company->id,
-            'name' => 'Traveloka HQ',
-            'address' => 'Rasuna Said',
+            'name' => 'Operation & Customer Care',
+            'address' => 'Wisma 77 Tower 1, 7th floor Jl. S. Parman Kav. 77',
             'is_main' => true,
+        ]);
+        factory(Office::class)->create([
+            'company_id' => $company->id,
+            'name' => 'Development HQ',
+            'address' => 'Wisma 77 Tower 2, 21st floor Jl. S. Parman Kav. 77',
+            'is_main' => false,
         ]);
 
         factory(Employee::class)->create([
