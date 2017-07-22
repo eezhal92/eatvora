@@ -1,28 +1,25 @@
-<template>
-  <div class="meal-list">
-    <label for="meal-date">
-      Tanggal
-    </label>
-    <select id="meal-date" v-model="date" @change="fetchMeals({ date: date, category: category })">
-      <option v-for="day in weekdays" :value="day">{{ day | date }}</option>
-    </select>
-    <br />
-    <br />
-    <div class="row">
-      <meal-item :date="date" v-for="meal in meals" :meal="meal" :key="meal.id"></meal-item>
-    </div>
-    <div v-show="isLoading" class="col-sm-12">Memuat...</div>
-    <div v-if="remaining" class="text-center">
-      <button @click="loadMore" class="btn btn--primary-outline">Muat Lebih Banyak</button>
-    </div>
-  </div>
-</template>
-
 <script>
 import { stringify as qsStringify } from 'querystring';
 import bus from './bus';
-
 import MealItem from './MealItem';
+import chunk from 'lodash/chunk';
+
+const DateSelector = {
+  props: ['weekdays'],
+  data() {
+    return { date: this.weekdays[0] };
+  },
+  template: `
+    <select id="meal-date" v-model="date" @change="emitDateChangedEvent">
+      <option v-for="day in weekdays" :value="day">{{ day | date }}</option>
+    </select>
+  `,
+  methods: {
+    emitDateChangedEvent() {
+      bus.$emit('date-selector:date-changed', this.date)
+    },
+  },
+};
 
 export default {
   props: ['weekdays'],
@@ -41,6 +38,11 @@ export default {
       this.category = query.category;
       this.reFetch();
     });
+
+    bus.$on('date-selector:date-changed', (date) => {
+      this.date = date;
+      this.fetchMeals({ date, category: this.category })
+    })
   },
   mounted() {
     this.fetchMeals({ date: this.date });
@@ -85,6 +87,9 @@ export default {
       const query = this.nextQuery();
 
       this.fetchMeals(query, true);
+    },
+    changeDate(date) {
+      this.date = date;
     }
   },
   computed: {
@@ -99,8 +104,30 @@ export default {
       return !(this.currentPage === this.lastPage);
     }
   },
-  components: {
-    'meal-item': MealItem,
+  render(h) {
+    const chunkedMeals = chunk(this.meals, 3);
+
+    return (
+      <div class="meal-list">
+        <label for="meal-date">
+          Tanggal
+        </label>
+        <DateSelector weekdays={this.weekdays} />
+        <br />
+        <br />
+        {chunkedMeals.map(meals => (
+          <div class="row">
+            {meals.map(meal => (
+              <MealItem date={this.date} key={meal.id} meal={meal} />
+            ))}
+          </div>
+        ))}
+        <div v-show={this.isLoading} class="col-sm-12">Memuat...</div>
+        <div v-show={this.remaining} class="text-center">
+          <button on-click={this.loadMore} class="btn btn--primary-outline">Muat Lebih Banyak</button>
+        </div>
+      </div>
+    );
   }
 }
 </script>
