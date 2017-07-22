@@ -52,11 +52,18 @@ class DatabaseSeeder extends Seeder
             'address' => 'Wisma 77 Tower 1, 7th floor Jl. S. Parman Kav. 77',
             'is_main' => true,
         ]);
+
         factory(Office::class)->create([
             'company_id' => $company->id,
             'name' => 'Development HQ',
             'address' => 'Wisma 77 Tower 2, 21st floor Jl. S. Parman Kav. 77',
         ]);
+
+        foreach (range(1, 10) as $number) {
+            factory(Office::class)->create([
+                'company_id' => $company->id,
+            ]);
+         }
 
         factory(Employee::class)->create([
             'user_id' => $user->id,

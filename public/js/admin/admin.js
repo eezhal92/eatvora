@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 218);
+/******/ 	return __webpack_require__(__webpack_require__.s = 222);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -375,14 +375,7 @@ module.exports = {
 
 /***/ }),
 
-/***/ 11:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(16);
-
-/***/ }),
-
-/***/ 14:
+/***/ 10:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10082,6 +10075,13 @@ module.exports = Vue$3;
 
 /***/ }),
 
+/***/ 12:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(16);
+
+/***/ }),
+
 /***/ 15:
 /***/ (function(module, exports) {
 
@@ -10111,15 +10111,15 @@ module.exports = function(module) {
 
 /***/ }),
 
-/***/ 158:
+/***/ 159:
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(33);
 
-const Vue = __webpack_require__(14);
+const Vue = __webpack_require__(10);
 
-Vue.component('employee-list', __webpack_require__(196));
-Vue.component('employee-list-button', __webpack_require__(230));
+Vue.component('employee-list', __webpack_require__(198));
+Vue.component('employee-list-button', __webpack_require__(199));
 
 new Vue({
     el: '#app'
@@ -10187,12 +10187,27 @@ module.exports.default = axios;
 
 /***/ }),
 
-/***/ 162:
+/***/ 163:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bus__ = __webpack_require__(229);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bus__ = __webpack_require__(39);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -10248,6 +10263,34 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       axios.get(`/api/v1/employees?office_id=${this.officeId}`).then(res => {
         this.employees = res.data;
       });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ 164:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bus__ = __webpack_require__(39);
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['officeId', 'officeName'],
+  methods: {
+    emitOfficeId() {
+      const payload = {
+        officeId: this.officeId,
+        officeName: this.officeName
+      };
+      __WEBPACK_IMPORTED_MODULE_0__bus__["a" /* default */].$emit('employee-list-button:clicked', payload);
     }
   }
 });
@@ -10472,14 +10515,14 @@ module.exports = InterceptorManager;
 
 /***/ }),
 
-/***/ 196:
+/***/ 198:
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(2)(
   /* script */
-  __webpack_require__(162),
+  __webpack_require__(163),
   /* template */
-  __webpack_require__(207),
+  __webpack_require__(211),
   /* scopeId */
   null,
   /* cssModules */
@@ -10499,6 +10542,41 @@ if (false) {(function () {
     hotAPI.createRecord("data-v-41813d4c", Component.options)
   } else {
     hotAPI.reload("data-v-41813d4c", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ 199:
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(2)(
+  /* script */
+  __webpack_require__(164),
+  /* template */
+  __webpack_require__(208),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/Users/eezhal/eatvora/eatvora-api/resources/assets/js/admin/modules/company/EmployeeListButton.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] EmployeeListButton.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-0006e22c", Component.options)
+  } else {
+    hotAPI.reload("data-v-0006e22c", Component.options)
   }
 })()}
 
@@ -10652,43 +10730,24 @@ module.exports = function dispatchRequest(config) {
 
 /***/ }),
 
-/***/ 207:
+/***/ 208:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('div', [_vm._v("Employee of "), _c('strong', [_vm._v(_vm._s(_vm.officeName))])]), _vm._v(" "), _c('div', {
-    staticStyle: {
-      "margin-top": "25px"
+  return _c('a', {
+    attrs: {
+      "href": "#"
+    },
+    on: {
+      "click": _vm.emitOfficeId
     }
-  }, [_c('div', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (!_vm.employees.length),
-      expression: "!employees.length"
-    }],
-    staticStyle: {
-      "display": "none"
-    }
-  }, [_vm._v("No Employee Yet")]), _vm._v(" "), _c('table', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.employees.length),
-      expression: "employees.length"
-    }],
-    staticClass: "table"
-  }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.employees), function(employee) {
-    return _c('tr', [_c('td'), _vm._v(" "), _c('td', [_vm._v(_vm._s(employee.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(employee.email))]), _vm._v(" "), _c('td')])
-  }))])])])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('thead', [_c('tr', [_c('th'), _vm._v(" "), _c('th', [_vm._v("Name")]), _vm._v(" "), _c('th', [_vm._v("Email")]), _vm._v(" "), _c('th', [_vm._v("Action")])])])
-}]}
+  }, [_vm._v("Show Employee")])
+},staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-41813d4c", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-0006e22c", module.exports)
   }
 }
 
@@ -10721,11 +10780,87 @@ module.exports = function enhanceError(error, config, code, response) {
 
 /***/ }),
 
-/***/ 218:
+/***/ 211:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(158);
-
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_c('div', [_vm._v("Employee of "), _c('strong', [_vm._v(_vm._s(_vm.officeName))])]), _vm._v(" "), _c('div', {
+    staticStyle: {
+      "margin-top": "25px"
+    }
+  }, [_c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!_vm.employees.length),
+      expression: "!employees.length"
+    }],
+    staticStyle: {
+      "display": "none"
+    }
+  }, [_vm._v("No Employee Yet")]), _vm._v(" "), _c('table', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.employees.length),
+      expression: "employees.length"
+    }],
+    staticClass: "table"
+  }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.employees), function(employee) {
+    return _c('tr', [_c('td'), _vm._v(" "), _c('td', [_vm._v(_vm._s(employee.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(employee.email))]), _vm._v(" "), _c('td', [_vm._v("Yes")]), _vm._v(" "), _c('td', [_c('a', {
+      attrs: {
+        "href": "#"
+      }
+    }, [_c('svg', {
+      staticStyle: {
+        "margin-top": "-5px"
+      },
+      attrs: {
+        "width": "32",
+        "height": "32",
+        "viewBox": "0 0 32 32",
+        "xmlns": "http://www.w3.org/2000/svg",
+        "aria-hidden": "false"
+      }
+    }, [_c('title', [_vm._v("table-overflow")]), _vm._v(" "), _c('g', {
+      attrs: {
+        "fill": "none",
+        "fill-rule": "evenodd"
+      }
+    }, [_c('g', {
+      attrs: {
+        "fill": "#637282"
+      }
+    }, [_c('circle', {
+      attrs: {
+        "cx": "10.5",
+        "cy": "16.5",
+        "r": "1.5"
+      }
+    }), _vm._v(" "), _c('circle', {
+      attrs: {
+        "cx": "15.5",
+        "cy": "16.5",
+        "r": "1.5"
+      }
+    }), _vm._v(" "), _c('circle', {
+      attrs: {
+        "cx": "20.5",
+        "cy": "16.5",
+        "r": "1.5"
+      }
+    })])])])])])])
+  }))])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('thead', [_c('tr', [_c('th'), _vm._v(" "), _c('th', [_vm._v("Name")]), _vm._v(" "), _c('th', [_vm._v("Email")]), _vm._v(" "), _c('th', [_vm._v("Active?")]), _vm._v(" "), _c('th', [_vm._v("Action")])])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-41813d4c", module.exports)
+  }
+}
 
 /***/ }),
 
@@ -10762,43 +10897,11 @@ module.exports = function settle(resolve, reject, response) {
 
 /***/ }),
 
-/***/ 228:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ 222:
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bus__ = __webpack_require__(229);
-//
-//
-//
-//
+module.exports = __webpack_require__(159);
 
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['officeId', 'officeName'],
-  methods: {
-    emitOfficeId() {
-      const payload = {
-        officeId: this.officeId,
-        officeName: this.officeName
-      };
-      __WEBPACK_IMPORTED_MODULE_0__bus__["a" /* default */].$emit('employee-list-button:clicked', payload);
-    }
-  }
-});
-
-/***/ }),
-
-/***/ 229:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-
-
-/* harmony default export */ __webpack_exports__["a"] = ((() => new __WEBPACK_IMPORTED_MODULE_0_vue___default.a())());
 
 /***/ }),
 
@@ -10827,64 +10930,6 @@ module.exports = function transformData(data, headers, fns) {
   return data;
 };
 
-
-/***/ }),
-
-/***/ 230:
-/***/ (function(module, exports, __webpack_require__) {
-
-var Component = __webpack_require__(2)(
-  /* script */
-  __webpack_require__(228),
-  /* template */
-  __webpack_require__(231),
-  /* scopeId */
-  null,
-  /* cssModules */
-  null
-)
-Component.options.__file = "/Users/eezhal/eatvora/eatvora-api/resources/assets/js/admin/modules/company/EmployeeListButton.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] EmployeeListButton.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-0006e22c", Component.options)
-  } else {
-    hotAPI.reload("data-v-0006e22c", Component.options)
-  }
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-
-/***/ 231:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('a', {
-    attrs: {
-      "href": "#"
-    },
-    on: {
-      "click": _vm.emitOfficeId
-    }
-  }, [_vm._v("Show Employee")])
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-0006e22c", module.exports)
-  }
-}
 
 /***/ }),
 
@@ -11413,7 +11458,7 @@ try {
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-window.axios = __webpack_require__(11);
+window.axios = __webpack_require__(12);
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
@@ -41374,6 +41419,18 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
+
+/***/ }),
+
+/***/ 39:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
+
+
+/* harmony default export */ __webpack_exports__["a"] = ((() => new __WEBPACK_IMPORTED_MODULE_0_vue___default.a())());
 
 /***/ }),
 

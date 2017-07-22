@@ -32,6 +32,16 @@
               <textarea id="main_office_address" name="main_office_address" class="form-control" type="text">{{ old('main_office_address', $mainOffice->address) }}</textarea>
             </div>
 
+            <div class="form-group">
+              <label for="main_office_email">Email</label>
+              <input id="main_office_email" name="main_office_email" class="form-control" type="text" value="{{ old('main_office_email', $mainOffice->email) }}">
+            </div>
+
+            <div class="form-group">
+              <label for="main_office_phone">Phone</label>
+              <input id="main_office_phone" name="main_office_phone" class="form-control" type="text" value="{{ old('main_office_phone', $mainOffice->phone) }}">
+            </div>
+
             <button class="btn btn-primary">
               Update Company
             </button>

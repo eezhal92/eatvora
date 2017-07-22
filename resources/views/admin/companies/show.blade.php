@@ -28,10 +28,13 @@
 
         <div class="col-lg-4">
           <div class="office-list">
+            <div class="text-center">
+              {{ $offices->render() }}
+            </div>
             <div class="office-list__header">
               {{ $company->name }} Offices
             </div>
-            @foreach($company->offices as $office)
+            @foreach($offices as $office)
               <div class="office-list__item office">
                 <div class="office__name-wrapper">
                   <h2 class="office__name">{{ $office->name }}</h2>
@@ -57,22 +60,22 @@
                       {{ $office->address }}
                     </div>
                     <div class="office__address-district">
-                      Slipi, Palmerah
+                      [Sub-District], [District]
                     </div>
                     <div class="office__address-city">
-                      Jakarta Barat
+                      [City]
                     </div>
                   </div>
                 </div>
                 <div class="office__contact">
                   @if($office->email)
                   <div class="office__contact-email">
-                    <i class="icon-envelope"></i> something@mail.com
+                    <i class="icon-envelope"></i> {{ $office->email}}
                   </div>
                   @endif
                   @if($office->phone)
                   <div class="office__contact-phone">
-                    <div class="icon-phone"></div> +62 852 5852
+                    <div class="icon-phone"></div> {{ $office->phone }}
                   </div>
                   @endif
                 </div>
@@ -81,7 +84,7 @@
                   <a href="#" class="text-danger">Delete</a>
                   @endif
                   <div class="pull-right">
-                    <a href="{{ $office->is_main ? url('/ap/companies/' . $company->id . '/edit') : '#' }}">Edit</a>
+                    <a href="{{ $office->is_main ? url('/ap/companies/' . $company->id . '/edit') : url('/ap/companies/' . $company->id . '/offices/' . $office->id . '/edit') }}">Edit</a>
                     <employee-list-button
                       :office-id="{{ $office->id }}"
                       :office-name="'{{ $office->name }}'"
@@ -90,6 +93,9 @@
                 </div>
               </div>
             @endforeach
+            <div class="text-center">
+              {{ $offices->render() }}
+            </div>
           </div>
         </div>
 

@@ -68,9 +68,10 @@ class CompanyController extends Controller
 
     public function show($id)
     {
-        $company = Company::with('offices')->findOrFail($id);
+        $company = Company::findOrFail($id);
+        $offices = $company->offices()->simplePaginate(10);
 
-        return view('admin.companies.show', compact('company'));
+        return view('admin.companies.show', compact('company', 'offices'));
     }
 
     public function edit(Request $request, $id)

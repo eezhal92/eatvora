@@ -55,9 +55,13 @@ Route::group(['prefix' => '/ap'], function () {
 
         Route::patch('/companies/{id}', 'Admin\CompanyController@update');
 
-        Route::get('/companies/{id}/offices/create', 'Admin\OfficeController@create');
+        Route::get('/companies/{companyId}/offices/create', 'Admin\OfficeController@create');
 
-        Route::post('/companies/{id}/offices', 'Admin\OfficeController@store');
+        Route::post('/companies/{companyId}/offices', 'Admin\OfficeController@store');
+
+        Route::get('/companies/{companyId}/offices/{id}/edit', 'Admin\OfficeController@edit');
+
+        Route::patch('/companies/{companyId}/offices/{id}', 'Admin\OfficeController@update');
 
     });
 });

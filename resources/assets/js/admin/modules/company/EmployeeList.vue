@@ -9,6 +9,7 @@
             <th></th>
             <th>Name</th>
             <th>Email</th>
+            <th>Active?</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -17,7 +18,21 @@
             <td></td>
             <td>{{ employee.name }}</td>
             <td>{{ employee.email }}</td>
-            <td></td>
+            <td>Yes</td>
+            <td>
+              <a href="#">
+                <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="false" style="margin-top: -5px;">
+                  <title>table-overflow</title>
+                  <g fill="none" fill-rule="evenodd">
+                    <g fill="#637282">
+                      <circle cx="10.5" cy="16.5" r="1.5"></circle>
+                      <circle cx="15.5" cy="16.5" r="1.5"></circle>
+                      <circle cx="20.5" cy="16.5" r="1.5"></circle>
+                    </g>
+                  </g>
+                </svg>
+              </a>
+            </td>
           </tr>
         </tbody>
       </table>

@@ -44,4 +44,39 @@ class OfficeController extends Controller
 
         return redirect("/ap/companies/{$company->id}");
     }
+
+    public function edit($companyId, $id)
+    {
+        try {
+            $company = Company::findOrFail($companyId);
+        } catch (ModelNotFoundException $e) {
+            return redirect('/ap/companies');
+        }
+
+        try {
+            $office = Office::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return redirect('/ap/companies');
+        }
+
+        if ((int) $office->company_id !== (int) $company->id) {
+            return redirect('/ap/companies');
+        }
+
+        return view('admin.offices.edit', compact('company', 'office'));
+    }
+
+    public function update(Request $request, $companyId, $id)
+    {
+        $office = Office::find($id);
+
+        $office->name = $request->get('name');
+        $office->address = $request->get('address');
+        $office->phone = $request->get('phone');
+        $office->email = $request->get('email');
+
+        $office->save();
+
+        return redirect("/ap/companies/{$companyId}");
+    }
 }
