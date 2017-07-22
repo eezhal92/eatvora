@@ -80,7 +80,7 @@ class DatabaseSeeder extends Seeder
             'office_id' => $office->id,
         ]);
         factory(Employee::class)->create([
-            'user_id' => $user->id,
+            'user_id' => $userB->id,
             'office_id' => $officeB->id,
         ]);
 

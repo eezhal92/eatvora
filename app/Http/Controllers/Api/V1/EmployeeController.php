@@ -26,7 +26,10 @@ class EmployeeController extends Controller
             ->where('offices.id', $officeId);
 
         if ($q = $request->get('query')) {
-            $query->where('users.name', 'like', "%{$q}%");
+            $query->where('users.name', 'like', "%{$q}%")
+                ->orWhere('users.email', 'like', "%{$q}%")
+                ->where('employees.office_id', $officeId)
+                ->distinct();
         }
 
         $totalEmployees = $query->count();
@@ -39,6 +42,7 @@ class EmployeeController extends Controller
         $pageCount = ceil($totalEmployees / $limit);
 
         return response()->json([
+            'total_records' => $totalEmployees,
             'current_page' => (int) $page,
             'page_count' => $pageCount,
             'employees' => $employees,

@@ -9,6 +9,7 @@
       </div>
       <div style="display: none" v-show="!employees.length">No employee was found...</div>
       <div v-show="employees.length">
+        <p v-html="recordsCountText"></p>
         <table class="table">
           <thead>
             <tr>
@@ -45,8 +46,8 @@
         <div class="list-pagination">
           <ul class="pager">
             <li style="margin-right: 10px">Page {{ currentPage }} / {{ pageCount }}</li>
-            <li :class="{ disabled: !isPrevAvailable }"><a @click="getPrevPage()">Previous</a></li>
-            <li :class="{ disabled: !isNextAvailable }"><a @click="getNextPage()">Next</a></li>
+            <li :class="{ disabled: !isPrevAvailable }"><a href="#" @click="getPrevPage()">Previous</a></li>
+            <li :class="{ disabled: !isNextAvailable }"><a href="#" @click="getNextPage()">Next</a></li>
           </ul>
         </div>
       </div>
@@ -66,6 +67,7 @@ export default {
       employees: [],
       currentPage: 1,
       pageCount: 1,
+      totalRecords: 0,
       query: '',
     }
   },
@@ -87,6 +89,9 @@ export default {
     isNextAvailable() {
       return this.currentPage < this.pageCount;
     },
+    recordsCountText() {
+      return `<span>Total Record is <b>${this.totalRecords}</b><span>`;
+    }
   },
   methods: {
     fetchEmployees({ page = 1 } = {}) {
@@ -94,10 +99,11 @@ export default {
 
       axios.get(`/api/v1/employees?office_id=${this.officeId}&query=${query}&page=${page}`)
         .then((res) => {
-          const { employees, page_count, current_page } = res.data;
+          const { employees, page_count, current_page, total_records } = res.data;
           this.employees = employees;
           this.pageCount = page_count;
           this.currentPage = current_page;
+          this.totalRecords = total_records;
         });
     },
     getNextPage() {

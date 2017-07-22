@@ -10249,6 +10249,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -10261,6 +10262,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       employees: [],
       currentPage: 1,
       pageCount: 1,
+      totalRecords: 0,
       query: ''
     };
   },
@@ -10281,6 +10283,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     isNextAvailable() {
       return this.currentPage < this.pageCount;
+    },
+    recordsCountText() {
+      return `<span>Total Record is <b>${this.totalRecords}</b><span>`;
     }
   },
   methods: {
@@ -10288,10 +10293,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       const query = this.query;
 
       axios.get(`/api/v1/employees?office_id=${this.officeId}&query=${query}&page=${page}`).then(res => {
-        const { employees, page_count, current_page } = res.data;
+        const { employees, page_count, current_page, total_records } = res.data;
         this.employees = employees;
         this.pageCount = page_count;
         this.currentPage = current_page;
+        this.totalRecords = total_records;
       });
     },
     getNextPage() {
@@ -10878,7 +10884,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       value: (_vm.employees.length),
       expression: "employees.length"
     }]
-  }, [_c('table', {
+  }, [_c('p', {
+    domProps: {
+      "innerHTML": _vm._s(_vm.recordsCountText)
+    }
+  }), _vm._v(" "), _c('table', {
     staticClass: "table"
   }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.employees), function(employee) {
     return _c('tr', [_c('td'), _vm._v(" "), _c('td', [_vm._v(_vm._s(employee.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(employee.email))]), _vm._v(" "), _c('td', [_vm._v("Yes")]), _vm._v(" "), _c('td', [_c('a', {
@@ -10937,6 +10947,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       disabled: !_vm.isPrevAvailable
     }
   }, [_c('a', {
+    attrs: {
+      "href": "#"
+    },
     on: {
       "click": function($event) {
         _vm.getPrevPage()
@@ -10947,6 +10960,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       disabled: !_vm.isNextAvailable
     }
   }, [_c('a', {
+    attrs: {
+      "href": "#"
+    },
     on: {
       "click": function($event) {
         _vm.getNextPage()

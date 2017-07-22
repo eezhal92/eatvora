@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title></title>
+  <meta name="robots" content="noindex">
+  <title>Login</title>
 </head>
 <body>
   <form action="{{ url('/ap/login') }}" method="post">
