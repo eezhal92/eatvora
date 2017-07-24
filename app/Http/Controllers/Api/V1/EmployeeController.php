@@ -3,8 +3,14 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\User;
+use App\Office;
+use App\Employee;
 use Illuminate\Http\Request;
+use App\Facades\RandomPassword;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\EmployeeRegistrationEmail;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class EmployeeController extends Controller
 {
@@ -47,5 +53,38 @@ class EmployeeController extends Controller
             'page_count' => $pageCount,
             'employees' => $employees,
         ]);
+    }
+
+    public function store(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|min:3',
+            'email' => 'required|email|unique:users,email',
+        ]);
+
+        try {
+            $office = Office::with('company')->findOrFail($request->get('office_id'));
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'office_id' => ['Office is not exists'],
+            ], 422);
+        }
+
+        $randomTemporaryPassword = RandomPassword::generate();
+
+        $user = User::create([
+            'name' => $request->get('name'),
+            'email' => $request->get('email'),
+            'password' => bcrypt($randomTemporaryPassword),
+        ]);
+
+        $employee = Employee::create([
+            'office_id' => $request->get('office_id'),
+            'user_id' => $user->id,
+        ]);
+
+        Mail::to($user->email)->send(new EmployeeRegistrationEmail($office->company, $user, $randomTemporaryPassword));
+
+        return response()->json($user, 201);
     }
 }

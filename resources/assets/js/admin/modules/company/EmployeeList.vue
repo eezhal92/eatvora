@@ -1,7 +1,16 @@
 <template>
   <div>
-    <div>Employee of <strong>{{ officeName }}</strong> Office</div>
+    <div class="clearfix">
+      Employee of <strong>{{ officeName }}</strong> Office
+      <button @click="toggleShowAddForm" class="btn btn-default btn-sm pull-right">
+        {{ showAddForm ? 'Cancel' : 'Add New Employee' }}
+      </button>
+    </div>
     <div style="margin-top: 25px">
+      <add-employee-form
+        :show="showAddForm"
+        :office-id="officeId"
+      >  </add-employee-form>
       <div class="search" style="margin-bottom: 15px">
         <form @submit.prevent="fetchEmployees()">
           <input type="text" v-model="query" class="form-control" placeholder="Search employee name">
@@ -69,6 +78,7 @@ export default {
       pageCount: 1,
       totalRecords: 0,
       query: '',
+      showAddForm: false,
     }
   },
   created() {
@@ -77,6 +87,11 @@ export default {
       this.officeName = officeName;
 
       this.fetchEmployees();
+    });
+
+    bus.$on('add-employee-form:added', (employee) => {
+      const [, ...employees] = this.employees;
+      this.employees = [employee, ...employees];
     });
   },
   mounted() {
@@ -115,6 +130,9 @@ export default {
       if (this.currentPage > 1) {
         this.fetchEmployees({ page: this.currentPage - 1});
       }
+    },
+    toggleShowAddForm() {
+      this.showAddForm = !this.showAddForm;
     }
   },
 }

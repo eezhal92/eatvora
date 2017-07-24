@@ -17,6 +17,11 @@ class Office extends Model
         return $this->hasMany(Employee::class);
     }
 
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
+
     public function admin()
     {
         return $this->employees()->with('user')->where('is_admin', true)->first();

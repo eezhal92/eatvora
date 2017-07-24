@@ -47,7 +47,7 @@ class CompanyController extends Controller
             'is_main' => true,
         ]);
 
-        $randomTemporaryPassword = RandomPassword::generate(); // @fixme: Temporary
+        $randomTemporaryPassword = RandomPassword::generate();
         $user = User::create([
             'name' => $request->get('admin_name'),
             'email' => $request->get('admin_email'),

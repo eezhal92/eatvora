@@ -75,4 +75,6 @@ Route::group(['prefix' => 'api/v1', 'namespace' => 'Api\V1', 'middleware' => 'au
     Route::get('/cart', 'CartController@index');
 
     Route::get('/employees', 'EmployeeController@index');
+
+    Route::post('/employees', 'EmployeeController@store');
 });
