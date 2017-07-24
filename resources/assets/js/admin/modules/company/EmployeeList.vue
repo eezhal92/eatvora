@@ -10,7 +10,7 @@
       <add-employee-form
         :show="showAddForm"
         :office-id="officeId"
-      >  </add-employee-form>
+      ></add-employee-form>
       <div class="search" style="margin-bottom: 15px">
         <form @submit.prevent="fetchEmployees()">
           <input type="text" v-model="query" class="form-control" placeholder="Search employee name">
@@ -36,18 +36,30 @@
               <td>{{ employee.email }}</td>
               <td>Yes</td>
               <td>
-                <a href="#">
-                  <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="false" style="margin-top: -5px;">
-                    <title>table-overflow</title>
-                    <g fill="none" fill-rule="evenodd">
-                      <g fill="#637282">
-                        <circle cx="10.5" cy="16.5" r="1.5"></circle>
-                        <circle cx="15.5" cy="16.5" r="1.5"></circle>
-                        <circle cx="20.5" cy="16.5" r="1.5"></circle>
-                      </g>
-                    </g>
-                  </svg>
-                </a>
+                <action-options-popover>
+                  <action-options-popover-menu
+                    :payload="employee"
+                    event-name="employee-edit"
+                    v-on:employee-edit="forwardEventEmittion"
+                  >
+                    Edit
+                  </action-options-popover-menu>
+                  <action-options-popover-menu
+                    :payload="employee"
+                    event-name="employee-move-office"
+                    v-on:employee-move-office="forwardEventEmittion"
+                  >
+                    Move Office
+                  </action-options-popover-menu>
+                  <hr style="margin: 0;">
+                  <action-options-popover-menu
+                    :payload="employee"
+                    event-name="employee-delete"
+                    v-on:employee-delete="forwardEventEmittion"
+                  >
+                    Delete
+                  </action-options-popover-menu>
+                </action-options-popover>
               </td>
             </tr>
           </tbody>
@@ -93,6 +105,11 @@ export default {
       const [, ...employees] = this.employees;
       this.employees = [employee, ...employees];
     });
+
+    bus.$on('edit-employee-modal:updated', (employee) => {
+      const employees = this.employees.slice().map(e => e.id === employee.id ? employee : e);
+      this.employees = employees;
+    });
   },
   mounted() {
     this.fetchEmployees();
@@ -133,7 +150,11 @@ export default {
     },
     toggleShowAddForm() {
       this.showAddForm = !this.showAddForm;
-    }
+    },
+    forwardEventEmittion(eventName, payload = {}) {
+      // alert(`Event ${eventName} with payload ` + JSON.stringify(payload));
+      bus.$emit(eventName, payload);
+    },
   },
 }
 </script>

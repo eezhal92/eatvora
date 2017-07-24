@@ -7,6 +7,7 @@ use App\Office;
 use App\Employee;
 use Illuminate\Http\Request;
 use App\Facades\RandomPassword;
+use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\EmployeeRegistrationEmail;
@@ -28,7 +29,7 @@ class EmployeeController extends Controller
 
         $query = User::join('employees', 'users.id', '=', 'employees.user_id')
             ->join('offices', 'employees.office_id', '=', 'offices.id')
-            ->select('users.*')
+            ->select(\DB::raw('employees.id as id'), 'users.name', 'users.email', 'employees.created_at', 'employees.created_at')
             ->where('offices.id', $officeId);
 
         if ($q = $request->get('query')) {
@@ -85,6 +86,38 @@ class EmployeeController extends Controller
 
         Mail::to($user->email)->send(new EmployeeRegistrationEmail($office->company, $user, $randomTemporaryPassword));
 
-        return response()->json($user, 201);
+        // @todo: add assertion in test
+        $employee = array_merge($user->toArray(), $employee->toArray());
+
+        return response()->json($employee, 201);
+    }
+
+    public function update(Request $request, $id)
+    {
+        try {
+            $employee = Employee::with('user')->findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Employee was not found.',
+            ], 404);
+        }
+
+        $this->validate($request, [
+            'name' => 'required|min:3',
+            'email' => [
+                'required',
+                Rule::unique('users')->ignore($employee->user_id),
+            ],
+        ]);
+
+        $employee->user->update([
+            'name' => $request->get('name'),
+            'email' => $request->get('email'),
+        ]);
+
+        // @todo: add assertion in test
+        $employee = array_merge($employee->user->toArray(), $employee->toArray());
+
+        return response()->json($employee, 200);
     }
 }

@@ -114,6 +114,10 @@
 
 @endsection
 
+@section('modals')
+  <company-show-page-modals></company-show-page-modals>
+@endsection
+
 @push('afterScripts')
   <script src="/js/admin/admin.js"></script>
 @endpush

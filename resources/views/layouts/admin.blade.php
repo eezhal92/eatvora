@@ -15,57 +15,60 @@
   <body>
     <div id="app">
       @yield('content')
-    </div>
 
-    <div class="eatvora-nav__container">
-      <div class="eatvora-nav__panel">
-        <a class="eatvora-nav__home-btn" href="{{ url('/ap/dashboard') }}">
-          eatvora
-        </a>
-        <div class="eatvora-nav__contents">
-          <ul class="eatvora-nav__menus">
-            <li>
-              <div class="eatvora-nav__menu-wrapper">
-                <a href="{{ url('/ap/dashboard') }}" class="eatvora-nav__menu-item {{ request()->checkForCss('/ap/dashboard', 'eatvora-nav__menu-item--active') }}">Dashboard</a>
-              </div>
-            </li>
-            <li class="eatvora-nav__separator"></li>
-            <li>
-              <div class="eatvora-nav__menu-wrapper">
-                <a href="{{ url('/ap/companies') }}" class="eatvora-nav__menu-item {{ request()->checkForCss('/ap/companies', 'eatvora-nav__menu-item--active') }}">Company</a>
-              </div>
-            </li>
-            <li>
-              <div class="eatvora-nav__menu-wrapper">
-                <a href="#" class="eatvora-nav__menu-item">Vendor</a>
-              </div>
-            </li>
-            <li class="eatvora-nav__separator"></li>
-            <li>
-              <div class="eatvora-nav__menu-wrapper">
-                <a href="#" class="eatvora-nav__menu-item">Menu</a>
-              </div>
-            </li>
-            <li>
-              <div class="eatvora-nav__menu-wrapper">
-                <a href="#" class="eatvora-nav__menu-item">Schedule</a>
-              </div>
-            </li>
-            <li class="eatvora-nav__separator"></li>
-            <li>
-              <div class="eatvora-nav__menu-wrapper">
-                <a href="#" class="eatvora-nav__menu-item">Order</a>
-              </div>
-            </li>
-            <li class="eatvora-nav__separator"></li>
-            <li>
-              <div class="eatvora-nav__menu-wrapper">
-                <a href="#" class="eatvora-nav__menu-item">Holiday</a>
-              </div>
-            </li>
-          </ul>
+      <div class="eatvora-nav__container">
+        <div class="eatvora-nav__panel">
+          <a class="eatvora-nav__home-btn" href="{{ url('/ap/dashboard') }}">
+            eatvora
+          </a>
+          <div class="eatvora-nav__contents">
+            <ul class="eatvora-nav__menus">
+              <li>
+                <div class="eatvora-nav__menu-wrapper">
+                  <a href="{{ url('/ap/dashboard') }}" class="eatvora-nav__menu-item {{ request()->checkForCss('/ap/dashboard', 'eatvora-nav__menu-item--active') }}">Dashboard</a>
+                </div>
+              </li>
+              <li class="eatvora-nav__separator"></li>
+              <li>
+                <div class="eatvora-nav__menu-wrapper">
+                  <a href="{{ url('/ap/companies') }}" class="eatvora-nav__menu-item {{ request()->checkForCss('/ap/companies', 'eatvora-nav__menu-item--active') }}">Company</a>
+                </div>
+              </li>
+              <li>
+                <div class="eatvora-nav__menu-wrapper">
+                  <a href="#" class="eatvora-nav__menu-item">Vendor</a>
+                </div>
+              </li>
+              <li class="eatvora-nav__separator"></li>
+              <li>
+                <div class="eatvora-nav__menu-wrapper">
+                  <a href="#" class="eatvora-nav__menu-item">Menu</a>
+                </div>
+              </li>
+              <li>
+                <div class="eatvora-nav__menu-wrapper">
+                  <a href="#" class="eatvora-nav__menu-item">Schedule</a>
+                </div>
+              </li>
+              <li class="eatvora-nav__separator"></li>
+              <li>
+                <div class="eatvora-nav__menu-wrapper">
+                  <a href="#" class="eatvora-nav__menu-item">Order</a>
+                </div>
+              </li>
+              <li class="eatvora-nav__separator"></li>
+              <li>
+                <div class="eatvora-nav__menu-wrapper">
+                  <a href="#" class="eatvora-nav__menu-item">Holiday</a>
+                </div>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
+
+      @yield('modals')
+
     </div>
 
     @stack('beforeScripts')

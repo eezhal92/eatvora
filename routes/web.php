@@ -77,4 +77,7 @@ Route::group(['prefix' => 'api/v1', 'namespace' => 'Api\V1', 'middleware' => 'au
     Route::get('/employees', 'EmployeeController@index');
 
     Route::post('/employees', 'EmployeeController@store');
+
+    Route::patch('/employees/{id}', 'EmployeeController@update');
+
 });
