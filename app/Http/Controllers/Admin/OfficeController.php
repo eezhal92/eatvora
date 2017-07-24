@@ -68,7 +68,20 @@ class OfficeController extends Controller
 
     public function update(Request $request, $companyId, $id)
     {
-        $office = Office::find($id);
+        $this->validate($request, [
+            'name' => 'required|min:3',
+            'address' => 'required|min:6',
+        ]);
+
+        try {
+            $office = Office::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return redirect("/ap/companies/{$companyId}")->with('message', 'Office was not found.');
+        }
+
+        if ((int) $office->company_id !== (int) $companyId) {
+            return redirect("/ap/companies/{$companyId}")->with('message', 'Office is not associated with the company.');
+        }
 
         $office->name = $request->get('name');
         $office->address = $request->get('address');
