@@ -36,6 +36,9 @@ $factory->state(User::class, 'admin', function ($faker) {
 $factory->define(Vendor::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
+        'phone' => $faker->phoneNumber,
+        'address' => $faker->streetAddress,
+        'email' => $faker->safeEmail,
         'capacity' => rand(50, 200),
     ];
 });
