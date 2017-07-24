@@ -41825,8 +41825,8 @@ const Vue = __webpack_require__(13);
 
 Vue.component('employee-list', __webpack_require__(215));
 Vue.component('employee-list-button', __webpack_require__(216));
-Vue.component('add-employee-form', __webpack_require__(211));
 Vue.component('company-show-page-modals', __webpack_require__(212));
+Vue.component('add-employee-modal', __webpack_require__(211));
 Vue.component('edit-employee-modal', __webpack_require__(214));
 Vue.component('delete-employee-modal', __webpack_require__(213));
 
@@ -42011,32 +42011,40 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data() {
     return {
+      modalId: 'addEmployeeModal',
       name: '',
       email: '',
+      officeId: null,
       errors: {}
     };
   },
+  created() {
+    __WEBPACK_IMPORTED_MODULE_0__bus__["a" /* default */].$on('employee-add', officeId => {
+      $('#addEmployeeModal').modal('show');
 
-  props: ['show', 'officeId'],
-
+      this.officeId = officeId;
+    });
+  },
   methods: {
-    store() {
+    storeEmployee() {
       this.resetErrors();
 
-      axios.post('/api/v1/employees', {
+      const payload = {
         name: this.name,
         email: this.email,
         office_id: this.officeId
-      }).then(({ data }) => {
-        __WEBPACK_IMPORTED_MODULE_0__bus__["a" /* default */].$emit('add-employee-form:added', data);
-        this.resetForm();
+      };
+
+      axios.post('/api/v1/employees', payload).then(({ data }) => {
+        __WEBPACK_IMPORTED_MODULE_0__bus__["a" /* default */].$emit('add-employee-modal:added', data);
+
+        $('#addEmployeeModal').modal('hide');
       }).catch(({ response }) => {
         if (response.status === 422) {
           this.errors = this.formatErrors(response.data);
@@ -42066,6 +42074,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
 //
 //
 //
@@ -42263,10 +42272,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
 
 
 
@@ -42292,7 +42297,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.fetchEmployees();
     });
 
-    __WEBPACK_IMPORTED_MODULE_0__bus__["a" /* default */].$on('add-employee-form:added', employee => {
+    __WEBPACK_IMPORTED_MODULE_0__bus__["a" /* default */].$on('add-employee-modal:added', employee => {
       const [, ...employees] = this.employees;
       this.employees = [employee, ...employees];
     });
@@ -42337,9 +42342,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       if (this.currentPage > 1) {
         this.fetchEmployees({ page: this.currentPage - 1 });
       }
-    },
-    toggleShowAddForm() {
-      this.showAddForm = !this.showAddForm;
     },
     forwardEventEmittion(eventName, payload = {}) {
       // alert(`Event ${eventName} with payload ` + JSON.stringify(payload));
@@ -42434,7 +42436,7 @@ var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(164),
   /* template */
-  __webpack_require__(237),
+  __webpack_require__(236),
   /* scopeId */
   null,
   /* cssModules */
@@ -42505,7 +42507,7 @@ var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(166),
   /* template */
-  __webpack_require__(238),
+  __webpack_require__(237),
   /* scopeId */
   null,
   /* cssModules */
@@ -42539,15 +42541,15 @@ var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(167),
   /* template */
-  __webpack_require__(225),
+  __webpack_require__(238),
   /* scopeId */
   null,
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/eezhal/eatvora/eatvora-web/resources/assets/js/admin/modules/company/AddEmployeeForm.vue"
+Component.options.__file = "/Users/eezhal/eatvora/eatvora-web/resources/assets/js/admin/modules/company/AddEmployeeModal.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] AddEmployeeForm.vue: functional components are not supported with templates, they should use render functions.")}
+if (Component.options.functional) {console.error("[vue-loader] AddEmployeeModal.vue: functional components are not supported with templates, they should use render functions.")}
 
 /* hot reload */
 if (false) {(function () {
@@ -42556,9 +42558,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-0cfab48f", Component.options)
+    hotAPI.createRecord("data-v-ab1b041c", Component.options)
   } else {
-    hotAPI.reload("data-v-0cfab48f", Component.options)
+    hotAPI.reload("data-v-ab1b041c", Component.options)
   }
 })()}
 
@@ -42573,7 +42575,7 @@ var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(168),
   /* template */
-  __webpack_require__(227),
+  __webpack_require__(226),
   /* scopeId */
   null,
   /* cssModules */
@@ -42607,7 +42609,7 @@ var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(169),
   /* template */
-  __webpack_require__(236),
+  __webpack_require__(235),
   /* scopeId */
   null,
   /* cssModules */
@@ -42641,7 +42643,7 @@ var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(170),
   /* template */
-  __webpack_require__(226),
+  __webpack_require__(225),
   /* scopeId */
   null,
   /* cssModules */
@@ -42675,7 +42677,7 @@ var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(171),
   /* template */
-  __webpack_require__(235),
+  __webpack_require__(234),
   /* scopeId */
   null,
   /* cssModules */
@@ -42709,7 +42711,7 @@ var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(172),
   /* template */
-  __webpack_require__(228),
+  __webpack_require__(227),
   /* scopeId */
   null,
   /* cssModules */
@@ -42745,139 +42747,6 @@ module.exports = Component.exports
 /* 223 */,
 /* 224 */,
 /* 225 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "add-employee-form",
-    staticStyle: {
-      "margin-bottom": "30px",
-      "border-bottom": "1px solid #ccc"
-    }
-  }, [_c('form', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.show),
-      expression: "show"
-    }],
-    staticClass: "form-horizontal",
-    staticStyle: {
-      "padding-bottom": "10px"
-    },
-    on: {
-      "submit": function($event) {
-        $event.preventDefault();
-        _vm.store($event)
-      }
-    }
-  }, [_c('div', {
-    staticClass: "form-group",
-    class: {
-      'has-error': _vm.errors.name
-    }
-  }, [_c('label', {
-    staticClass: "col-sm-2 control-label",
-    attrs: {
-      "for": "new_employee_name"
-    }
-  }, [_vm._v("Name")]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-10"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.name),
-      expression: "name"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      "type": "text",
-      "id": "new_employee_name",
-      "placeholder": "Jane Doe"
-    },
-    domProps: {
-      "value": (_vm.name)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.name = $event.target.value
-      }
-    }
-  }), _vm._v(" "), _c('span', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.errors.name),
-      expression: "errors.name"
-    }],
-    staticClass: "help-block"
-  }, [_vm._v("\n          " + _vm._s(_vm.errors.name) + "\n        ")])])]), _vm._v(" "), _c('div', {
-    staticClass: "form-group",
-    class: {
-      'has-error': _vm.errors.email
-    }
-  }, [_c('label', {
-    staticClass: "col-sm-2 control-label",
-    attrs: {
-      "for": "new_employee_email"
-    }
-  }, [_vm._v("Email")]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-10"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.email),
-      expression: "email"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      "type": "email",
-      "id": "new_employee_email",
-      "placeholder": "jane.doe@example.com"
-    },
-    domProps: {
-      "value": (_vm.email)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.email = $event.target.value
-      }
-    }
-  }), _vm._v(" "), _c('span', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.errors.email),
-      expression: "errors.email"
-    }],
-    staticClass: "help-block"
-  }, [_vm._v("\n          " + _vm._s(_vm.errors.email) + "\n        ")])])]), _vm._v(" "), _vm._m(0)])])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "form-group"
-  }, [_c('div', {
-    staticClass: "col-sm-offset-2 col-sm-10"
-  }, [_c('button', {
-    staticClass: "btn btn-default",
-    attrs: {
-      "type": "submit"
-    }
-  }, [_vm._v("Add Employee")])])])
-}]}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-0cfab48f", module.exports)
-  }
-}
-
-/***/ }),
-/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -42986,11 +42855,11 @@ if (false) {
 }
 
 /***/ }),
-/* 227 */
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('delete-employee-modal'), _vm._v(" "), _c('edit-employee-modal')], 1)
+  return _c('div', [_c('add-employee-modal'), _vm._v(" "), _c('edit-employee-modal'), _vm._v(" "), _c('delete-employee-modal')], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -43001,7 +42870,7 @@ if (false) {
 }
 
 /***/ }),
-/* 228 */
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -43023,13 +42892,13 @@ if (false) {
 }
 
 /***/ }),
+/* 228 */,
 /* 229 */,
 /* 230 */,
 /* 231 */,
 /* 232 */,
 /* 233 */,
-/* 234 */,
-/* 235 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -43038,18 +42907,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v("\n    Employee of "), _c('strong', [_vm._v(_vm._s(_vm.officeName))]), _vm._v(" Office\n    "), _c('button', {
     staticClass: "btn btn-default btn-sm pull-right",
     on: {
-      "click": _vm.toggleShowAddForm
+      "click": function($event) {
+        _vm.forwardEventEmittion('employee-add', _vm.officeId)
+      }
     }
   }, [_vm._v("\n      " + _vm._s(_vm.showAddForm ? 'Cancel' : 'Add New Employee') + "\n    ")])]), _vm._v(" "), _c('div', {
     staticStyle: {
       "margin-top": "25px"
     }
-  }, [_c('add-employee-form', {
-    attrs: {
-      "show": _vm.showAddForm,
-      "office-id": _vm.officeId
-    }
-  }), _vm._v(" "), _c('div', {
+  }, [_c('div', {
     staticClass: "search",
     staticStyle: {
       "margin-bottom": "15px"
@@ -43169,7 +43035,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.getNextPage()
       }
     }
-  }, [_vm._v("Next")])])])])])], 1)])
+  }, [_vm._v("Next")])])])])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('thead', [_c('tr', [_c('th'), _vm._v(" "), _c('th', [_vm._v("Name")]), _vm._v(" "), _c('th', [_vm._v("Email")]), _vm._v(" "), _c('th', [_vm._v("Active?")]), _vm._v(" "), _c('th', [_vm._v("Action")])])])
 }]}
@@ -43182,7 +43048,7 @@ if (false) {
 }
 
 /***/ }),
-/* 236 */
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -43218,7 +43084,7 @@ if (false) {
 }
 
 /***/ }),
-/* 237 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -43297,7 +43163,7 @@ if (false) {
 }
 
 /***/ }),
-/* 238 */
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -43347,6 +43213,137 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
      require("vue-hot-reload-api").rerender("data-v-a03a4906", module.exports)
+  }
+}
+
+/***/ }),
+/* 238 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('base-modal', {
+    attrs: {
+      "id": _vm.modalId
+    }
+  }, [_c('span', {
+    slot: "modal-header"
+  }, [_vm._v("Add New Employee")]), _vm._v(" "), _c('div', {
+    slot: "modal-body"
+  }, [_c('form', {
+    on: {
+      "submit": function($event) {
+        $event.preventDefault();
+        _vm.storeEmployee($event)
+      }
+    }
+  }, [_c('div', {
+    staticClass: "form-group",
+    class: {
+      'has-error': _vm.errors.name
+    }
+  }, [_c('label', {
+    attrs: {
+      "for": "add_employee_name"
+    }
+  }, [_vm._v("Name")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.name),
+      expression: "name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "id": "add_employee_name",
+      "type": "text",
+      "placeholder": ""
+    },
+    domProps: {
+      "value": (_vm.name)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.name = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('span', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.errors.name),
+      expression: "errors.name"
+    }],
+    staticClass: "help-block"
+  }, [_vm._v("\n          " + _vm._s(_vm.errors.name) + "\n        ")])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group",
+    class: {
+      'has-error': _vm.errors.email
+    }
+  }, [_c('label', {
+    attrs: {
+      "for": "add_employee_email"
+    }
+  }, [_vm._v("Email")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.email),
+      expression: "email"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "id": "add_employee_email",
+      "type": "text",
+      "placeholder": ""
+    },
+    domProps: {
+      "value": (_vm.email)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.email = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('span', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.errors.email),
+      expression: "errors.email"
+    }],
+    staticClass: "help-block"
+  }, [_vm._v("\n          " + _vm._s(_vm.errors.email) + "\n        ")])]), _vm._v(" "), _c('button', {
+    staticStyle: {
+      "display": "none"
+    },
+    attrs: {
+      "type": "submit"
+    }
+  }, [_vm._v("Update")])])]), _vm._v(" "), _c('div', {
+    slot: "modal-footer"
+  }, [_c('button', {
+    staticClass: "btn btn-default",
+    attrs: {
+      "type": "button",
+      "data-dismiss": "modal"
+    }
+  }, [_vm._v("Close")]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": _vm.storeEmployee
+    }
+  }, [_vm._v("Add")])])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-ab1b041c", module.exports)
   }
 }
 
