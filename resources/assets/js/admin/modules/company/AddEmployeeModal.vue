@@ -82,7 +82,7 @@ export default {
 
         return Object.assign(acc, { [errorKey]: message });
       }, {});
-    }
+    },
   },
 };
 </script>

@@ -42151,6 +42151,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -42159,7 +42165,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     return {
       modalId: 'editEmployeeModal',
       employeeName: '',
-      employee: {}
+      employee: {},
+      errors: {}
     };
   },
   computed: {
@@ -42177,6 +42184,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
   methods: {
     updateEmployee() {
+      this.resetErrors();
+
       const employeeId = this.employee.id;
       const { name, email } = this.editedEmployee;
 
@@ -42186,7 +42195,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         __WEBPACK_IMPORTED_MODULE_0__bus__["a" /* default */].$emit('edit-employee-modal:updated', data);
 
         $('#editEmployeeModal').modal('hide');
+      }).catch(({ response }) => {
+        if (response.status === 422) {
+          this.errors = this.formatErrors(response.data);
+        }
       });
+    },
+    resetErrors() {
+      this.errors = {};
+    },
+    formatErrors(errors) {
+      return Object.keys(errors).reduce((acc, errorKey) => {
+        const message = errors[errorKey][0];
+
+        return Object.assign(acc, { [errorKey]: message });
+      }, {});
     }
   }
 });
@@ -42766,7 +42789,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }, [_c('div', {
-    staticClass: "form-group"
+    staticClass: "form-group",
+    class: {
+      'has-error': _vm.errors.name
+    }
   }, [_c('label', {
     attrs: {
       "for": "edit_employee_name"
@@ -42793,8 +42819,19 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.editedEmployee.name = $event.target.value
       }
     }
-  })]), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
+  }), _vm._v(" "), _c('span', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.errors.name),
+      expression: "errors.name"
+    }],
+    staticClass: "help-block"
+  }, [_vm._v("\n          " + _vm._s(_vm.errors.name) + "\n        ")])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group",
+    class: {
+      'has-error': _vm.errors.email
+    }
   }, [_c('label', {
     attrs: {
       "for": "edit_employee_email"
@@ -42821,7 +42858,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.editedEmployee.email = $event.target.value
       }
     }
-  })]), _vm._v(" "), _c('button', {
+  }), _vm._v(" "), _c('span', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.errors.email),
+      expression: "errors.email"
+    }],
+    staticClass: "help-block"
+  }, [_vm._v("\n          " + _vm._s(_vm.errors.email) + "\n        ")])]), _vm._v(" "), _c('button', {
     staticStyle: {
       "display": "none"
     },

@@ -3,13 +3,19 @@
     <span slot="modal-header">Edit Employee {{ employeeName }}</span>
     <div slot="modal-body" v-if="employee.id">
       <form @submit.prevent="updateEmployee">
-        <div class="form-group">
+        <div class="form-group" :class="{ 'has-error': errors.name }">
           <label for="edit_employee_name">Name</label>
           <input id="edit_employee_name" type="text" v-model="editedEmployee.name" class="form-control" placeholder="">
+          <span class="help-block" v-show="errors.name">
+            {{ errors.name }}
+          </span>
         </div>
-        <div class="form-group">
+        <div class="form-group" :class="{ 'has-error': errors.email }">
           <label for="edit_employee_email">Email</label>
           <input id="edit_employee_email" type="text" v-model="editedEmployee.email" class="form-control" placeholder="">
+          <span class="help-block" v-show="errors.email">
+            {{ errors.email }}
+          </span>
         </div>
         <button type="submit" style="display:none">Update</button>
       </form>
@@ -30,6 +36,7 @@ export default {
       modalId: 'editEmployeeModal',
       employeeName: '',
       employee: {},
+      errors: {},
     };
   },
   computed: {
@@ -47,6 +54,8 @@ export default {
   },
   methods: {
     updateEmployee() {
+      this.resetErrors();
+
       const employeeId = this.employee.id;
       const { name, email } = this.editedEmployee;
 
@@ -57,7 +66,22 @@ export default {
           bus.$emit('edit-employee-modal:updated', data);
 
           $('#editEmployeeModal').modal('hide');
+        })
+        .catch(({ response }) => {
+          if (response.status === 422) {
+            this.errors = this.formatErrors(response.data);
+          }
         });
+    },
+    resetErrors() {
+      this.errors = {};
+    },
+    formatErrors(errors) {
+      return Object.keys(errors).reduce((acc, errorKey) => {
+        const message = errors[errorKey][0];
+
+        return Object.assign(acc, { [errorKey]: message });
+      }, {});
     },
   },
 };
