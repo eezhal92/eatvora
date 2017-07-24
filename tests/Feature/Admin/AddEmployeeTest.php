@@ -82,7 +82,7 @@ class AddEmployeeTest extends TestCase
         // assert response
         $response->assertStatus(201);
         $response->assertJsonFragment([
-            'id' => $employeeUser->id,
+            'id' => $employee->id,
             'name' => 'Michael Jordan',
             'email' => 'jordan@mail.com',
         ]);
