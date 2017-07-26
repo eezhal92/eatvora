@@ -2,19 +2,20 @@
 
 namespace Tests\Feature;
 
+use App\User;
+use App\Menu;
 use App\Cart;
+use App\Vendor;
+use App\Office;
 use App\Company;
 use App\Employee;
-use App\Menu;
 use App\Schedule;
-use App\Services\ScheduleService;
-use App\User;
-use App\Vendor;
 use Carbon\Carbon;
+use Tests\TestCase;
+use App\Services\ScheduleService;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Tests\TestCase;
 
 /**
  * What to assert:
@@ -27,7 +28,7 @@ use Tests\TestCase;
  * - It should not able to checkout when the cart is less than 3 day (It should be in dedicated CheckoutTest)
  * - It should not able to checkout when user balance is not enough total order (It should be in dedicated CheckoutTest)
  */
-class AddMealToCart extends TestCase
+class AddMealToCartTest extends TestCase
 {
     use DatabaseMigrations;
 
@@ -81,14 +82,21 @@ class AddMealToCart extends TestCase
             'name' => 'Traveloka',
         ]);
 
+        $office = factory(Office::class)->create([
+            'company_id' => $company->id,
+        ]);
+
         $employee = factory(Employee::class)->create([
             'user_id' => $user->id,
-            'company_id' => $company->id,
+            'office_id' => $office->id,
         ]);
 
         // Act
         $response = $this->actingAs($user)
-            ->withSession(['company_id' => $company->id])
+            ->withSession([
+                'office_id' => $office->id,
+                'company_id' => $company->id
+            ])
             ->json('post', '/api/v1/cart', [
                 'menuId' => $menu->id,
                 'date' => $nextMonday->format('Y-m-d'),
@@ -102,7 +110,7 @@ class AddMealToCart extends TestCase
                 [
                     'name' => 'Nasi Kuning',
                     'qty' => 2,
-                    'date' => $nextMonday->format('Y-m-d H:i:s'),
+                    'date' => $nextMonday->format('Y-m-d'),
                 ]
             ]); // todo maybe should create another assertion method like seeJsonSubset
 
@@ -112,7 +120,7 @@ class AddMealToCart extends TestCase
 
         $cartItems = $cart->items();
 
-        $this->assertEquals($cartItems->first()->date, $nextMonday->format('Y-m-d H:i:s'));
+        $this->assertEquals($cartItems->first()->date, $nextMonday->format('Y-m-d'));
         $this->assertEquals($cartItems->first()->qty, 2);
     }
 

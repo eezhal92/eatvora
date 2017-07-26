@@ -8,7 +8,7 @@ export default  {
   `,
   methods: {
     emitEvent() {
-      this.$emit(this.eventName, this.eventName, this.payload);
+      this.$emit(this.eventName, this.payload, this.eventName);
     }
   }
 };

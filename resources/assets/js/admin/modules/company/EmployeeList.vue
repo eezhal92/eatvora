@@ -144,8 +144,7 @@ export default {
         this.fetchEmployees({ page: this.currentPage - 1});
       }
     },
-    forwardEventEmittion(eventName, payload = {}) {
-      // alert(`Event ${eventName} with payload ` + JSON.stringify(payload));
+    forwardEventEmittion(payload, eventName) {
       bus.$emit(eventName, payload);
     },
   },

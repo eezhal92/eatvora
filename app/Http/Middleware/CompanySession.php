@@ -28,6 +28,7 @@ class CompanySession
         }
 
         $office = $employees->first()->office;
+
         session([
             'office_id' => $office->id,
             'company_id' => $office->company_id,

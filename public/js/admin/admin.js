@@ -41834,6 +41834,9 @@ Vue.component('action-options-popover', __webpack_require__(208));
 Vue.component('action-options-popover-menu', __webpack_require__(209));
 Vue.component('base-modal', __webpack_require__(210));
 
+Vue.component('vendor-row-action', __webpack_require__(257));
+Vue.component('delete-vendor-modal', __webpack_require__(260));
+
 Vue.directive('click-outside', {
   bind: function (el, binding, vNode) {
     // Provided expression must evaluate to a function.
@@ -41932,7 +41935,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   `,
   methods: {
     emitEvent() {
-      this.$emit(this.eventName, this.eventName, this.payload);
+      this.$emit(this.eventName, this.payload, this.eventName);
     }
   }
 });
@@ -42366,8 +42369,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.fetchEmployees({ page: this.currentPage - 1 });
       }
     },
-    forwardEventEmittion(eventName, payload = {}) {
-      // alert(`Event ${eventName} with payload ` + JSON.stringify(payload));
+    forwardEventEmittion(payload, eventName) {
       __WEBPACK_IMPORTED_MODULE_0__bus__["a" /* default */].$emit(eventName, payload);
     }
   }
@@ -43455,6 +43457,254 @@ if(false) {
 
 module.exports = __webpack_require__(160);
 
+
+/***/ }),
+/* 247 */,
+/* 248 */,
+/* 249 */,
+/* 250 */,
+/* 251 */,
+/* 252 */,
+/* 253 */,
+/* 254 */,
+/* 255 */,
+/* 256 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bus__ = __webpack_require__(12);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['vendor'],
+  methods: {
+    goToShowPage(payload) {
+      window.location.href = '/ap/vendors/' + payload.id;
+    },
+    goToEditPage(payload) {
+      window.location.href = '/ap/vendors/' + payload.id + '/edit';
+    },
+    showDeleteModal(payload) {
+      __WEBPACK_IMPORTED_MODULE_0__bus__["a" /* default */].$emit('vendor-delete', payload);
+    }
+  }
+});
+
+/***/ }),
+/* 257 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(2)(
+  /* script */
+  __webpack_require__(256),
+  /* template */
+  __webpack_require__(258),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/Users/eezhal/eatvora/eatvora-web/resources/assets/js/admin/modules/vendor/VendorRowAction.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] VendorRowAction.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-51e1373a", Component.options)
+  } else {
+    hotAPI.reload("data-v-51e1373a", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 258 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "vendor-row-action"
+  }, [_c('action-options-popover', [_c('action-options-popover-menu', {
+    attrs: {
+      "payload": _vm.vendor,
+      "event-name": "employee-show"
+    },
+    on: {
+      "employee-show": _vm.goToShowPage
+    }
+  }, [_vm._v("\n      Show\n    ")]), _vm._v(" "), _c('action-options-popover-menu', {
+    attrs: {
+      "payload": _vm.vendor,
+      "event-name": "vendor-edit"
+    },
+    on: {
+      "vendor-edit": _vm.goToEditPage
+    }
+  }, [_vm._v("\n      Edit\n    ")]), _vm._v(" "), _c('hr', {
+    staticStyle: {
+      "margin": "0"
+    }
+  }), _vm._v(" "), _c('action-options-popover-menu', {
+    attrs: {
+      "payload": _vm.vendor,
+      "event-name": "vendor-delete"
+    },
+    on: {
+      "vendor-delete": _vm.showDeleteModal
+    }
+  }, [_vm._v("\n      Delete\n    ")])], 1)], 1)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-51e1373a", module.exports)
+  }
+}
+
+/***/ }),
+/* 259 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bus__ = __webpack_require__(12);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data() {
+    return {
+      modalId: 'deleteVendorModal',
+      vendorName: ''
+    };
+  },
+  created() {
+    __WEBPACK_IMPORTED_MODULE_0__bus__["a" /* default */].$on('vendor-delete', vendor => {
+      $(`#${this.modalId}`).modal('show');
+      this.vendorName = vendor.name;
+    });
+  }
+});
+
+/***/ }),
+/* 260 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(2)(
+  /* script */
+  __webpack_require__(259),
+  /* template */
+  __webpack_require__(261),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/Users/eezhal/eatvora/eatvora-web/resources/assets/js/admin/modules/vendor/DeleteVendorModal.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] DeleteVendorModal.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-15a43df5", Component.options)
+  } else {
+    hotAPI.reload("data-v-15a43df5", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 261 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('base-modal', {
+    attrs: {
+      "id": _vm.modalId
+    }
+  }, [_c('span', {
+    slot: "modal-header"
+  }, [_vm._v("Delete Vendor")]), _vm._v(" "), _c('div', {
+    slot: "modal-body"
+  }, [_vm._v("Are you sure want to delete "), _c('b', [_vm._v(_vm._s(_vm.vendorName))]), _vm._v("?")]), _vm._v(" "), _c('div', {
+    slot: "modal-footer"
+  }, [_c('button', {
+    staticClass: "btn btn-default",
+    attrs: {
+      "type": "button",
+      "data-dismiss": "modal"
+    }
+  }, [_vm._v("Close")]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "type": "button"
+    }
+  }, [_vm._v("Yes")])])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-15a43df5", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

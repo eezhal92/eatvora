@@ -5,9 +5,17 @@ namespace App\Http\Controllers\Admin;
 use App\Vendor;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class VendorController extends Controller
 {
+    public function index(Request $request)
+    {
+        $vendors = Vendor::paginate($request->get('limit', 10));
+
+        return view('admin.vendors.index', compact('vendors'));
+    }
+
     public function create()
     {
         return view('admin.vendors.create');
@@ -30,5 +38,16 @@ class VendorController extends Controller
         ]);
 
         return redirect("/ap/vendors/{$vendor->id}");
+    }
+
+    public function show($id)
+    {
+        try {
+            $vendor = Vendor::with('menus')->findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return abort(404);
+        }
+
+        return view('admin.vendors.show', compact('vendor'));
     }
 }

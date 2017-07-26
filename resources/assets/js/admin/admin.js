@@ -13,6 +13,8 @@ Vue.component('action-options-popover', require('./components/ActionOptionsPopov
 Vue.component('action-options-popover-menu', require('./components/ActionOptionsPopoverMenu.vue'));
 Vue.component('base-modal', require('./components/BaseModal.vue'));
 
+Vue.component('vendor-row-action', require('./modules/vendor/VendorRowAction.vue'));
+Vue.component('delete-vendor-modal', require('./modules/vendor/DeleteVendorModal.vue'));
 
 Vue.directive('click-outside', {
   bind: function(el, binding, vNode) {
