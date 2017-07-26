@@ -50,4 +50,33 @@ class VendorController extends Controller
 
         return view('admin.vendors.show', compact('vendor'));
     }
+
+    public function edit($id)
+    {
+        $vendor = Vendor::find($id);
+
+        return view('admin.vendors.edit', compact('vendor'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $this->validate($request, [
+            'name' => 'required|min:3',
+            'phone' => 'required',
+            'capacity' => 'required|numeric|min:10',
+            'email' => 'sometimes|required|email',
+        ]);
+
+        $vendor = Vendor::find($id);
+
+        $vendor->update($request->only([
+            'name',
+            'capacity',
+            'phone',
+            'email',
+            'address',
+        ]));
+
+        return redirect("/ap/vendors/{$vendor->id}");
+    }
 }

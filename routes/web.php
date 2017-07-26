@@ -71,6 +71,10 @@ Route::group(['prefix' => '/ap'], function () {
 
         Route::get('/vendors/{id}', 'Admin\VendorController@show');
 
+        Route::get('/vendors/{id}/edit', 'Admin\VendorController@edit');
+
+        Route::patch('/vendors/{id}', 'Admin\VendorController@update');
+
     });
 });
 
