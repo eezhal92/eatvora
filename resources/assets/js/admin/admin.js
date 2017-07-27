@@ -15,6 +15,7 @@ Vue.component('base-modal', require('./components/BaseModal.vue'));
 
 Vue.component('vendor-row-action', require('./modules/vendor/VendorRowAction.vue'));
 Vue.component('delete-vendor-modal', require('./modules/vendor/DeleteVendorModal.vue'));
+Vue.component('vendor-menu-list', require('./modules/vendor/VendorMenuList.vue'));
 
 Vue.directive('click-outside', {
   bind: function(el, binding, vNode) {
@@ -46,6 +47,8 @@ Vue.directive('click-outside', {
 
   }
 });
+
+Vue.filter('rupiah',  value => `Rp. ${value.toLocaleString()}`);
 
 new Vue({
   el: '#app',

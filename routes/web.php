@@ -75,6 +75,10 @@ Route::group(['prefix' => '/ap'], function () {
 
         Route::patch('/vendors/{id}', 'Admin\VendorController@update');
 
+        Route::get('/menus/{id}/edit', 'Admin\MenuController@edit');
+
+        Route::patch('/menus/{id}', 'Admin\MenuController@update');
+
     });
 });
 
@@ -91,5 +95,7 @@ Route::group(['prefix' => 'api/v1', 'namespace' => 'Api\V1', 'middleware' => 'au
     Route::post('/employees', 'EmployeeController@store');
 
     Route::patch('/employees/{id}', 'EmployeeController@update');
+
+    Route::get('/menus', 'MenuController@index');
 
 });

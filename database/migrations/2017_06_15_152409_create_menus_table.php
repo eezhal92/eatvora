@@ -17,8 +17,8 @@ class CreateMenusTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->integer('price');
-            $table->text('description');
-            $table->text('contents');
+            $table->text('description')->nullable();
+            $table->text('contents')->nullable();
             $table->integer('vendor_id')->unsigned();
             $table->timestamps();
         });

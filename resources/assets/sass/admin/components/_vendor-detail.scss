@@ -1,0 +1,29 @@
+.vendor-detail {
+  &__action {
+    margin-top: 8px;
+    font-size: 12px;
+    height: 17px;
+
+    a {
+      border-bottom: 1px dotted #0070e0;
+      color: #0070e0;
+    }
+
+    a.text-danger {
+      color: #e82110;
+      border-bottom: 1px dotted #e82110;
+    }
+  }
+
+  &__address, &__capacity {
+    margin-bottom: 16px;
+  }
+
+  &__address-header, &__capacity-header {
+    font-weight: bold;
+  }
+
+  &__contact {
+    color: #637282;
+  }
+}

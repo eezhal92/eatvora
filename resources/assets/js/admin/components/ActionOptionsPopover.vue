@@ -1,6 +1,6 @@
 <template>
   <div class="action-options-popover">
-    <a v-click-outside="hide" @click="toggleExpand" aria-haspopup="true" v-bind:aria-expanded="expanded ? 'true' : 'false'">
+    <a v-click-outside="hide" @click="toggleExpand" aria-haspopup="true" v-bind:aria-expanded="expanded ? 'true' : 'false'" style="cursor: pointer">
       <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="false" style="margin-top: -5px;">
         <title>table-overflow</title>
         <g fill="none" fill-rule="evenodd">
