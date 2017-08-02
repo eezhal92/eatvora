@@ -20,7 +20,11 @@
           <td>{{ menu.price | rupiah }}</td>
           <td>
             <action-options-popover>
-              <action-options-popover-menu>
+              <action-options-popover-menu
+                :payload="menu.id"
+                event-name="menu-detail"
+                v-on:menu-detail="toDetailPage"
+              >
                 Detail
               </action-options-popover-menu>
               <action-options-popover-menu
@@ -63,7 +67,6 @@ export default {
   mounted() {
     this.fetchMenus();
   },
-
   computed: {
     isPrevAvailable() {
       return this.currentPage > 1;
@@ -93,7 +96,10 @@ export default {
     },
     toEditPage(menuId) {
       window.location.href = `/ap/menus/${menuId}/edit`;
-    }
+    },
+    toDetailPage(menuId) {
+      window.location.href = `/ap/menus/${menuId}`;
+    },
   }
 };
 </script>

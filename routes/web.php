@@ -75,6 +75,10 @@ Route::group(['prefix' => '/ap'], function () {
 
         Route::patch('/vendors/{id}', 'Admin\VendorController@update');
 
+        Route::get('/menus', 'Admin\MenuController@index');
+
+        Route::get('/menus/{id}', 'Admin\MenuController@show');
+
         Route::get('/menus/{id}/edit', 'Admin\MenuController@edit');
 
         Route::patch('/menus/{id}', 'Admin\MenuController@update');

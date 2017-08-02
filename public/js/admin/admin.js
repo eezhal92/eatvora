@@ -42498,6 +42498,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['vendorId'],
@@ -42512,7 +42516,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   mounted() {
     this.fetchMenus();
   },
-
   computed: {
     isPrevAvailable() {
       return this.currentPage > 1;
@@ -42541,6 +42544,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     toEditPage(menuId) {
       window.location.href = `/ap/menus/${menuId}/edit`;
+    },
+    toDetailPage(menuId) {
+      window.location.href = `/ap/menus/${menuId}`;
     }
   }
 });
@@ -43826,7 +43832,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   })])]), _vm._v(" "), _c('table', {
     staticClass: "table"
   }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.menus), function(menu) {
-    return _c('tr', [_c('td', [_vm._v(_vm._s(menu.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm._f("rupiah")(menu.price)))]), _vm._v(" "), _c('td', [_c('action-options-popover', [_c('action-options-popover-menu', [_vm._v("\n              Detail\n            ")]), _vm._v(" "), _c('action-options-popover-menu', {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(menu.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm._f("rupiah")(menu.price)))]), _vm._v(" "), _c('td', [_c('action-options-popover', [_c('action-options-popover-menu', {
+      attrs: {
+        "payload": menu.id,
+        "event-name": "menu-detail"
+      },
+      on: {
+        "menu-detail": _vm.toDetailPage
+      }
+    }, [_vm._v("\n              Detail\n            ")]), _vm._v(" "), _c('action-options-popover-menu', {
       attrs: {
         "payload": menu.id,
         "event-name": "menu-edit"

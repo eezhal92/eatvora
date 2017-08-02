@@ -9,6 +9,23 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class MenuController extends Controller
 {
+    public function index()
+    {
+        $menus = Menu::with('vendor')->paginate(20);
+
+        return view('admin.menus.index', compact('menus'));
+    }
+    public function show($id)
+    {
+        try {
+            $menu = Menu::with('vendor')->findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return redirect('/ap/menus')->with('error', 'Menu was not found.');
+        }
+
+        return view('admin.menus.show', compact('menu'));
+    }
+
     public function edit(Request $request, $id)
     {
         try {
