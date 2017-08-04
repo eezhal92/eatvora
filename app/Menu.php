@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Menu extends Model
 {
-    protected $fillable = ['name', 'price', 'description', 'contents', 'vendor_id'];
+    protected $fillable = ['name', 'price', 'description', 'contents', 'vendor_id', 'image_path'];
 
     public function vendor()
     {
@@ -22,5 +22,16 @@ class Menu extends Model
     public function formattedPrice()
     {
         return 'Rp. ' . number_format($this->price);
+    }
+
+    public function getImageUrlAttribute()
+    {
+        $path = $this->image_path;
+
+        if (!$path) {
+            return '';
+        }
+
+        return \Storage::disk('public')->url($path);
     }
 }

@@ -4,7 +4,10 @@ namespace Tests\Feature\Admin;
 
 use App\Menu;
 use App\User;
+use App\Vendor;
 use Tests\TestCase;
+use Illuminate\Http\Testing\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -21,6 +24,7 @@ class EditMenuTest extends TestCase
             'description' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 tempor.',
             'contents' => 'Menu contents',
+            'vendor' => factory(Vendor::class)->create()->id,
         ], $overrides);
     }
 
@@ -87,6 +91,8 @@ tempor.',
     /** @test */
     public function eatvora_admin_can_update_existing_menu()
     {
+        Storage::fake('public');
+
         $admin = factory(User::class)->states('admin')->create();
 
         $menu = factory(Menu::class)->create([
@@ -94,13 +100,18 @@ tempor.',
             'price' => 100000,
             'description' => 'Roasted beef description',
             'contents' => 'French fries, roasted beef',
+            'image_path' => '/images/menus/old-image.jpg',
         ]);
+
+        $vendor = factory(Vendor::class)->create();
 
         $response = $this->actingAs($admin)->patch('/ap/menus/' . $menu->id, [
             'name' => 'New Roasted Beef',
             'price' => 150000,
             'description' => 'New roasted beef description',
             'contents' => 'New french fries, roasted beef',
+            'image' => File::image('new-image.jpg', 480, 320),
+            'vendor' => $vendor->id,
         ]);
 
         $response->assertStatus(302);
@@ -108,10 +119,12 @@ tempor.',
 
         $menu->refresh();
 
-        $this->assertEquals($menu->name, 'New Roasted Beef');
-        $this->assertEquals($menu->price, 150000);
-        $this->assertEquals($menu->description, 'New roasted beef description');
-        $this->assertEquals($menu->contents, 'New french fries, roasted beef');
+        $this->assertEquals('New Roasted Beef', $menu->name);
+        $this->assertEquals(150000, $menu->price);
+        $this->assertEquals('New roasted beef description', $menu->description);
+        $this->assertEquals('New french fries, roasted beef', $menu->contents);
+        $this->assertNotEquals('/images/menus/old-image.jpg', $menu->image_path);
+        $this->assertEquals($vendor->id, $menu->vendor_id);
     }
 
     private function updateMenu($menuId, $overrides)
@@ -273,5 +286,26 @@ tempor.',
         $menu->refresh();
 
         $this->assertEquals($menu->contents, '');
+    }
+
+    /** @test */
+    public function image_is_optional()
+    {
+        // $this->withExceptionHandling();
+
+        $menu = factory(Menu::class)->create([
+            'image_path' => '/images/menus/old-image.jpg',
+        ]);
+
+        $response = $this->updateMenu($menu->id, [
+            'images' => null,
+        ]);
+
+        $response->assertStatus(302);
+        $response->assertRedirect("/ap/menus/{$menu->id}");
+
+        $menu->refresh();
+
+        $this->assertEquals('/images/menus/old-image.jpg', $menu->image_path);
     }
 }

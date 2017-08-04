@@ -8,11 +8,18 @@
     <div class="container-fluid container-fluid--narrow">
       <div class="row">
 
-        @include('admin.top-navigation', ['header' => 'Menu Detail of ' . $menu->name])
+        @include('admin.top-navigation', ['header' => sprintf('Detail of %s Menu', $menu->name)])
 
         <div class="col-lg-4">
           <div style="background: #ececec">
-            <img src="http://lorempixel.com/480/320/food" class="img-responsive" alt="">
+            @if ($menu->image_path)
+            <img src="{{ asset('storage/' . $menu->image_path) }}" class="img-responsive" style="width: 100%" alt="">
+            @else
+            <img src="{{ asset('images/menu-placeholder.png' )}}" class="img-responsive" alt="">
+            @endif
+          </div>
+          <div class="text-center" style="padding: 5px 0">
+            <a href="{{ url(sprintf('/ap/menus/%s/edit', $menu->id)) }}">Edit</a>
           </div>
         </div>
 
