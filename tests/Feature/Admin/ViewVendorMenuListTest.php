@@ -37,14 +37,6 @@ class ViewVendorMenuListTest extends TestCase
     }
 
     /** @test */
-    public function can_view_menu_list()
-    {
-        $response = $this->actingAs($this->admin)->get('/ap/menus');
-
-        $response->assertStatus(200);
-    }
-
-    /** @test */
     public function can_retrieve_menus_by_vendor()
     {
         $response = $this->actingAs($this->admin)->json('GET', '/api/v1/menus?vendor_id=' . $this->vendor->id);

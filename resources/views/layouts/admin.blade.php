@@ -42,7 +42,7 @@
               <li class="eatvora-nav__separator"></li>
               <li>
                 <div class="eatvora-nav__menu-wrapper">
-                  <a href="#" class="eatvora-nav__menu-item">Menu</a>
+                  <a href="{{ url('/ap/menus') }}" class="eatvora-nav__menu-item">Menu</a>
                 </div>
               </li>
               <li>
