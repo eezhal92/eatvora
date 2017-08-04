@@ -47,6 +47,17 @@ class DatabaseSeeder extends Seeder
         $userB = factory(User::class)->create(['email' => 'jane@mail.com', 'password' => bcrypt('password')]);
 
         $company = factory(Company::class)->create(['name' => 'Traveloka']);
+
+        foreach (range(1, 15) as $i) {
+            $c = factory(Company::class)->create();
+            $o = factory(Office::class)->states('main')->create(['company_id' => $c->id]);
+            $u = factory(User::class)->create();
+            $a = factory(Employee::class)->states('admin')->create([
+                'user_id' => $u->id,
+                'office_id' => $o->id,
+            ]);
+        }
+
         $office = factory(Office::class)->create([
             'company_id' => $company->id,
             'name' => 'Operation & Customer Care',
@@ -79,6 +90,7 @@ class DatabaseSeeder extends Seeder
             'is_admin' => true,
             'office_id' => $office->id,
         ]);
+
         factory(Employee::class)->create([
             'user_id' => $userB->id,
             'office_id' => $officeB->id,
@@ -87,7 +99,7 @@ class DatabaseSeeder extends Seeder
         // senin-jum'at lihat hari bsok
         $weekDays = (new ScheduleService())->nextWeekDayDates();
 
-        $vendors = $this->createVendors(9);
+        $vendors = $this->createVendors(15);
 
         $vendors->each(function ($vendor) use ($weekDays) {
             $menus = $this->createMenuByVendor($vendor->id, 25);

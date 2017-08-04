@@ -21,7 +21,7 @@
         <div class="col-lg-12">
           <table class="table">
             <thead>
-              <tr style="font-family: 'Open Sans Condensed', sans-serif; ">
+              <tr>
                 <th>Name</th>
                 <th>Main Office</th>
                 <th>Phone</th>
@@ -43,6 +43,7 @@
               </tr>
               @endforeach
           </table>
+          {{ $companies->appends(request()->except('page'))->render()}}
         </div>
 
       </div>

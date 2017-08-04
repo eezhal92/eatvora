@@ -77,6 +77,10 @@ Route::group(['prefix' => '/ap'], function () {
 
         Route::get('/menus', 'Admin\MenuController@index');
 
+        Route::get('/menus/create', 'Admin\MenuController@create');
+
+        Route::post('/menus', 'Admin\MenuController@store');
+
         Route::get('/menus/{id}', 'Admin\MenuController@show');
 
         Route::get('/menus/{id}/edit', 'Admin\MenuController@edit');

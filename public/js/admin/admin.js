@@ -43341,7 +43341,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "btn btn-default btn-sm pull-right",
     on: {
       "click": function($event) {
-        _vm.forwardEventEmittion('employee-add', _vm.officeId)
+        _vm.forwardEventEmittion(_vm.officeId, 'employee-add')
       }
     }
   }, [_vm._v("\n      " + _vm._s(_vm.showAddForm ? 'Cancel' : 'Add New Employee') + "\n    ")])]), _vm._v(" "), _c('div', {

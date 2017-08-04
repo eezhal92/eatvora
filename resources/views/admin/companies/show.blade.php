@@ -59,7 +59,7 @@
                   </div>
                   <div class="office__address-content">
                     <div class="office__address-address">
-                      {{ $office->address }}
+                      {!! nl2br($office->address) !!}
                     </div>
                     <div class="office__address-district">
                       [Sub-District], [District]

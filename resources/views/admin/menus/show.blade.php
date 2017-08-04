@@ -45,7 +45,7 @@
               Description
             </div>
             <div class="menu-detail__description-content info-subset__content">
-              {{ $menu->description }}
+              {{ $menu->description ?: '-' }}
             </div>
           </div>
           <div class="menu-detail__contents info-subset">
@@ -53,7 +53,7 @@
               Contents
             </div>
             <div class="menu-detail__contents-content info-subset__content">
-              {{ $menu->contents }}
+              {{ $menu->contents ?: '-' }}
             </div>
           </div>
         </div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Menu;
 use App\Vendor;
+use App\Lib\NullFile;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -15,6 +16,35 @@ class MenuController extends Controller
         $menus = Menu::with('vendor')->paginate(20);
 
         return view('admin.menus.index', compact('menus'));
+    }
+
+    public function create()
+    {
+        $vendors = Vendor::all()->pluck('name', 'id');
+
+        return view('admin.menus.create', compact('vendors'));
+    }
+
+    public function store(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|min:8',
+            'vendor' => 'required|numeric|min:1',
+            'price' => 'required|numeric|min:15000',
+        ]);
+
+        $menu = Menu::create([
+            'vendor_id' => $request->get('vendor'),
+            'name' => $request->get('name'),
+            'price' => $request->get('price'),
+            'description' => $request->get('description'),
+            'contents' => $request->get('contents'),
+            'image_path' => $request->file('image', new NullFile())->store('images/menus', 'public'),
+        ]);
+
+
+        return redirect('/ap/menus/' . $menu->id)
+            ->with('success', sprintf('Menu %s successfully been created.', $menu->name));
     }
 
     public function show($id)
@@ -47,6 +77,7 @@ class MenuController extends Controller
         $this->validate($request, [
             'name' => 'required|min:8',
             'price' => 'required|numeric|min:15000',
+            'vendor' => 'required|numeric|min:1',
         ]);
 
         $menu = Menu::find($id);
@@ -59,7 +90,7 @@ class MenuController extends Controller
             'vendor_id' => $request->get('vendor'),
         ];
 
-        $path = $request->file('image', new \App\Lib\NullFile())->store('images/menus', 'public');
+        $path = $request->file('image', new NullFile())->store('images/menus', 'public');
 
         if ($path) {
             $data['image_path'] = $path;

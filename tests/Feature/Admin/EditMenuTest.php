@@ -159,6 +159,66 @@ tempor.',
     }
 
     /** @test */
+    public function vendor_is_required()
+    {
+        $this->withExceptionHandling();
+
+        $vendor = factory(Vendor::class)->create();
+
+        $menu = factory(Menu::class)->create([
+            'vendor_id' => $vendor->id,
+        ]);
+
+        $response = $this->updateMenu($menu->id, [
+            'vendor' => null,
+        ]);
+
+        $response->assertStatus(302);
+        $response->assertRedirect("/ap/menus/{$menu->id}/edit");
+        $response->assertSessionHasErrors('vendor');
+
+        $menu->refresh();
+
+        $this->assertEquals($vendor->id, $menu->vendor_id);
+    }
+
+    /** @test */
+    public function vendor_must_be_positive_number()
+    {
+        $this->withExceptionHandling();
+
+        $vendor = factory(Vendor::class)->create();
+
+        $menu = factory(Menu::class)->create([
+            'vendor_id' => $vendor->id,
+        ]);
+
+        $response = $this->updateMenu($menu->id, [
+            'vendor' => 'not valid number',
+        ]);
+
+        $response->assertStatus(302);
+        $response->assertRedirect("/ap/menus/{$menu->id}/edit");
+        $response->assertSessionHasErrors('vendor');
+
+        $menu->refresh();
+
+        $this->assertEquals($vendor->id, $menu->vendor_id);
+
+        $response = $this->updateMenu($menu->id, [
+            'vendor' => -1,
+        ]);
+
+        $response->assertStatus(302);
+        $response->assertRedirect("/ap/menus/{$menu->id}/edit");
+        $response->assertSessionHasErrors('vendor');
+
+        $menu->refresh();
+
+        $this->assertEquals($vendor->id, $menu->vendor_id);
+    }
+
+    /** @test */
     public function name_must_be_at_least_8()
     {
         $this->withExceptionHandling();
@@ -291,8 +351,6 @@ tempor.',
     /** @test */
     public function image_is_optional()
     {
-        // $this->withExceptionHandling();
-
         $menu = factory(Menu::class)->create([
             'image_path' => '/images/menus/old-image.jpg',
         ]);

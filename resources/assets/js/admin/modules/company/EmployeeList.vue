@@ -2,7 +2,7 @@
   <div>
     <div class="clearfix">
       Employee of <strong>{{ officeName }}</strong> Office
-      <button @click="forwardEventEmittion('employee-add', officeId)" class="btn btn-default btn-sm pull-right">
+      <button @click="forwardEventEmittion(officeId, 'employee-add')" class="btn btn-default btn-sm pull-right">
         {{ showAddForm ? 'Cancel' : 'Add New Employee' }}
       </button>
     </div>

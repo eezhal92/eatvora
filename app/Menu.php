@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Menu extends Model
 {
-    protected $fillable = ['name', 'price', 'description', 'contents', 'vendor_id', 'image_path'];
+    protected $guarded = [];
 
     public function vendor()
     {
