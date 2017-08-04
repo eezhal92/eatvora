@@ -9,7 +9,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class ViewMenuTest extends TestCase
+class ViewMenuDetailTest extends TestCase
 {
     use DatabaseMigrations;
 

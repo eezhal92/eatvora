@@ -10,7 +10,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class ViewMenuListTest extends TestCase
+class ViewVendorMenuListTest extends TestCase
 {
     use DatabaseMigrations;
 
