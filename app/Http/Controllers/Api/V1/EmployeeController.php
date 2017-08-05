@@ -29,7 +29,7 @@ class EmployeeController extends Controller
 
         $query = User::join('employees', 'users.id', '=', 'employees.user_id')
             ->join('offices', 'employees.office_id', '=', 'offices.id')
-            ->select(\DB::raw('employees.id as id'), 'users.name', 'users.email', 'employees.created_at', 'employees.created_at')
+            ->select(\DB::raw('employees.id as id'), 'users.name', 'users.email', 'employees.active', 'employees.created_at')
             ->where('offices.id', $officeId);
 
         if ($q = $request->get('query')) {
@@ -119,5 +119,20 @@ class EmployeeController extends Controller
         $employee = array_merge($employee->user->toArray(), $employee->toArray());
 
         return response()->json($employee, 200);
+    }
+
+    public function updateActive(Request $request, $id)
+    {
+        try {
+            $employee = Employee::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([], 404);
+        }
+
+        $employee->update([
+            'active' => $request->get('status'),
+        ]);
+
+        return response()->json([], 200);
     }
 }

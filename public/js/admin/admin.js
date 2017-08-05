@@ -42301,6 +42301,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -42371,6 +42378,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       if (this.currentPage > 1) {
         this.fetchEmployees({ page: this.currentPage - 1 });
       }
+    },
+    toggleActivation(employee) {
+      axios.patch(`/api/v1/employees/${employee.id}/active`, {
+        status: !employee.active
+      }).then(() => {
+        employee.active = !employee.active;
+      });
     },
     forwardEventEmittion(payload, eventName) {
       __WEBPACK_IMPORTED_MODULE_0__bus__["a" /* default */].$emit(eventName, payload);
@@ -43405,7 +43419,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }), _vm._v(" "), _c('table', {
     staticClass: "table"
   }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.employees), function(employee) {
-    return _c('tr', [_c('td'), _vm._v(" "), _c('td', [_vm._v(_vm._s(employee.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(employee.email))]), _vm._v(" "), _c('td', [_vm._v("Yes")]), _vm._v(" "), _c('td', [_c('action-options-popover', [_c('action-options-popover-menu', {
+    return _c('tr', [_c('td'), _vm._v(" "), _c('td', [_vm._v(_vm._s(employee.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(employee.email))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(employee.active ? 'Yes' : 'No'))]), _vm._v(" "), _c('td', [_c('action-options-popover', [_c('action-options-popover-menu', {
       attrs: {
         "payload": employee,
         "event-name": "employee-edit"
@@ -43421,7 +43435,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       on: {
         "employee-move-office": _vm.forwardEventEmittion
       }
-    }, [_vm._v("\n                  Move Office\n                ")]), _vm._v(" "), _c('hr', {
+    }, [_vm._v("\n                  Move Office\n                ")]), _vm._v(" "), _c('action-options-popover-menu', {
+      attrs: {
+        "payload": employee,
+        "event-name": "employee-toggle-activation"
+      },
+      on: {
+        "employee-toggle-activation": _vm.toggleActivation
+      }
+    }, [_vm._v("\n                  " + _vm._s(employee.active ? 'Deactivate' : 'Activate') + "\n                ")]), _vm._v(" "), _c('hr', {
       staticStyle: {
         "margin": "0"
       }

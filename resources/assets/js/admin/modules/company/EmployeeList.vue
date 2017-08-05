@@ -30,7 +30,7 @@
               <td></td>
               <td>{{ employee.name }}</td>
               <td>{{ employee.email }}</td>
-              <td>Yes</td>
+              <td>{{ employee.active ? 'Yes' : 'No' }}</td>
               <td>
                 <action-options-popover>
                   <action-options-popover-menu
@@ -46,6 +46,13 @@
                     v-on:employee-move-office="forwardEventEmittion"
                   >
                     Move Office
+                  </action-options-popover-menu>
+                  <action-options-popover-menu
+                    :payload="employee"
+                    event-name="employee-toggle-activation"
+                    v-on:employee-toggle-activation="toggleActivation"
+                  >
+                    {{ employee.active ? 'Deactivate' : 'Activate' }}
                   </action-options-popover-menu>
                   <hr style="margin: 0;">
                   <action-options-popover-menu
@@ -143,6 +150,13 @@ export default {
       if (this.currentPage > 1) {
         this.fetchEmployees({ page: this.currentPage - 1});
       }
+    },
+    toggleActivation(employee) {
+      axios.patch(`/api/v1/employees/${employee.id}/active`, {
+        status: !employee.active,
+      }).then(() => {
+        employee.active = !employee.active;
+      });
     },
     forwardEventEmittion(payload, eventName) {
       bus.$emit(eventName, payload);

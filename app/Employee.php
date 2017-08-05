@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Employee extends Model
 {
-    protected $fillable = ['user_id', 'office_id', 'is_admin'];
+    protected $guarded = [];
 
     protected $casts = [
         'is_admin' => 'boolean',
+        'active' => 'boolean',
     ];
 
     public function office()
