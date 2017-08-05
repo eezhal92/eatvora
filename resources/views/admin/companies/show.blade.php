@@ -28,6 +28,9 @@
             <a href="{{ url("/ap/companies/{$company->id}/offices/create") }}" class="btn btn-primary">
               <i class="glyphicon glyphicon-plus"></i> Create New Office
             </a>
+            <a href="{{ url("/ap/companies/{$company->id}/employees") }}" class="btn btn-default">
+              <i class="glyphicon glyphicon-user"></i> View All Employee
+            </a>
           </div>
         </div>
 

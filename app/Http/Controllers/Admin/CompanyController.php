@@ -8,10 +8,11 @@ use App\Company;
 use App\Employee;
 use Illuminate\Http\Request;
 use App\Facades\RandomPassword;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
+use App\Http\Controllers\Controller;
 use App\Mail\CompanyRegistrationEmail;
 use App\Mail\EmployeeRegistrationEmail;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CompanyController extends Controller
 {
@@ -105,5 +106,35 @@ class CompanyController extends Controller
         ]);
 
         return redirect("/ap/companies/{$company->id}");
+    }
+
+    public function employees(Request $request, $id)
+    {
+        try {
+            $company = Company::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            abort(404);
+        }
+
+        $query = User::join('employees', 'users.id', '=', 'employees.user_id')
+            ->join('offices', 'employees.office_id', '=', 'offices.id')
+            ->select(\DB::raw('employees.id as id'), 'users.name', 'users.email', 'employees.active', 'employees.created_at', \DB::raw('offices.name as office_name'))
+            ->where('offices.company_id', $id);
+
+        if ($q = $request->get('query')) {
+            $query->where('users.name', 'like', "%{$q}%")
+                ->orWhere('users.email', 'like', "%{$q}%");
+        }
+
+
+        if ($active = $request->get('active')) {
+            $bool = $active === 'true' ? 1 : 0;
+            // dd($bool);
+            $query->where('employees.active', $bool);
+        }
+
+        $employees = $query->paginate(20);
+
+        return view('admin.companies.employees', compact('employees', 'company'));
     }
 }
