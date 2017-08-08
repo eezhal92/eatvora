@@ -30,7 +30,8 @@ class EmployeeController extends Controller
         $query = User::join('employees', 'users.id', '=', 'employees.user_id')
             ->join('offices', 'employees.office_id', '=', 'offices.id')
             ->select(\DB::raw('employees.id as id'), 'users.name', 'users.email', 'employees.active', 'employees.created_at')
-            ->where('offices.id', $officeId);
+            ->where('offices.id', $officeId)
+            ->whereNull('employees.deleted_at');
 
         if ($q = $request->get('query')) {
             $query->where(function ($nestedQuery) use ($q) {
@@ -136,5 +137,26 @@ class EmployeeController extends Controller
         ]);
 
         return response()->json([], 200);
+    }
+
+    public function delete($id)
+    {
+        try {
+            $employee = Employee::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Cannot delete non existing employee',
+            ], 404);
+        }
+
+        if ($employee->is_admin) {
+            return response()->json([
+                'message' => 'Cannot delete admin of company',
+            ], 400);
+        }
+
+        $employee->delete();
+
+        return response()->json([]);
     }
 }

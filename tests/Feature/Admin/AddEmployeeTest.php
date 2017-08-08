@@ -52,6 +52,41 @@ class AddEmployeeTest extends TestCase
         $this->assertArrayHasKey($field, $this->decodeResponseJson());
     }
 
+    private function validParams($overrides = [])
+    {
+        return array_merge([
+            'office_id' => factory(Office::class)->create()->id,
+            'name' => '',
+            'email' => 'jordan@mail.com',
+        ], $overrides);
+    }
+
+    /** @test */
+    public function guest_cannot_add_employee()
+    {
+        $this->withExceptionHandling();
+
+        $response = $this->json('POST', '/api/v1/employees', $this->validParams());
+
+        $response->assertStatus(401);
+
+        $this->assertEquals(0, Employee::count());
+    }
+
+    /** @test */
+    public function non_admin_user_cannot_add_employee()
+    {
+        $this->withExceptionHandling();
+
+        $user = factory(User::class)->create();
+
+        $response = $this->actingAs($user)->json('POST', '/api/v1/employees', $this->validParams());
+
+        $response->assertStatus(401);
+
+        $this->assertEquals(0, Employee::count());
+    }
+
     /** @test */
     public function add_valid_employee()
     {

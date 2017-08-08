@@ -113,6 +113,11 @@ export default {
       const employees = this.employees.slice().map(e => e.id === employee.id ? employee : e);
       this.employees = employees;
     });
+
+    bus.$on('delete-employee-modal:deleted', (employeeId) => {
+      const employees = this.employees.slice().filter(e => e.id !== employeeId);
+      this.employees = employees;
+    });
   },
   mounted() {
     this.fetchEmployees();
@@ -160,7 +165,7 @@ export default {
     },
     forwardEventEmittion(payload, eventName) {
       bus.$emit(eventName, payload);
-    },
+    }
   },
 }
 </script>

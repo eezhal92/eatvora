@@ -19,6 +19,7 @@ class CreateEmployeesTable extends Migration
             $table->integer('office_id')->unsigned();
             $table->tinyInteger('is_admin')->default(0);
             $table->tinyInteger('active')->default(1);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

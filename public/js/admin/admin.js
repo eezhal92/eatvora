@@ -42116,14 +42116,34 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   data() {
     return {
       modalId: 'deleteEmployeeModal',
-      employeeName: ''
+      employeeName: '',
+      employeeId: null
     };
   },
   created() {
     __WEBPACK_IMPORTED_MODULE_0__bus__["a" /* default */].$on('employee-delete', employee => {
       $(`#${this.modalId}`).modal('show');
+      this.employeeId = employee.id;
       this.employeeName = employee.name;
     });
+  },
+  methods: {
+    hideModal() {
+      $(`#${this.modalId}`).modal('hide');
+    },
+    deleteEmployee() {
+      axios.delete(`/api/v1/employees/${this.employeeId}`).then(() => {
+        this.hideModal();
+
+        __WEBPACK_IMPORTED_MODULE_0__bus__["a" /* default */].$emit('delete-employee-modal:deleted', this.employeeId);
+      }).catch(({ response }) => {
+        if (response.data && response.data.message) {
+          this.hideModal();
+
+          alert(response.data.message);
+        }
+      });
+    }
   }
 });
 
@@ -42340,6 +42360,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     __WEBPACK_IMPORTED_MODULE_0__bus__["a" /* default */].$on('edit-employee-modal:updated', employee => {
       const employees = this.employees.slice().map(e => e.id === employee.id ? employee : e);
+      this.employees = employees;
+    });
+
+    __WEBPACK_IMPORTED_MODULE_0__bus__["a" /* default */].$on('delete-employee-modal:deleted', employeeId => {
+      const employees = this.employees.slice().filter(e => e.id !== employeeId);
       this.employees = employees;
     });
   },
@@ -43527,6 +43552,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "btn btn-primary",
     attrs: {
       "type": "button"
+    },
+    on: {
+      "click": _vm.deleteEmployee
     }
   }, [_vm._v("Yes")])])])
 },staticRenderFns: []}

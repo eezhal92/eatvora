@@ -48,6 +48,54 @@ class EditEmployeeTest extends TestCase
     }
 
     /** @test */
+    public function guest_cannot_add_employee()
+    {
+        $this->withExceptionHandling();
+
+        $employee = $this->createEmployee([
+            'name' => 'Jason',
+            'email' => 'jason@gmail.com',
+        ]);
+
+        $response = $this->json('PATCH', '/api/v1/employees/' . $employee->id, [
+            'name' => 'Steph Curry',
+            'email' => 'curry@gmail.com'
+        ]);
+
+        $response->assertStatus(401);
+
+        $employee->refresh();
+
+        $this->assertEquals('Jason', $employee->user->name);
+        $this->assertEquals('jason@gmail.com', $employee->user->email);
+    }
+
+    /** @test */
+    public function non_admin_user_cannot_add_employee()
+    {
+        $this->withExceptionHandling();
+
+        $user = factory(User::class)->create();
+
+        $employee = $this->createEmployee([
+            'name' => 'Jason',
+            'email' => 'jason@gmail.com',
+        ]);
+
+        $response = $this->actingAs($user)->json('PATCH', '/api/v1/employees/' . $employee->id, [
+            'name' => 'Steph Curry',
+            'email' => 'curry@gmail.com'
+        ]);
+
+        $response->assertStatus(401);
+
+        $employee->refresh();
+
+        $this->assertEquals('Jason', $employee->user->name);
+        $this->assertEquals('jason@gmail.com', $employee->user->email);
+    }
+
+    /** @test */
     public function admin_can_edit_existing_employee()
     {
         $employee = $this->createEmployee();

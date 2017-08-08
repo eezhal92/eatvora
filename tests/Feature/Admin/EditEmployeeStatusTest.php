@@ -14,6 +14,49 @@ class EditEmployeeStatusTest extends TestCase
     use DatabaseMigrations;
 
     /** @test */
+    public function guest_cannot_update_active_status()
+    {
+        $this->withExceptionHandling();
+
+        $employee = factory(Employee::class)->create([
+            'active' => true,
+        ]);
+
+        $response = $this->json('PATCH', sprintf('/api/v1/employees/%d/active', $employee->id), [
+            'status' => false,
+        ]);
+
+        $response->assertStatus(401);
+
+        $employee->refresh();
+
+        $this->assertTrue($employee->active);
+    }
+
+    /** @test */
+    public function non_admin_user_cannot_update_active_status()
+    {
+        $this->withExceptionHandling();
+
+        $employee = factory(Employee::class)->create([
+            'active' => true,
+        ]);
+
+        $user = factory(User::class)->create();
+
+        $response = $this->actingAs($user)
+            ->json('PATCH', sprintf('/api/v1/employees/%d/active', $employee->id), [
+                'status' => false,
+            ]);
+
+        $response->assertStatus(401);
+
+        $employee->refresh();
+
+        $this->assertTrue($employee->active);
+    }
+
+    /** @test */
     public function can_update_employee_active_status()
     {
         $admin = factory(User::class)->states('admin')->create();

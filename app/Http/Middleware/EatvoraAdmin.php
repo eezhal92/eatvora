@@ -22,6 +22,10 @@ class EatvoraAdmin
         $authenticatedAndAdmin = $request->user() && $request->user()->is_admin;
 
         if (!$authenticatedAndAdmin) {
+            if ($request->isJson()) {
+                return response()->json([], 401);
+            }
+
             return redirect('/');
         };
 
