@@ -41838,6 +41838,8 @@ Vue.component('vendor-row-action', __webpack_require__(222));
 Vue.component('delete-vendor-modal', __webpack_require__(220));
 Vue.component('vendor-menu-list', __webpack_require__(221));
 
+Vue.component('delete-menu-modal', __webpack_require__(266));
+
 Vue.directive('click-outside', {
   bind: function (el, binding, vNode) {
     // Provided expression must evaluate to a function.
@@ -42486,6 +42488,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bus__ = __webpack_require__(4);
+//
+//
+//
+//
 //
 //
 //
@@ -42542,6 +42549,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['vendorId'],
   data() {
@@ -42554,6 +42563,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
   mounted() {
     this.fetchMenus();
+  },
+  created() {
+    __WEBPACK_IMPORTED_MODULE_0__bus__["a" /* default */].$on('delete-menu-modal:menu-deleted', () => {
+      this.fetchMenus({ page: this.currentPage });
+    });
   },
   computed: {
     isPrevAvailable() {
@@ -42580,6 +42594,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       if (this.currentPage < this.pageCount) {
         this.fetchMenus({ page: this.currentPage + 1 });
       }
+    },
+    showDeleteModal(menu) {
+      __WEBPACK_IMPORTED_MODULE_0__bus__["a" /* default */].$emit('menu-delete', menu);
     },
     toEditPage(menuId) {
       window.location.href = `/ap/menus/${menuId}/edit`;
@@ -43902,7 +43919,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticStyle: {
         "margin": "0"
       }
-    }), _vm._v(" "), _c('action-options-popover-menu', [_vm._v("\n              Delete\n            ")])], 1)], 1)])
+    }), _vm._v(" "), _c('action-options-popover-menu', {
+      attrs: {
+        "payload": menu,
+        "event-name": "menu-delete"
+      },
+      on: {
+        "menu-delete": _vm.showDeleteModal
+      }
+    }, [_vm._v("\n              Delete\n            ")])], 1)], 1)])
   }))]), _vm._v(" "), _c('div', {
     staticClass: "list-pagination"
   }, [_c('ul', {
@@ -44016,6 +44041,144 @@ if(false) {
 
 module.exports = __webpack_require__(160);
 
+
+/***/ }),
+/* 256 */,
+/* 257 */,
+/* 258 */,
+/* 259 */,
+/* 260 */,
+/* 261 */,
+/* 262 */,
+/* 263 */,
+/* 264 */,
+/* 265 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bus__ = __webpack_require__(4);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data() {
+    return {
+      modalId: 'deleteMenuModal',
+      menuName: '',
+      menuId: null
+    };
+  },
+  created() {
+    __WEBPACK_IMPORTED_MODULE_0__bus__["a" /* default */].$on('menu-delete', menu => {
+      $(`#${this.modalId}`).modal('show');
+      this.menuId = menu.id;
+      this.menuName = menu.name;
+    });
+  },
+  methods: {
+    hideModal() {
+      $(`#${this.modalId}`).modal('hide');
+    },
+    deleteMenu() {
+      axios.delete(`/api/v1/menus/${this.menuId}`).then(() => {
+        this.hideModal();
+
+        __WEBPACK_IMPORTED_MODULE_0__bus__["a" /* default */].$emit('delete-menu-modal:menu-deleted');
+      }).catch(({ response }) => {
+        if (response.data && response.data.message) {
+          alert(response.data.message);
+
+          this.hideModal();
+        }
+      });
+    }
+  }
+});
+
+/***/ }),
+/* 266 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(2)(
+  /* script */
+  __webpack_require__(265),
+  /* template */
+  __webpack_require__(267),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/Users/eezhal/eatvora/eatvora-web/resources/assets/js/admin/modules/menu/DeleteMenuModal.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] DeleteMenuModal.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-5e08a256", Component.options)
+  } else {
+    hotAPI.reload("data-v-5e08a256", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 267 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('base-modal', {
+    attrs: {
+      "id": _vm.modalId
+    }
+  }, [_c('span', {
+    slot: "modal-header"
+  }, [_vm._v("Delete Menu")]), _vm._v(" "), _c('div', {
+    slot: "modal-body"
+  }, [_vm._v("Are you sure want to delete "), _c('b', [_vm._v(_vm._s(_vm.menuName))]), _vm._v("?")]), _vm._v(" "), _c('div', {
+    slot: "modal-footer"
+  }, [_c('button', {
+    staticClass: "btn btn-default",
+    attrs: {
+      "type": "button",
+      "data-dismiss": "modal"
+    }
+  }, [_vm._v("Close")]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": _vm.deleteMenu
+    }
+  }, [_vm._v("Yes")])])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-5e08a256", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

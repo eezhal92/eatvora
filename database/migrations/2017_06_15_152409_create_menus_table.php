@@ -21,6 +21,7 @@ class CreateMenusTable extends Migration
             $table->text('description')->nullable();
             $table->text('contents')->nullable();
             $table->text('image_path')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

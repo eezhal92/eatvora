@@ -53,6 +53,10 @@
 
 @endsection
 
+@section('modals')
+  <delete-menu-modal></delete-menu-modal>
+@endsection
+
 @push('afterScripts')
   <script type="text/javascript" src="/js/admin/admin.js"></script>
 @endpush

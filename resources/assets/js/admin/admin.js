@@ -17,6 +17,8 @@ Vue.component('vendor-row-action', require('./modules/vendor/VendorRowAction.vue
 Vue.component('delete-vendor-modal', require('./modules/vendor/DeleteVendorModal.vue'));
 Vue.component('vendor-menu-list', require('./modules/vendor/VendorMenuList.vue'));
 
+Vue.component('delete-menu-modal', require('./modules/menu/DeleteMenuModal.vue'));
+
 Vue.directive('click-outside', {
   bind: function(el, binding, vNode) {
     // Provided expression must evaluate to a function.

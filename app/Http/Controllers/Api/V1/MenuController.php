@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Menu;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class MenuController extends Controller
 {
@@ -21,5 +22,20 @@ class MenuController extends Controller
         }
 
         return $query->paginate(20);
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $menu = Menu::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Cannot delete non existing menu',
+            ], 404);
+        }
+
+        $menu->delete();
+
+        return response()->json([], 200);
     }
 }

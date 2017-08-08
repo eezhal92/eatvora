@@ -114,6 +114,7 @@ Route::group(['prefix' => 'api/v1', 'namespace' => 'Api\V1', 'middleware' => 'au
 
         Route::delete('/employees/{id}', 'EmployeeController@delete');
 
+        Route::delete('/menus/{id}', 'MenuController@destroy');
     });
 
 });

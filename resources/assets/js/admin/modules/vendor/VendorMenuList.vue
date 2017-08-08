@@ -35,7 +35,11 @@
                 Edit
               </action-options-popover-menu>
               <hr style="margin: 0">
-              <action-options-popover-menu>
+              <action-options-popover-menu
+                :payload="menu"
+                event-name="menu-delete"
+                v-on:menu-delete="showDeleteModal"
+              >
                 Delete
               </action-options-popover-menu>
             </action-options-popover>
@@ -54,6 +58,8 @@
 </template>
 
 <script>
+import bus from '../bus';
+
 export default {
   props: ['vendorId'],
   data() {
@@ -66,6 +72,11 @@ export default {
   },
   mounted() {
     this.fetchMenus();
+  },
+  created() {
+    bus.$on('delete-menu-modal:menu-deleted', () => {
+      this.fetchMenus({ page: this.currentPage });
+    });
   },
   computed: {
     isPrevAvailable() {
@@ -93,6 +104,9 @@ export default {
       if (this.currentPage < this.pageCount) {
         this.fetchMenus({ page: this.currentPage + 1});
       }
+    },
+    showDeleteModal(menu) {
+      bus.$emit('menu-delete', menu);
     },
     toEditPage(menuId) {
       window.location.href = `/ap/menus/${menuId}/edit`;
