@@ -71,7 +71,10 @@ class ViewCompanyEmployeeListTest extends TestCase
     /** @test */
     public function can_search_employee_by_name()
     {
-        $admin = factory(User::class)->states('admin')->create();
+        $admin = factory(User::class)->states('admin')->create([
+            'name' => 'Firmino',
+            'email' => 'firmino@gmail.com',
+        ]);
 
         $company = factory(Company::class)->create();
         $office = factory(Office::class)->states('main')->create(['company_id' => $company->id]);

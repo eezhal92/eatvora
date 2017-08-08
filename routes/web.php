@@ -15,13 +15,13 @@ Route::get('/', function () {
     return view('home');
 });
 
-Route::get('/meals/{date}/{menuId}', 'Employee\MealController@show');
-
 Auth::routes();
 
 Route::get('/logout', 'Auth\LoginController@logout');
 
 Route::group(['middleware' => ['auth', 'company']], function () {
+
+    Route::get('/meals/{date}/{menuId}', 'Employee\MealController@show');
 
     Route::get('/cart', 'Employee\CartController@index');
 

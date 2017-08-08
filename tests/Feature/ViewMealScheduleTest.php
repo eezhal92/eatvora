@@ -3,9 +3,10 @@
 namespace Tests\Feature;
 
 use App\Menu;
-use App\Schedule;
 use App\User;
 use App\Vendor;
+use App\Schedule;
+use App\Employee;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -117,7 +118,12 @@ class ViewMealScheduleTest extends TestCase
             'menu_id' => $menu->id,
         ]);
 
-        $response = $this->get("/meals/2017-06-12/{$menu->id}");
+        $user = factory(User::class)->create();
+        factory(Employee::class)->create([
+            'user_id' => $user,
+        ]);
+
+        $response = $this->actingAs($user)->get("/meals/2017-06-12/{$menu->id}");
 
         $this->assertEquals('Nasi Padang', $response->data('menu')->name);
         $this->assertEquals('Dapur Lulu', $response->data('menu')->vendor->name);
@@ -144,7 +150,12 @@ class ViewMealScheduleTest extends TestCase
             'menu_id' => $menu->id,
         ]);
 
-        $response = $this->get("/meals/2017-06-12/100");
+        $user = factory(User::class)->create();
+        factory(Employee::class)->create([
+            'user_id' => $user,
+        ]);
+
+        $response = $this->actingAs($user)->get("/meals/2017-06-12/100");
 
         $response->assertSee('Not found!');
 

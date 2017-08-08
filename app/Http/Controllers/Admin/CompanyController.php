@@ -122,14 +122,15 @@ class CompanyController extends Controller
             ->where('offices.company_id', $id);
 
         if ($q = $request->get('query')) {
-            $query->where('users.name', 'like', "%{$q}%")
-                ->orWhere('users.email', 'like', "%{$q}%");
+            $query->where(function ($nestedQuery) use ($q) {
+                $nestedQuery->where('users.name', 'like', "%{$q}%")
+                    ->orWhere('users.email', 'like', "%{$q}%");
+            });
         }
 
 
         if ($active = $request->get('active')) {
             $bool = $active === 'true' ? 1 : 0;
-            // dd($bool);
             $query->where('employees.active', $bool);
         }
 

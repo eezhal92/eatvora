@@ -25,7 +25,7 @@
             <ul class="dropdown-menu" aria-labelledby="account-btn">
               <li>
                 <a href="#">
-                  M. Rizki Rijal
+                  {{ auth()->user()->name }}
                   <br/>
                   Balance: Rp. 125,000
                 </a>

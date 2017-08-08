@@ -33,8 +33,10 @@ class EmployeeController extends Controller
             ->where('offices.id', $officeId);
 
         if ($q = $request->get('query')) {
-            $query->where('users.name', 'like', "%{$q}%")
-                ->orWhere('users.email', 'like', "%{$q}%")
+            $query->where(function ($nestedQuery) use ($q) {
+                    $nestedQuery->where('users.name', 'like', "%{$q}%")
+                        ->orWhere('users.email', 'like', "%{$q}%");
+                })
                 ->where('employees.office_id', $officeId)
                 ->distinct();
         }

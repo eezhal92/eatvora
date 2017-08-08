@@ -46,6 +46,7 @@
                 <th>Email</th>
                 <th>Office</th>
                 <th>Active?</th>
+                <th>Created At</th>
                 <th></th>
               </tr>
             </thead>
@@ -56,6 +57,7 @@
                 <td>{{ $employee->email }}</td>
                 <td>{{ $employee->office_name }}</td>
                 <td>{{ $employee->active ? 'Yes' : 'No' }}</td>
+                <td>{{ $employee->created_at->format('d M Y, H:i') }}</td>
               </tr>
               @endforeach
             </tbody>
