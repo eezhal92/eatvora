@@ -2,7 +2,7 @@
 
 @section('content')
   <section>
-    Hero
+    Herokulah
   </section>
   <section>
     Feature

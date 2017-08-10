@@ -46,4 +46,4 @@ jobs:
           name: Deployment
           command: |
             ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no \
-                -C deployer@eatvora.com 'ls ~'
+                -C deployer@eatvora.com 'bash -s' < ./scripts/deploy.sh "${CIRCLE_BRANCH}"
