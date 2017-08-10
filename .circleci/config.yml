@@ -39,3 +39,11 @@ jobs:
             - ./vendor
       - run: touch storage/database.sqlite
       - run: ./vendor/bin/phpunit
+      - add_ssh_keys:
+          fingerprints:
+            - "fe:c7:eb:cd:6c:90:ca:cc:4a:e1:40:18:ad:4c:04:13"
+      - run:
+          name: Deployment
+          command: |
+            ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no \
+                -C deployer@eatvora.com 'ls ~'
