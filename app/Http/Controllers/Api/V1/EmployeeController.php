@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\User;
 use App\Office;
 use App\Employee;
+use App\Jobs\CreateEmployee;
 use Illuminate\Http\Request;
 use App\Facades\RandomPassword;
 use Illuminate\Validation\Rule;
@@ -51,6 +52,8 @@ class EmployeeController extends Controller
 
         $pageCount = ceil($totalEmployees / $limit);
 
+        // dd($employees);
+
         return response()->json([
             'total_records' => $totalEmployees,
             'current_page' => (int) $page,
@@ -93,6 +96,34 @@ class EmployeeController extends Controller
         $employee = array_merge($user->toArray(), $employee->toArray());
 
         return response()->json($employee, 201);
+    }
+
+    public function bulkStore(Request $request)
+    {
+        $this->validate($request, [
+            'office_id' => 'required',
+        ]);
+
+        if (!$request->file('file')) {
+            return response()->json([], 422);
+        }
+
+        $office = Office::findOrFail($request->get('office_id'));
+
+        $file = request()->file('file');
+
+        \Excel::load($file, function ($reader) use ($request) {
+            $res = $reader->get();
+
+            foreach ($res as $cell) {
+                $tempPassword = RandomPassword::generate();
+
+                dispatch(new CreateEmployee($cell['name'], $cell['email'], $tempPassword, $request->get('office_id')));
+            }
+
+        });
+
+        return redirect('/ap/companies/' . $office->company_id);
     }
 
     public function update(Request $request, $id)

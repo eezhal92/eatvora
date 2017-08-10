@@ -6,6 +6,9 @@
         {{ showAddForm ? 'Cancel' : 'Add New Employee' }}
       </button>
     </div>
+    <div>
+      <employee-import-form :office-id="officeId"></employee-import-form>
+    </div>
     <div style="margin-top: 25px">
       <div class="search" style="margin-bottom: 15px">
         <form @submit.prevent="fetchEmployees()">

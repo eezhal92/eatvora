@@ -108,6 +108,8 @@ Route::group(['prefix' => 'api/v1', 'namespace' => 'Api\V1', 'middleware' => 'au
 
         Route::post('/employees', 'EmployeeController@store');
 
+        Route::post('/employees/bulk', 'EmployeeController@bulkStore');
+
         Route::patch('/employees/{id}', 'EmployeeController@update');
 
         Route::patch('/employees/{id}/active', 'EmployeeController@updateActive');

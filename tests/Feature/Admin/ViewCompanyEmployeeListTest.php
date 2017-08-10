@@ -88,8 +88,13 @@ class ViewCompanyEmployeeListTest extends TestCase
             'office_id' => $office->id,
         ]);
 
+        $anotherUser = factory(User::class)->create([
+            'name' => 'Bill Joe',
+            'email' => 'billy@gmail.com',
+        ]);
         factory(Employee::class, 10)->create([
             'office_id' => $office->id,
+            'user_id' => $anotherUser->id,
         ]);
 
         $response = $this->actingAs($admin)->get(
