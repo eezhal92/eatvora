@@ -1,8 +1,8 @@
 <template>
   <div class="cart-summary">
-    <div style="padding: 20px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); background: #fff">
-      <div style="font-size: 18px; font-weight: bold">Total</div>
-      <div style="font-size: 22px; font-weight: bold">{{ cartTotal | rupiah }}</div>
+    <div class="cart-summary__total">
+      <div class="cart-summary__total-heading">Total</div>
+      <div class="cart-summary__total-amount">{{ cartTotal | rupiah }}</div>
     </div>
     <br>
     <button class="btn btn--primary btn-block">
@@ -21,6 +21,23 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+  .cart-summary {
+    &__total {
+      padding: 20px;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      background: #fff;
+    }
 
+    &__total-heading {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    &__total-amount {
+      font-size: 22px;
+      font-weight: bold;
+    }
+  }
 </style>

@@ -11,7 +11,7 @@
         @include('admin.top-navigation', ['header' => sprintf('Eatvora - %s Employee List', $company->name)])
 
         <div class="col-lg-12">
-          <div class="action-panel" style="margin-bottom: 15px;">
+          <div class="action-panel">
             <a href="{{ url('/ap/companies/create') }}" class="btn btn-primary">
               <i class="glyphicon glyphicon-plus"></i> Create New
             </a>

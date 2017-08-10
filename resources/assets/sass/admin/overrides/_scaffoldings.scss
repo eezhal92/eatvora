@@ -5,3 +5,9 @@ a {
     color: darken($blue, 2%);
   }
 }
+
+.list-pagination {
+  &__page {
+    margin-right: 10px;
+  }
+}

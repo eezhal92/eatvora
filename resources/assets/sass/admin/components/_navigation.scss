@@ -1,3 +1,18 @@
+.eatvora-header {
+  padding-top: 40px;
+
+  &__page-title {
+    position: absolute;
+    height: 32px;
+  }
+
+  &__page-heading {
+    font-size: 20px;
+    margin: 0;
+    padding: 5px 0;
+  }
+}
+
 .eatvora-nav {
   &__container {
     width: 240px;
@@ -68,12 +83,20 @@
   justify-content: flex-end;
   height: 50px;
 
-  &__profile {
-
-  }
-
   &__search-bar {
     margin-right: 20px;
+  }
+
+  &__search-input {
+    height: 32px;
+    border-radius: 32px;
+  }
+
+  &__link {
+    margin-top: 5px;
+    height: 32px;
+    display: inline-block;
+    padding: 0 10px;
   }
 
   .profile-menu {

@@ -1,5 +1,5 @@
 <template>
-  <div style="margin-top: 20px">
+  <div class="employee-import-form">
     <h5>Bulk Import Employee</h5>
     <form class="form-inline" @submit.prevent="importEmployee">
       <div class="form-group">
@@ -49,3 +49,9 @@ export default {
   }
 };
 </script>
+
+<style lang="scss">
+  .employee-import-form {
+    margin-top: 20px;
+  }
+</style>

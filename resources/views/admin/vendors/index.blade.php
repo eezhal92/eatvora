@@ -11,7 +11,7 @@
         @include('admin.top-navigation', ['header' => 'Vendor List'])
 
         <div class="col-lg-12">
-          <div class="action-panel" style="margin-bottom: 15px;">
+          <div class="action-panel">
             <a href="{{ url('/ap/vendors/create') }}" class="btn btn-primary">
               <i class="glyphicon glyphicon-plus"></i> Create New
             </a>

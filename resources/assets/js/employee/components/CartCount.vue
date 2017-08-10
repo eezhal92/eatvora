@@ -1,7 +1,7 @@
 <template>
-  <div style="display: inline; position: relative">
+  <div class="cart-count">
     <i class="glyphicon glyphicon-shopping-cart"></i>
-    <div class="cart-count">
+    <div class="cart-count__count">
       <div class="cart-count__number">
         {{ count }}
       </div>
@@ -29,6 +29,11 @@ export default {
 
 <style scoped>
   .cart-count {
+    display: inline;
+    position: relative;
+  }
+
+  .cart-count__count {
     background-color: #F44336;
     color: #fff;
     height: 20px;

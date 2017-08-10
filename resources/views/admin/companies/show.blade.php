@@ -24,7 +24,7 @@
         @include('admin.top-navigation', ['header' => $company->name])
 
         <div class="col-lg-12">
-          <div class="action-panel" style="margin-bottom: 15px;">
+          <div class="action-panel">
             <a href="{{ url("/ap/companies/{$company->id}/offices/create") }}" class="btn btn-primary">
               <i class="glyphicon glyphicon-plus"></i> Create New Office
             </a>

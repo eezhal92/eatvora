@@ -1,16 +1,16 @@
 <template>
   <div class="cart-items-by-date">
     <div class="cart-items-by-date__header">
-      {{ date | date }} <span style="float: right">{{ count }} Item</span>
+      {{ date | date }} <span class="pull-right">{{ count }} Item</span>
     </div>
     <div class="cart-items-by-date__items">
-      <div v-for="item in items" style="margin: 10px 0">
+      <div v-for="item in items" class="cart-items-by-date__item">
         <div>
-          <div class="row" style="display: flex; align-items: flex-start;">
+          <div class="row cart-items-by-date__item-row">
             <div class="col-xs-8">
-              <div style="overflow: hidden">
+              <div class="menu-detail">
                 <img src="http://lorempixel.com/60/60" alt="meal" class="pull-left" />
-                <div style="display: inline-block;margin-left: 10px;">
+                <div class="menu-detail__info">
                   <p style="margin-bottom: 4px">{{ item.name }}</p>
                   <small>{{ item.vendorName }}</small>
                 </div>
@@ -20,7 +20,7 @@
               <div>Qty <input class="cart-item-qty" type="number" min="1" max="3" :value="item.qty" /></div>
             </div>
             <div class="col-xs-2">
-              <div style="text-align: right; padding-top: 6px">{{ item.qty * item.price | rupiah }}</div>
+              <div class="menu-price">{{ item.qty * item.price | rupiah }}</div>
             </div>
           </div>
         </div>
@@ -44,13 +44,22 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   .cart-items-by-date {
     background: #fff;
     padding: 15px 20px;
     border-radius: 4px;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
     margin-bottom: 20px;
+  }
+
+  .cart-items-by-date__item {
+    margin: 10px 0;
+  }
+
+  .cart-items-by-date__item-row {
+    display: flex;
+    align-items: flex-start;
   }
 
   .cart-items-by-date__header {
@@ -63,5 +72,19 @@ export default {
     border: 1px solid #eeeeee;
     padding: 4px;
     border-radius: 4px;
+  }
+
+  .menu-detail {
+    overflow: hidden;
+
+    &__info {
+      display: inline-block;
+      margin-left: 10px;
+    }
+  }
+
+  .menu-price {
+    text-align: right;
+    padding-top: 6px;
   }
 </style>

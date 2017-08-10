@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="employee-list">
     <div class="clearfix">
       Employee of <strong>{{ officeName }}</strong> Office
       <button @click="forwardEventEmittion(officeId, 'employee-add')" class="btn btn-default btn-sm pull-right">
@@ -9,8 +9,8 @@
     <div>
       <employee-import-form :office-id="officeId"></employee-import-form>
     </div>
-    <div style="margin-top: 25px">
-      <div class="search" style="margin-bottom: 15px">
+    <div class="employee-list__list">
+      <div class="employee-list__search">
         <form @submit.prevent="fetchEmployees()">
           <input type="text" v-model="query" class="form-control" placeholder="Search employee name">
         </form>
@@ -72,7 +72,7 @@
         </table>
         <div class="list-pagination">
           <ul class="pager">
-            <li style="margin-right: 10px">Page {{ currentPage }} / {{ pageCount }}</li>
+            <li class="list-pagination__page">Page {{ currentPage }} / {{ pageCount }}</li>
             <li :class="{ disabled: !isPrevAvailable }"><a href="#" @click="getPrevPage()">Previous</a></li>
             <li :class="{ disabled: !isNextAvailable }"><a href="#" @click="getNextPage()">Next</a></li>
           </ul>
@@ -172,3 +172,15 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+  .employee-list {
+    &__list {
+      margin-top: 25px;
+    }
+
+    &__search {
+      margin-bottom: 15px;
+    }
+  }
+</style>

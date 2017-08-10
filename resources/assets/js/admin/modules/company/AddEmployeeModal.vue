@@ -17,7 +17,7 @@
             {{ errors.email }}
           </span>
         </div>
-        <button type="submit" style="display:none">Update</button>
+        <button type="submit" style="display:none">Add</button>
       </form>
     </div>
     <div slot="modal-footer">

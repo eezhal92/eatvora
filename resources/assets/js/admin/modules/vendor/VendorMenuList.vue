@@ -1,7 +1,7 @@
 <template>
   <div class="vendor-menu-list">
-    <div style="margin-bottom: 25px; font-weight: bold">Menu List</div>
-    <div style="padding: 10px; background: #ececec; margin-bottom: 10px">
+    <div class="vendor-menu-list__heading">Menu List</div>
+    <div class="vendor-menu-list__search">
       <form @submit.prevent="fetchMenus">
         <input type="text" v-model="query" class="form-control" placeholder="Search menu">
       </form>
@@ -49,7 +49,7 @@
     </table>
     <div class="list-pagination">
       <ul class="pager">
-        <li style="margin-right: 10px">Page {{ currentPage }} / {{ pageCount }}</li>
+        <li class="list-pagination__page">Page {{ currentPage }} / {{ pageCount }}</li>
         <li :class="{ disabled: !isPrevAvailable }"><a href="#" @click="getPrevPage()">Previous</a></li>
         <li :class="{ disabled: !isNextAvailable }"><a href="#" @click="getNextPage()">Next</a></li>
       </ul>
@@ -117,3 +117,18 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+  .vendor-menu-list {
+    &__heading {
+      margin-bottom: 25px;
+      font-weight: bold;
+    }
+
+    &__search {
+      padding: 10px;
+      background: #ececec;
+      margin-bottom: 10px;
+    }
+  }
+</style>
