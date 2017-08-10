@@ -7,6 +7,13 @@
 - PHP 7.1+
 - Sqlite 3.19.3 (For DB Testing)
 
+## Todo
+
+- [ ] Extract steps in job build into separate job
+- [ ] Use Circle CI workflows
+- [ ] Add Api documentations
+- [ ] Add guides (Getting started, conventions, practice tips .etc)
+
 ## Known Issues
 
 ### Testing
