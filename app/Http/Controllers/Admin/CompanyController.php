@@ -128,7 +128,6 @@ class CompanyController extends Controller
             });
         }
 
-
         if ($active = $request->get('active')) {
             $bool = $active === 'true' ? 1 : 0;
             $query->where('employees.active', $bool);

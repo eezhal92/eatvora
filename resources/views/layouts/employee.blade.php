@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Eatvora')</title>
 
-    <link rel="stylesheet" href="{{ elixir('css/app.css') }}">
+    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
     @include('scripts.app')
     @stack('head')
   </head>
@@ -18,7 +18,9 @@
     </div>
 
     @stack('beforeScripts')
-    <script src="{{ elixir('js/app.js') }}"></script>
+    <script src="{{ mix('/js/manifest.js') }}"></script>
+    <script src="{{ mix('/js/vendor.js') }}"></script>
+    <script src="{{ mix('/js/app.js') }}"></script>
     @stack('afterScripts')
   </body>
 </html>

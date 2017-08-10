@@ -13,19 +13,17 @@
     "axios": "^0.15.3",
     "babel-helper-vue-jsx-merge-props": "^2.0.2",
     "babel-plugin-syntax-jsx": "^6.18.0",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-plugin-transform-vue-jsx": "^3.4.3",
     "bootstrap-sass": "^3.3.7",
     "cross-env": "^3.2.3",
     "install": "^0.10.1",
     "jquery": "^3.1.1",
-    "laravel-mix": "0.*",
+    "laravel-mix": "^1.4.2",
     "lodash": "^4.17.4",
-    "vue": "^2.1.10"
-  },
-  "dependencies": {
-    "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "moment": "^2.18.1",
     "sass-loader": "^6.0.6",
+    "vue": "@2.4.2",
     "vue-click-outside": "^1.0.6",
     "vuex": "^2.3.1"
   }

@@ -15,13 +15,6 @@ const store = require('./vuex/store').default;
 const moment = require('moment');
 moment.locale('ID');
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
-
-Vue.component('example', require('./components/Example.vue'));
 Vue.component('meal-list', require('./components/MealList.vue'));
 Vue.component('meal-filter', require('./components/MealFilter.vue'));
 Vue.component('cart', require('./components/Cart.vue'));
