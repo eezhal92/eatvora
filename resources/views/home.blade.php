@@ -2,15 +2,6 @@
 
 @section('content')
   <section>
-    Herokulah
-  </section>
-  <section>
-    Feature
-  </section>
-  <section>
-    Quote
-  </section>
-  <section>
-    CTA
+    We are still under development!
   </section>
 @endsection

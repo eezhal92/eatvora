@@ -32,8 +32,18 @@ APP_PATH="/var/www/eatvora/${FOLDER}";
 
 cd ${APP_PATH}
 
+# Force to use remote commits
+echo "git checkout ${BRANCH}";
 git checkout ${BRANCH}
-git pull origin ${BRANCH} --force
+
+echo "git fetch origin ${BRANCH}";
+git fetch origin ${BRANCH}
+
+echo "git reset --hard FETCH_HEAD";
+git reset --hard FETCH_HEAD
+
+echo "git clean -df";
+git clean -df
 
 composer install -n --no-dev --prefer-dist
 
@@ -42,11 +52,14 @@ echo "-------------------------";
 echo "2. Build static assets...";
 echo "-------------------------";
 
+echo "yarn install";
 yarn install
 
-yarn run production --force
+echo "yarn run production --force";
+yarn run production
 
-php artisan migrate
+echo "php artisan migrate --force";
+php artisan migrate --force
 
 echo "";
 echo "✨ Finished!";
