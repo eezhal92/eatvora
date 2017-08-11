@@ -100,8 +100,12 @@ class EditEmployeeTest extends TestCase
     {
         $employee = $this->createEmployee();
 
+        $office = Office::with('company')->find($employee->office_id);
+
+        $otherOffice = factory(Office::class)->create(['company_id' => $office->company->id]);
+
         $response = $this->updateEmployeeAsAdmin($employee->id, [
-            'office_id' => $employee->office_id,
+            'office_id' => $otherOffice->id,
             'name' => 'Steph Curry',
             'email' => 'stephcurry@gmail.com',
         ]);
@@ -111,7 +115,14 @@ class EditEmployeeTest extends TestCase
             'id' => $employee->user_id,
             'name' => 'Steph Curry',
             'email' => 'stephcurry@gmail.com',
+            'office_id' => $otherOffice->id,
         ]);
+
+        $employee->refresh();
+
+        $this->assertEquals('Steph Curry', $employee->user->name);
+        $this->assertEquals('stephcurry@gmail.com', $employee->user->email);
+        $this->assertEquals($otherOffice->id, $employee->office_id);
     }
 
     /** @test */
@@ -196,5 +207,52 @@ class EditEmployeeTest extends TestCase
         ]);
 
         $this->assertValidationError($response, 'email');
+    }
+
+    /** @test */
+    public function office_id_is_optional()
+    {
+        $this->withExceptionHandling();
+
+        $employee = $this->createEmployee();
+        $prevOfficeId = $employee->id;
+
+        $response = $this->updateEmployeeAsAdmin($employee->id, [
+            'name' => 'Steph Curry',
+            'email' => 'stephcurry@gmail.com',
+        ]);
+
+        $response->assertStatus(200);
+
+        $employee->refresh();
+
+        $this->assertEquals('Steph Curry', $employee->user->name);
+        $this->assertEquals('stephcurry@gmail.com', $employee->user->email);
+        $this->assertEquals($prevOfficeId, $employee->office_id);
+    }
+
+    /** @test */
+    public function cannot_update_to_another_company_office()
+    {
+        $this->withExceptionHandling();
+
+        $employee = $this->createEmployee();
+        $prevOfficeId = $employee->id;
+
+        $anotherCompanyOffice = factory(Office::class)->create();
+
+        $response = $this->updateEmployeeAsAdmin($employee->id, [
+            'office_id' => $anotherCompanyOffice->id,
+            'name' => 'Steph Curry',
+            'email' => 'stephcurry@gmail.com',
+        ]);
+
+        $this->assertValidationError($response, 'office_id');
+
+        $employee->refresh();
+
+        $this->assertNotEquals('Steph Curry', $employee->user->name);
+        $this->assertNotEquals('stephcurry@gmail.com', $employee->user->email);
+        $this->assertEquals($prevOfficeId, $employee->office_id);
     }
 }

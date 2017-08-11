@@ -17,6 +17,15 @@
             {{ errors.email }}
           </span>
         </div>
+        <div class="form-group" :class="{ 'has-error': errors.office_id }">
+          <label for="office">Office</label>
+          <select v-model="editedEmployee.office_id" class="form-control">
+            <option v-for="office in offices" :value="office.id">{{ office.name }}</option>
+          </select>
+          <span class="help-block" v-show="errors.office_id">
+            {{ errors.office_id }}
+          </span>
+        </div>
         <button type="submit" style="display:none">Update</button>
       </form>
     </div>
@@ -31,12 +40,14 @@
 import bus from '../bus';
 
 export default {
+  props: ['companyId'],
   data() {
     return {
       modalId: 'editEmployeeModal',
       employeeName: '',
       employee: {},
       errors: {},
+      offices: [],
     };
   },
   computed: {
@@ -52,18 +63,26 @@ export default {
       this.employeeName = employee.name;
     });
   },
+  mounted() {
+    this.getOffices();
+  },
   methods: {
     updateEmployee() {
       this.resetErrors();
 
       const employeeId = this.employee.id;
-      const { name, email } = this.editedEmployee;
+      const prevOfficeId = this.employee.office_id;
+      const { name, email, office_id } = this.editedEmployee;
 
-      const payload = { _method: 'PATCH', name, email };
+      const payload = { _method: 'PATCH', name, email, office_id };
 
       axios.post(`/api/v1/employees/${employeeId}`, payload)
         .then(({ data }) => {
-          bus.$emit('edit-employee-modal:updated', data);
+          if (prevOfficeId !== data.office_id) {
+            bus.$emit('edit-employee-modal:moved', data);
+          } else {
+            bus.$emit('edit-employee-modal:updated', data);
+          }
 
           $('#editEmployeeModal').modal('hide');
         })
@@ -71,6 +90,12 @@ export default {
           if (response.status === 422) {
             this.errors = this.formatErrors(response.data);
           }
+        });
+    },
+    getOffices() {
+      axios.get(`/api/v1/companies/${this.companyId}/offices?no_pagination=true`)
+        .then(({ data }) => {
+          this.offices = data;
         });
     },
     resetErrors() {

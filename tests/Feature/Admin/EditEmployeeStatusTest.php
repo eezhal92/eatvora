@@ -9,6 +9,10 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
+/**
+ * @todo
+ * - Create scheduled job that send email about de-activation every midnight
+ */
 class EditEmployeeStatusTest extends TestCase
 {
     use DatabaseMigrations;

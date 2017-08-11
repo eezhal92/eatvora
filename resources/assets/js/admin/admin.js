@@ -4,7 +4,6 @@ const Vue = require('vue');
 
 Vue.component('employee-list', require('./modules/company/EmployeeList.vue'));
 Vue.component('employee-list-button', require('./modules/company/EmployeeListButton.vue'));
-Vue.component('company-show-page-modals', require('./modules/company/CompanyShowPageModals.vue'));
 Vue.component('add-employee-modal', require('./modules/company/AddEmployeeModal.vue'));
 Vue.component('edit-employee-modal', require('./modules/company/EditEmployeeModal.vue'));
 Vue.component('delete-employee-modal', require('./modules/company/DeleteEmployeeModal.vue'));

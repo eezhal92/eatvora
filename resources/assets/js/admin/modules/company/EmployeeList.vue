@@ -45,13 +45,6 @@
                   </action-options-popover-menu>
                   <action-options-popover-menu
                     :payload="employee"
-                    event-name="employee-move-office"
-                    v-on:employee-move-office="forwardEventEmittion"
-                  >
-                    Move Office
-                  </action-options-popover-menu>
-                  <action-options-popover-menu
-                    :payload="employee"
                     event-name="employee-toggle-activation"
                     v-on:employee-toggle-activation="toggleActivation"
                   >
@@ -115,6 +108,10 @@ export default {
     bus.$on('edit-employee-modal:updated', (employee) => {
       const employees = this.employees.slice().map(e => e.id === employee.id ? employee : e);
       this.employees = employees;
+    });
+
+    bus.$on('edit-employee-modal:moved', (employee) => {
+      this.fetchEmployees();
     });
 
     bus.$on('delete-employee-modal:deleted', (employeeId) => {

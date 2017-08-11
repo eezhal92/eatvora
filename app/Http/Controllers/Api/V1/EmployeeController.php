@@ -30,7 +30,7 @@ class EmployeeController extends Controller
 
         $query = User::join('employees', 'users.id', '=', 'employees.user_id')
             ->join('offices', 'employees.office_id', '=', 'offices.id')
-            ->select(\DB::raw('employees.id as id'), 'users.name', 'users.email', 'employees.active', 'employees.created_at')
+            ->select(\DB::raw('employees.id as id'), 'users.name', 'users.email', 'employees.active', 'employees.created_at', 'employees.office_id')
             ->where('offices.id', $officeId)
             ->whereNull('employees.deleted_at');
 
@@ -129,7 +129,7 @@ class EmployeeController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $employee = Employee::with('user')->findOrFail($id);
+            $employee = Employee::with('user', 'office.company')->findOrFail($id);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'message' => 'Employee was not found.',
@@ -142,7 +142,22 @@ class EmployeeController extends Controller
                 'required',
                 Rule::unique('users')->ignore($employee->user_id),
             ],
+            'office_id' => 'sometimes|numeric',
         ]);
+
+        if ($officeId = $request->get('office_id')) {
+            $newOfficeCompany = Office::with('company')->find($officeId);
+
+            if ($newOfficeCompany->company->id !== $employee->office->company->id) {
+                return response()->json([
+                    'office_id' => ['Selected office is not in same company with current office'],
+                ], 422);
+            }
+
+            $employee->update([
+                'office_id' => $officeId,
+            ]);
+        }
 
         $employee->user->update([
             'name' => $request->get('name'),

@@ -118,7 +118,9 @@
 @endsection
 
 @section('modals')
-  <company-show-page-modals></company-show-page-modals>
+  <add-employee-modal></add-employee-modal>
+  <edit-employee-modal company-id="{{ $company->id }}"></edit-employee-modal>
+  <delete-employee-modal></delete-employee-modal>
 @endsection
 
 @push('afterScripts')
