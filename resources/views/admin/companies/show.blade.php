@@ -31,6 +31,8 @@
             <a href="{{ url("/ap/companies/{$company->id}/employees") }}" class="btn btn-default">
               <i class="glyphicon glyphicon-user"></i> View All Employee
             </a>
+
+            <add-balance-button></add-balance-button>
           </div>
         </div>
 
@@ -121,6 +123,9 @@
   <add-employee-modal></add-employee-modal>
   <edit-employee-modal company-id="{{ $company->id }}"></edit-employee-modal>
   <delete-employee-modal></delete-employee-modal>
+  <add-balance-modal
+    :company-id="{{ $company->id }}"
+  ></add-balance-modal>
 @endsection
 
 @push('afterScripts')

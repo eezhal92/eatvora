@@ -35,4 +35,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(Employee::class);
     }
+
+    public function balance()
+    {
+        return Balance::where('user_id', $this->id)
+            ->pluck('amount')
+            ->sum();
+    }
 }

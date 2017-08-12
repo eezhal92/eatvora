@@ -27,7 +27,7 @@
                 <a href="#">
                   {{ auth()->user()->name }}
                   <br/>
-                  Balance: Rp. 125,000
+                  Balance: {{ auth()->user()->balance() }}
                 </a>
               </li>
               <li><a href="#">Pengaturan</a></li>

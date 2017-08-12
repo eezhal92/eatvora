@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\User;
 use App\Office;
+use App\Company;
 use App\Employee;
 use App\Jobs\CreateEmployee;
 use Illuminate\Http\Request;
@@ -204,5 +205,19 @@ class EmployeeController extends Controller
         $employee->delete();
 
         return response()->json([]);
+    }
+
+    /** @todo Add Test */
+    public function employeeCount()
+    {
+        $this->validate(request(), [
+            'company_id' => 'required',
+        ]);
+
+        $company = Company::find(request('company_id'));
+
+        return response()->json([
+            'count' => $company->activeEmployees()->count(),
+        ]);
     }
 }

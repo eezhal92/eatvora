@@ -112,6 +112,8 @@ Route::group(['prefix' => 'api/v1', 'namespace' => 'Api\V1', 'middleware' => 'au
 
         Route::patch('/employees/{id}', 'EmployeeController@update');
 
+        Route::get('/employees-count', 'EmployeeController@employeeCount');
+
         Route::patch('/employees/{id}/active', 'EmployeeController@updateActive');
 
         Route::delete('/employees/{id}', 'EmployeeController@delete');
@@ -119,6 +121,8 @@ Route::group(['prefix' => 'api/v1', 'namespace' => 'Api\V1', 'middleware' => 'au
         Route::delete('/menus/{id}', 'MenuController@destroy');
 
         Route::get('/companies/{id}/offices', 'OfficeController@index');
+
+        Route::post('/balances', 'BalanceController@store');
     });
 
 });

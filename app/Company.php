@@ -17,4 +17,13 @@ class Company extends Model
     {
         return $this->offices()->where('is_main', true)->first();
     }
+
+    public function activeEmployees()
+    {
+        return Employee::join('offices', 'offices.id', '=', 'employees.office_id')
+            ->join('companies', 'companies.id', '=', 'offices.company_id')
+            ->where('companies.id', $this->id)
+            ->where('employees.active', true)
+            ->get();
+    }
 }

@@ -19,6 +19,9 @@ Vue.component('vendor-menu-list', require('./modules/vendor/VendorMenuList.vue')
 
 Vue.component('delete-menu-modal', require('./modules/menu/DeleteMenuModal.vue'));
 
+Vue.component('add-balance-modal', require('./modules/balance/AddBalanceModal.vue'));
+Vue.component('add-balance-button', require('./modules/balance/AddBalanceButton.vue'));
+
 Vue.directive('click-outside', {
   bind: function(el, binding, vNode) {
     // Provided expression must evaluate to a function.
