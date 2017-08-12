@@ -8,6 +8,8 @@ Vue.component('add-employee-modal', require('./modules/company/AddEmployeeModal.
 Vue.component('edit-employee-modal', require('./modules/company/EditEmployeeModal.vue'));
 Vue.component('delete-employee-modal', require('./modules/company/DeleteEmployeeModal.vue'));
 Vue.component('employee-import-form', require('./modules/company/EmployeeImportForm.vue'));
+Vue.component('payment-note-button', require('./modules/company/PaymentNoteButton.vue'));
+Vue.component('payment-note-modal', require('./modules/company/PaymentNoteModal.vue'));
 
 Vue.component('action-options-popover', require('./components/ActionOptionsPopover.vue'));
 Vue.component('action-options-popover-menu', require('./components/ActionOptionsPopoverMenu.vue'));

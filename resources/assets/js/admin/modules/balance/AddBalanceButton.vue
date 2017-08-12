@@ -1,5 +1,5 @@
 <template>
-  <a @click.prevent="showAddBalanceModal" class="btn btn-default pull-right">
+  <a @click.prevent="showAddBalanceModal" class="btn btn-default">
     <i class="glyphicon glyphicon-eur"></i> Top Up Employee Balance
   </a>
 </template>

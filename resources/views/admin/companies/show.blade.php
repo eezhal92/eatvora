@@ -32,7 +32,9 @@
               <i class="glyphicon glyphicon-user"></i> View All Employee
             </a>
 
-            <add-balance-button></add-balance-button>
+            <span class="pull-right">
+              <a href="{{ url(sprintf('/ap/companies/%s/payments', $company->id)) }}">Show Payments</a>
+            </span>
           </div>
         </div>
 

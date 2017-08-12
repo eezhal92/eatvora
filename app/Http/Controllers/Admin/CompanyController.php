@@ -6,6 +6,7 @@ use App\User;
 use App\Office;
 use App\Company;
 use App\Employee;
+use App\CompanyPayment;
 use Illuminate\Http\Request;
 use App\Facades\RandomPassword;
 use Illuminate\Support\Facades\Mail;
@@ -73,6 +74,15 @@ class CompanyController extends Controller
         $offices = $company->offices()->simplePaginate(10);
 
         return view('admin.companies.show', compact('company', 'offices'));
+    }
+
+    public function payments($id)
+    {
+        $company = Company::findOrFail($id);
+
+        $payments = CompanyPayment::where('company_id', $id)->paginate(20);
+
+        return view('admin.companies.payment', compact('company', 'payments'));
     }
 
     public function edit(Request $request, $id)

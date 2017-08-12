@@ -65,6 +65,8 @@ Route::group(['prefix' => '/ap'], function () {
 
         Route::get('/companies/{companyId}/employees', 'Admin\CompanyController@employees');
 
+        Route::get('/companies/{companyId}/payments', 'Admin\CompanyController@payments');
+
         Route::get('/vendors', 'Admin\VendorController@index');
 
         Route::post('/vendors', 'Admin\VendorController@store');

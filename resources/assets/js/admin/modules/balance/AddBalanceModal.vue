@@ -1,14 +1,10 @@
 <template>
   <base-modal :id="modalId">
-    <span slot="modal-header">Top-up Balance For Employee</span>
+    <span slot="modal-header">
+      Top-up Balance For <b>{{ activeEmployeeCount }} Employees</b>
+    </span>
     <div slot="modal-body">
       <form @submit.prevent="topUp">
-        <div class="form-group">
-          <label for="totalActiveEmployee">
-            Total Active Employee
-          </label>
-          <p><strong>{{ activeEmployeeCount }} person</strong></p>
-        </div>
         <div class="form-group" :class="{ 'has-error': errors.amount_per_employee }">
           <label for="amount-per-employee">Amount / Employee / Week</label>
           <div class="input-group">
@@ -18,6 +14,10 @@
           <span class="help-block" v-show="errors.amount_per_employee">
             {{ errors.amount_per_employee }}
           </span>
+        </div>
+        <div class="form-group">
+          <label for="note">Note</label>
+          <textarea id="note" v-model="note" class="form-control" cols="30" rows="3"></textarea>
         </div>
         <div class="form-group">
           The company has paid as much as <strong>{{ paid | rupiah }}</strong>?
@@ -42,6 +42,7 @@ export default {
       modalId: 'addBalanceModal',
       amountPerEmployee: 125000,
       activeEmployeeCount: 0,
+      note: '',
       processing: false,
       errors: {},
     };
@@ -63,11 +64,21 @@ export default {
       });
   },
   methods: {
+    payload() {
+      return {
+        company_id: this.companyId,
+        amount_per_employee: this.amountPerEmployee,
+        note: this.note,
+      };
+    },
     topUp() {
-      const payload = { company_id: this.companyId, amount_per_employee: this.amountPerEmployee };
-      axios.post('/api/v1/balances', payload)
+      return axios.post('/api/v1/balances', this.payload())
         .then(() => {
           $(`#${this.modalId}`).modal('hide');
+
+          setTimeout(() => {
+            window.location.reload();
+          }, 500);
         })
         .catch((err) => {
           alert('Error occured')
