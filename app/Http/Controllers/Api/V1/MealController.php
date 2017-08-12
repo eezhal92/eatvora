@@ -19,9 +19,8 @@ class MealController extends Controller
             ->where('schedules.date', Carbon::parse($date))
             ->paginate($limit);
 
-        
         $result = $this->decoratePaginatedResponse($menus);
-        
+
         return response()->json($result);
     }
 }
