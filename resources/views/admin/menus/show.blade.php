@@ -29,7 +29,7 @@
               Vendor
             </div>
             <div class="menu-detail__vendor__content info-subset__content">
-              {{ $menu->vendor->name }}
+              <a href="{{ url(sprintf('/ap/vendors/%d', $menu->vendor->id)) }}">{{ $menu->vendor->name }}</a>
             </div>
           </div>
           <div class="menu-detail__price info-subset">
@@ -38,6 +38,14 @@
             </div>
             <div class="menu-detail__price-content info-subset__content">
               {{ $menu->formattedPrice() }}
+            </div>
+          </div>
+          <div class="menu-detail__final-price info-subset">
+            <div class="menu-detail__price-header info-subset__header">
+              Final Price
+            </div>
+            <div class="menu-detail__price-content info-subset__content">
+              {{ $menu->formattedFinalPrice() }}
             </div>
           </div>
           <div class="menu-detail__description info-subset">

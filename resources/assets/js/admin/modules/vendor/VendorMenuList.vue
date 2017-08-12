@@ -11,6 +11,7 @@
         <tr>
           <th>Menu</th>
           <th>Price</th>
+          <th>Final Price</th>
           <th style="width: 64px">Action</th>
         </tr>
       </thead>
@@ -18,6 +19,7 @@
         <tr v-for="menu in menus">
           <td>{{ menu.name }}</td>
           <td>{{ menu.price | rupiah }}</td>
+          <td>{{ menu.final_price | rupiah }}</td>
           <td>
             <action-options-popover>
               <action-options-popover-menu

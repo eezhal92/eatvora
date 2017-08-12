@@ -12,6 +12,8 @@ class Menu extends Model
 
     protected $guarded = [];
 
+    protected $appends = ['final_price'];
+
     public function vendor()
     {
         return $this->belongsTo(Vendor::class);
@@ -43,6 +45,11 @@ class Menu extends Model
         $commissionPercentage = config('eatvora.commission_percentage');
 
         return $this->roundUpByPerPoint($this->price + ($this->price * $commissionPercentage));
+    }
+
+    public function formattedFinalPrice()
+    {
+        return 'Rp. ' . number_format($this->final_price);
     }
 
     public function getPointAttribute()

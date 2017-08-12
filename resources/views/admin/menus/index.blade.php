@@ -27,6 +27,7 @@
                 <th>Name</th>
                 <th>Vendor</th>
                 <th>Price</th>
+                <th>Final Price</th>
                 <th></th>
               </tr>
             </thead>
@@ -38,6 +39,7 @@
                   <a href="{{ url('/ap/vendors/' . $menu->vendor->id) }}">{{ $menu->vendor->name }}</a>
                 </td>
                 <td>{{ $menu->formattedPrice() }}</td>
+                <td>{{ $menu->formattedFinalPrice() }}</td>
                 <td>
                   <a href="{{ url('/ap/menus/' . $menu->id) }}">View</a>
                 </td>

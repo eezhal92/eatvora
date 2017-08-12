@@ -67,6 +67,22 @@ class MenuTest extends TestCase
     }
 
     /** @test */
+    public function can_get_formatted_final_price()
+    {
+        config([
+            'eatvora.commission_percentage' => 0.1,
+            'eatvora.rupiah_per_point' => 500,
+        ]);
+
+        $menu = factory(Menu::class)->make([
+            'price' => 20000,
+        ]);
+
+        $this->assertEquals(22000, $menu->final_price);
+        $this->assertEquals('Rp. 22,000', $menu->formattedFinalPrice());
+    }
+
+    /** @test */
     public function can_get_point()
     {
         config([
