@@ -3,10 +3,11 @@
 namespace Tests\Unit;
 
 use App\Menu;
+use App\Meal;
 use App\Vendor;
+use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Tests\TestCase;
 
 class MenuTest extends TestCase
 {
@@ -108,6 +109,16 @@ class MenuTest extends TestCase
 
         $this->assertEquals(23000, $menu->final_price);
         $this->assertEquals(46, $menu->point);
+    }
+
+    /** @test */
+    public function can_schedule_menu()
+    {
+        $menu = factory(Menu::class)->create(['name' => 'Nasi Goreng', 'price' => 25000]);
+
+        $menu->scheduleMeals('2017-07-09', 20);
+
+        $this->assertEquals(20, Meal::where('menu_id', $menu->id)->count());
     }
 
     /**

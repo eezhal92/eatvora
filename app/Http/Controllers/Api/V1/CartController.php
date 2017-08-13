@@ -31,6 +31,7 @@ class CartController extends Controller
 
     public function store()
     {
+        //@ todo add validation when trying menu / meal that are not scheduled
         $employee = Employee::where('user_id', Auth::user()->id)
             ->where('office_id', session('office_id'))
             ->first();

@@ -10,7 +10,13 @@ class Cart extends Model
 
     public static function of(Employee $employee)
     {
-        return static::where('employee_id', $employee->id)->first();
+        $cart = static::where('employee_id', $employee->id)->first();
+
+        if (is_null($cart)) {
+            return static::create(['employee_id' => $employee->id]);
+        }
+
+        return $cart;
     }
 
     private function findItem($menuId, $date)
@@ -23,6 +29,10 @@ class Cart extends Model
 
     public function addItem($menuId, $qty, $date)
     {
+        if ($menuId instanceof Menu) {
+            $menuId = $menuId->id;
+        }
+
         $foundItem = $this->cartItems()
             ->where('menu_id', $menuId)
             ->where('date', $date->format('Y-m-d'))

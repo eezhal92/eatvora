@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Vendor;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -17,6 +18,11 @@ class Menu extends Model
     public function vendor()
     {
         return $this->belongsTo(Vendor::class);
+    }
+
+    public function meals()
+    {
+        return $this->hasMany(Meal::class);
     }
 
     public function vendorName()
@@ -38,6 +44,19 @@ class Menu extends Model
         }
 
         return \Storage::disk('public')->url($path);
+    }
+
+    public function scheduleMeals($date, $quantity)
+    {
+        if (is_string($date)) {
+            $date = Carbon::parse($date);
+        }
+
+        foreach (range(1, $quantity) as $i) {
+            $this->meals()->create(['date' => $date->format('Y-m-d H:i:s')]);
+        }
+
+        return $this;
     }
 
     public function getFinalPriceAttribute()
