@@ -14,6 +14,10 @@ class OfficeController extends Controller
 {
     public function index($companyId)
     {
+        $this->validate(request(), [
+            'company_id' => 'required|numeric',
+        ]);
+
         $withPaginate = request('no_paginate', 'false') === 'false';
 
         $query = Office::where('company_id', $companyId);

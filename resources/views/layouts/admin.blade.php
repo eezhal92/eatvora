@@ -56,6 +56,11 @@
                   <a href="#" class="eatvora-nav__menu-item">Order</a>
                 </div>
               </li>
+              <li>
+                <div class="eatvora-nav__menu-wrapper">
+                  <a href="{{ url('/ap/payments') }}" class="eatvora-nav__menu-item">Payment</a>
+                </div>
+              </li>
               <li class="eatvora-nav__separator"></li>
               <li>
                 <div class="eatvora-nav__menu-wrapper">

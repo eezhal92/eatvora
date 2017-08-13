@@ -91,6 +91,7 @@ Route::group(['prefix' => '/ap'], function () {
 
         Route::patch('/menus/{id}', 'Admin\MenuController@update');
 
+        Route::get('/payments', 'Admin\PaymentController@index');
     });
 });
 
@@ -125,6 +126,9 @@ Route::group(['prefix' => 'api/v1', 'namespace' => 'Api\V1', 'middleware' => 'au
         Route::get('/companies/{id}/offices', 'OfficeController@index');
 
         Route::post('/balances', 'BalanceController@store');
+
+        Route::patch('/payments/{id}', 'PaymentController@update');
+
     });
 
 });

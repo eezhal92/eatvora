@@ -18,6 +18,11 @@ class Company extends Model
         return $this->offices()->where('is_main', true)->first();
     }
 
+    public function employees()
+    {
+        return $this->hasManyThrough(Employee::class, Office::class);
+    }
+
     public function activeEmployees()
     {
         return Employee::join('offices', 'offices.id', '=', 'employees.office_id')

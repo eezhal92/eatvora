@@ -19,23 +19,26 @@
         </div>
 
         <div class="col-lg-12">
-          <form action="" class="form-inline" style="padding: 15px; border-radius: 3px; margin: 20px 0 25px; background: #f3f3f3">
-            <div class="form-group">
-              <label for="query">Query</label>
-              <input type="text" id="query" name="query" class="form-control" value="{{ request('query') }}" placeholder="Search by name or email..." {{ request('query') ? 'autofocus' : '' }}>
-            </div>
-            <div class="form-group">
-              <label for="active">Active Status</label>
-              <select name="active" id="active" class="form-control">
-                <option value="" {{ request('active') === '' ? 'selected' : '' }}>All</option>
-                <option value="true" {{ request('active') === 'true' ? 'selected' : '' }}>Yes</option>
-                <option value="false" {{ request('active') === 'false' ? 'selected' : '' }}>No</option>
-              </select>
-            </div>
-            <button type="submit" class="pull-right btn btn-default">
-              Search
-            </button>
-          </form>
+          <div class="action-panel">
+            <form class="form-inline">
+              <div class="form-group">
+                <div class="input-group">
+                  <span class="input-group-addon">Query</span>
+                  <input type="text" id="query" name="query" class="form-control" value="{{ request('query') }}" placeholder="Search by name or email..." {{ request('query') ? 'autofocus' : '' }}>
+                </div>
+              </div>
+              <div class="form-group">
+                <select name="active" id="active" class="form-control">
+                  <option value="" {{ request('active') === '' ? 'selected' : '' }}>All Status</option>
+                  <option value="true" {{ request('active') === 'true' ? 'selected' : '' }}>Active</option>
+                  <option value="false" {{ request('active') === 'false' ? 'selected' : '' }}>Not Active</option>
+                </select>
+              </div>
+              <button type="submit" class="pull-right btn btn-default">
+                Search
+              </button>
+            </form>
+          </div>
         </div>
 
         <div class="col-lg-12">

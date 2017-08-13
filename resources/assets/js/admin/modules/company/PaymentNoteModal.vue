@@ -4,12 +4,12 @@
     <div slot="modal-body">
       <div class="form-group">
         <label for="note">Note</label>
-        <textarea class="form-control" cols="30" rows="3">{{ payment.note }}</textarea>
+        <textarea class="form-control" v-model="payment.note" cols="30" rows="3"></textarea>
       </div>
     </div>
     <div slot="modal-footer">
       <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-      <button type="button" class="btn btn-primary">Update</button>
+      <button @click="updatePaymentNote" type="button" class="btn btn-primary">Update</button>
     </div>
   </base-modal>
 </template>
@@ -30,5 +30,18 @@ export default {
       $(`#${this.modalId}`).modal('show');
     });
   },
+  methods: {
+    updatePaymentNote() {
+      axios.patch(`/api/v1/payments/${this.payment.id}`, { note: this.payment.note })
+        .then(() => {
+          window.location.reload();
+        })
+        .catch((err) => {
+          alert('Error occured!');
+
+          throw err;
+        });
+    }
+  }
 };
 </script>

@@ -6,7 +6,7 @@
     <div slot="modal-body">
       <form @submit.prevent="topUp">
         <div class="form-group" :class="{ 'has-error': errors.amount_per_employee }">
-          <label for="amount-per-employee">Amount / Employee / Week</label>
+          <label for="amount-per-employee">Amount / Employee</label>
           <div class="input-group">
             <span class="input-group-addon">Rp.</span>
             <input id="amount-per-employee" type="text" v-model="amountPerEmployee" class="form-control" placeholder="" autofocus="autofocus">

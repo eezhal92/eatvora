@@ -53,8 +53,6 @@ class EmployeeController extends Controller
 
         $pageCount = ceil($totalEmployees / $limit);
 
-        // dd($employees);
-
         return response()->json([
             'total_records' => $totalEmployees,
             'current_page' => (int) $page,
@@ -93,7 +91,7 @@ class EmployeeController extends Controller
 
         Mail::to($user->email)->send(new EmployeeRegistrationEmail($office->company, $user, $randomTemporaryPassword));
 
-        // @todo: add assertion in test
+        // @todo: add response structure assertion in test
         $employee = array_merge($user->toArray(), $employee->toArray());
 
         return response()->json($employee, 201);
@@ -207,7 +205,6 @@ class EmployeeController extends Controller
         return response()->json([]);
     }
 
-    /** @todo Add Test */
     public function employeeCount()
     {
         $this->validate(request(), [
@@ -216,8 +213,14 @@ class EmployeeController extends Controller
 
         $company = Company::find(request('company_id'));
 
+        if (request('active') === 'true') {
+            return response()->json([
+                'count' => $company->activeEmployees()->count(),
+            ]);
+        }
+
         return response()->json([
-            'count' => $company->activeEmployees()->count(),
+            'count' => $company->employees->count(),
         ]);
     }
 }

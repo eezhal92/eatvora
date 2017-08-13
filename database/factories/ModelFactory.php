@@ -8,6 +8,7 @@ use App\Company;
 use App\Office;
 use App\Employee;
 use App\Schedule;
+use App\CompanyPayment;
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 $factory->define(User::class, function (Faker\Generator $faker) {
@@ -111,6 +112,22 @@ $factory->define(Cart::class, function (Faker\Generator $faker) {
         'employee_id' => function () {
             return factory(Employee::class)->create()->id;
         },
+    ];
+});
+
+$factory->define(CompanyPayment::class, function (Faker\Generator $faker) {
+    $employeeCount = rand(100, 200);
+    $amountPerEmployee = rand(20000, 50000);
+    $totalAmount = $employeeCount * $amountPerEmployee;
+
+    return [
+        'company_id' => function () {
+            return factory(Company::class)->create()->id;
+        },
+        'employee_count' => $employeeCount,
+        'amount_per_employee' => $amountPerEmployee,
+        'total_amount' => $totalAmount,
+        'note' => $faker->paragraph,
     ];
 });
 

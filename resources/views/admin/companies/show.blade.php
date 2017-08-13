@@ -31,10 +31,9 @@
             <a href="{{ url("/ap/companies/{$company->id}/employees") }}" class="btn btn-default">
               <i class="glyphicon glyphicon-user"></i> View All Employee
             </a>
-
-            <span class="pull-right">
-              <a href="{{ url(sprintf('/ap/companies/%s/payments', $company->id)) }}">Show Payments</a>
-            </span>
+            <a class="btn btn-default" href="{{ url(sprintf('/ap/companies/%s/payments', $company->id)) }}">
+              <i class="glyphicon glyphicon-list"></i> Show Payments
+            </a>
           </div>
         </div>
 
