@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Cart extends Model
@@ -31,6 +32,10 @@ class Cart extends Model
     {
         if ($menuId instanceof Menu) {
             $menuId = $menuId->id;
+        }
+
+        if (is_string($date)) {
+            $date = Carbon::parse($date);
         }
 
         $foundItem = $this->cartItems()
@@ -85,6 +90,13 @@ class Cart extends Model
             ->join('vendors', 'menus.vendor_id', '=', 'vendors.id')
             ->select('menus.*', \DB::raw('cart_items.id as cart_item_id'), 'cart_items.qty', 'cart_items.date', 'vendors.name as vendorName')
             ->get();
+    }
+
+    public function meals()
+    {
+        return $this->items()->map(function ($item) {
+            return Meal::where('menu_id', $item->id)->where('date', Carbon::parse($item->date))->take($item->qty)->get();
+        })->flatten();
     }
 
     public function cartItems()

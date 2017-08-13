@@ -122,4 +122,42 @@ class CartTest extends TestCase
             ],
         ], $items);
     }
+
+    /** @test */
+    public function can_retrieve_meals()
+    {
+        $menuA = factory(Menu::class)->create([
+            'price' => 20000,
+        ]);
+
+        $menuA->scheduleMeals('2017-08-7', 20);
+
+        $pretendedCurrentDate = Carbon::create(2017, 8, 7);
+
+        Carbon::setTestNow($pretendedCurrentDate);
+
+        $menuB = factory(Menu::class)->create([
+            'price' => 30000,
+        ]);
+        $menuC = factory(Menu::class)->create();
+
+        $employee = factory(Employee::class)->create();
+
+        $cart = Cart::of($employee);
+
+        $nextMonday = Carbon::parse();
+
+        $menuA->scheduleMeals('2017-08-14', 20);
+        $menuB->scheduleMeals('2017-08-17', 20);
+
+        $cart->addItem($menuA, 2, '2017-08-14');
+        $cart->addItem($menuB, 1, '2017-08-17');
+
+        $meals = $cart->meals();
+
+        $this->assertEquals(3, $meals->count());
+        $this->assertContains($menuA->id, $meals->pluck('menu_id'));
+        $this->assertContains($menuB->id, $meals->pluck('menu_id'));
+        $this->assertNotContains($menuC->id, $meals->pluck('menu_id'));
+    }
 }

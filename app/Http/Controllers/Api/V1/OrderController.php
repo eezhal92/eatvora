@@ -19,19 +19,13 @@ class OrderController extends Controller
 
         $cart = Cart::of($employee);
 
-        $order = Order::create([
-            'employee_id' => $employee->id,
-            'user_id' => $employee->user->id,
-        ]);
+        $meals = $cart->meals();
 
-        $cart->items()->each(function ($menu) use ($order) {
-            $meals = Meal::where('menu_id', $menu->id)->take($menu->qty)->get();
+        $amount = $meals->reduce(function ($total, $item) {
+            return $total + $item->menu->price;
+        }, 0);
 
-            $meals->each->update([
-                'reserved_at' => Carbon::now(),
-                'order_id' => $order->id,
-            ]);
-        });
+        $order = Order::forMeals($meals, $employee, $amount);
 
         return response()->json([]);
     }

@@ -3,12 +3,14 @@
 use App\Cart;
 use App\Menu;
 use App\User;
+use App\Meal;
 use App\Vendor;
 use App\Company;
 use App\Office;
 use App\Employee;
 use App\Schedule;
 use App\CompanyPayment;
+use Carbon\Carbon;
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 $factory->define(User::class, function (Faker\Generator $faker) {
@@ -128,6 +130,15 @@ $factory->define(CompanyPayment::class, function (Faker\Generator $faker) {
         'amount_per_employee' => $amountPerEmployee,
         'total_amount' => $totalAmount,
         'note' => $faker->paragraph,
+    ];
+});
+
+$factory->define(Meal::class, function (Faker\Generator $faker) {
+    return [
+        'date' => Carbon::now(),
+        'menu_id' => function () {
+            return factory(Menu::class)->create()->id;
+        },
     ];
 });
 
