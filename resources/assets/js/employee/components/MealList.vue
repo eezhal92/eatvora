@@ -104,8 +104,8 @@ export default {
             ))}
           </div>
         ))}
-        <div v-show={this.isLoading} style="margin-top: 20px" class="text-center">Memuat...</div>
-        <div v-show={this.remaining && !this.isLoading} style="margin-top: 20px" class="text-center">
+        <div v-show={this.isLoading} class="text-center">Memuat...</div>
+        <div v-show={this.remaining && !this.isLoading} class="text-center">
           <button on-click={this.loadMore} class="btn btn--primary-outline">Muat Lebih Banyak</button>
         </div>
       </div>

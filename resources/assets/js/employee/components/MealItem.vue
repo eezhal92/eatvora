@@ -69,14 +69,14 @@ export default {
   background: #FD8421;
   color: #fff;
   font-weight: bold;
-  border: none;
+  border: 1px solid #FD8421;
 }
 
 .meal-card {
   overflow: hidden;
   border-radius: 4px;
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
-  margin-bottom: 18px;
+  margin-bottom: 32px;
 }
 
 .meal-card-cover {
@@ -112,6 +112,7 @@ export default {
 
 .meal-card__detail {
   padding: 14px;
+  background: #fff;
 }
 
 .meal-card__point {
