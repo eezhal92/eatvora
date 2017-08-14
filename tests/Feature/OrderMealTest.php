@@ -113,13 +113,15 @@ class OrderMealTest extends TestCase
     {
         Balance::employeeTopUp($this->employee, 200000);
 
+        session(['office_id' => $this->employee->office_id]);
+
         $this->setMealSchedule();
 
         $this->addMealsToCart();
 
-        $response = $this->actingAs($this->user)->json('post', '/api/v1/orders', [
-            'employee_id' => $this->employee->id,
-        ]);
+        $response = $this->actingAs($this->user)->json('post', '/api/v1/orders');
+
+        $response->assertStatus(200);
 
         $order = Order::first();
 
@@ -139,5 +141,35 @@ class OrderMealTest extends TestCase
         // assert order amount
         // assert vendor bill of order
         // assert revenue of order
+        // user charged correct amount
+    }
+
+    /** @test */
+    public function cannot_order_more_meals_than_remain()
+    {
+        Balance::employeeTopUp($this->employee, 200000);
+
+        session(['office_id' => $this->employee->office_id]);
+
+        $this->setMealSchedule();
+
+        // Add meal to cart
+        $item = $this->meals->first();
+
+        $this->cart->addItem($item['menu'], 30, Carbon::parse($item['date']));
+
+        $response = $this->actingAs($this->user)->json('post', '/api/v1/orders', [
+            'employee_id' => $this->employee->id,
+        ]);
+
+        $response->assertStatus(422);
+
+        $order = Order::first();
+
+        $balance = Balance::all()->last();
+
+        $this->assertNull($order);
+        $this->assertEquals(200000, $this->employee->user->balance());
+        $this->assertEquals(200000, $balance->amount);
     }
 }

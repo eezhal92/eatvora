@@ -8,24 +8,38 @@ use App\Order;
 use App\Employee;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Services\BalanceService;
 use App\Http\Controllers\Controller;
+use App\Exceptions\NotEnoughMealsException;
+use App\Exceptions\NotEnoughBalanceException;
 
 class OrderController extends Controller
 {
-    public function store()
+    public function store(BalanceService $balanceService)
     {
         // @todo validate user whether has employee
-        $employee = Employee::with('user')->find(request('employee_id'));
+        $employee = Employee::with('user')->where([
+            'user_id' => auth()->user()->id,
+            'office_id' => session('office_id'),
+        ])->first();
 
         $cart = Cart::of($employee);
 
-        $meals = $cart->meals();
+        try {
+            $reservation = $cart->reserveMeals();
 
-        $amount = $meals->reduce(function ($total, $item) {
-            return $total + $item->menu->price;
-        }, 0);
+            $order = $reservation->complete($balanceService);
+        } catch (NotEnoughBalanceException $e) {
+            $reservation->cancel();
 
-        $order = Order::forMeals($meals, $employee, $amount);
+            return response()->json([
+                'message' => $e->getMessage(),
+            ], 422);
+        } catch (NotEnoughMealsException $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+            ], 422);
+        }
 
         return response()->json([]);
     }

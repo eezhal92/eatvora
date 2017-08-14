@@ -4,6 +4,7 @@ use App\Cart;
 use App\Menu;
 use App\User;
 use App\Meal;
+use App\Order;
 use App\Vendor;
 use App\Company;
 use App\Office;
@@ -139,6 +140,20 @@ $factory->define(Meal::class, function (Faker\Generator $faker) {
         'menu_id' => function () {
             return factory(Menu::class)->create()->id;
         },
+    ];
+});
+
+$factory->define(Order::class, function (Faker\Generator $faker) {
+    $employee = factory(Employee::class)->create();
+
+    return [
+        'employee_id' => function () use ($employee) {
+            return $employee->id;
+        },
+        'user_id' => function () use ($employee)  {
+            return $employee->user->id;
+        },
+        'amount' => 80000,
     ];
 });
 

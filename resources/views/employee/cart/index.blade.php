@@ -9,6 +9,9 @@
         </div>
       </div>
       <div class="row" style="margin-top: 22px;">
+        <div class="col-xs-12">
+          <alert id="checkout" type="danger"></alert>
+        </div>
         <div class="col-xs-12 col-sm-9">
           <cart></cart>
         </div>

@@ -5,19 +5,35 @@
       <div class="cart-summary__total-amount">{{ cartTotal | rupiah }}</div>
     </div>
     <br>
-    <button class="btn btn--primary btn-block">
+    <button @click="checkout" class="btn btn--primary btn-block">
       Checkout
     </button>
   </div>
 </template>
 
 <script>
+import bus from './bus';
 import { mapGetters } from 'vuex';
 
 export default {
   computed: {
     ...mapGetters(['cartTotal'])
   },
+  methods: {
+    checkout() {
+      bus.$emit('alert:hide');
+
+      axios.post('/api/v1/orders')
+        .then(() => {
+          alert('Successful');
+        })
+        .catch(({ response }) => {
+          if (response.data && response.data.message) {
+            bus.$emit('alert:show', response.data.message);
+          }
+        })
+    }
+  }
 };
 </script>
 

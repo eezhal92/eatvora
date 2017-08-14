@@ -52,11 +52,13 @@ class Menu extends Model
             $date = Carbon::parse($date);
         }
 
+        $meals = collect([]);
+
         foreach (range(1, $quantity) as $i) {
-            $this->meals()->create(['date' => $date->format('Y-m-d H:i:s')]);
+            $meals->push($this->meals()->create(['date' => $date->format('Y-m-d H:i:s')]));
         }
 
-        return $this;
+        return $meals;
     }
 
     public function getFinalPriceAttribute()

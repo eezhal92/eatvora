@@ -4,10 +4,26 @@ namespace App;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use App\Exceptions\NotEnoughMealsException;
 
 class Cart extends Model
 {
     protected $fillable = ['employee_id'];
+
+    public function menus()
+    {
+        return $this->belongsToMany(Menu::class, 'cart_items', 'cart_id', 'menu_id');
+    }
+
+    public function cartItems()
+    {
+        return $this->hasMany(CartItem::class);
+    }
+
+    public function employee()
+    {
+        return $this->belongsTo(Employee::class);
+    }
 
     public static function of(Employee $employee)
     {
@@ -92,20 +108,29 @@ class Cart extends Model
             ->get();
     }
 
-    public function meals()
+    private function findMeals()
     {
         return $this->items()->map(function ($item) {
-            return Meal::where('menu_id', $item->id)->where('date', Carbon::parse($item->date))->take($item->qty)->get();
+            $meals = Meal::where('menu_id', $item->id)
+                ->where('date', Carbon::parse($item->date))
+                ->available()
+                ->take($item->qty)
+                ->get();
+
+            if ($meals->count() < $item->qty) {
+                throw new NotEnoughMealsException("Maaf, Stok menu {$item->name} tinggal {$meals->count()}.");
+            }
+
+            return $meals;
         })->flatten();
     }
 
-    public function cartItems()
+    public function reserveMeals()
     {
-        return $this->hasMany(CartItem::class);
-    }
+        $meals = $this->findMeals()->each(function ($meal) {
+            $meal->reserve();
+        });
 
-    public function menus()
-    {
-        return $this->belongsToMany(Menu::class, 'cart_items', 'cart_id', 'menu_id');
+        return new Reservation($meals, $this->employee);
     }
 }

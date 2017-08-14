@@ -1,15 +1,16 @@
 <?php
 
+use App\Menu;
+use App\User;
+use App\Office;
+use App\Vendor;
+use App\Balance;
 use App\Company;
 use App\Employee;
-use App\Menu;
 use App\Schedule;
-use App\Services\ScheduleService;
-use App\User;
-use App\Vendor;
-use App\Office;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
+use App\Services\ScheduleService;
 
 class DatabaseSeeder extends Seeder
 {
@@ -27,6 +28,9 @@ class DatabaseSeeder extends Seeder
 
     private function createSchedule($menuId, $date)
     {
+        $menu = Menu::find($menuId);
+
+        $menu->scheduleMeals($date, 2);
         return factory(Schedule::class)->create([
             'menu_id' => $menuId,
             'date' => $date,
@@ -85,16 +89,19 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        factory(Employee::class)->create([
+        $employeeA = factory(Employee::class)->create([
             'user_id' => $user->id,
             'is_admin' => true,
             'office_id' => $office->id,
         ]);
 
-        factory(Employee::class)->create([
+        $employeeB = factory(Employee::class)->create([
             'user_id' => $userB->id,
             'office_id' => $officeB->id,
         ]);
+
+        Balance::employeeTopUp($employeeA, 100000);
+        Balance::employeeTopUp($employeeB, 100000);
 
         // senin-jum'at lihat hari bsok
         $weekDays = (new ScheduleService())->nextWeekDayDates();

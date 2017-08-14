@@ -3,18 +3,24 @@
 namespace Tests\Unit;
 
 use App\Cart;
-use App\Employee;
 use App\Menu;
+use App\Order;
+use App\Employee;
 use Carbon\Carbon;
+use Tests\TestCase;
+use App\Exceptions\NotEnoughMealsException;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Tests\TestCase;
 
+/**
+ * @todo
+ * - Assert given example. get/create cart for next week, not get cart for this week or past weeks
+ */
 class CartTest extends TestCase
 {
     use DatabaseMigrations;
 
-    /** @atest */
+    /** @test */
     public function able_to_retrieve_a_cart_by_employee()
     {
         $employee = factory(Employee::class)->create();
@@ -25,15 +31,19 @@ class CartTest extends TestCase
         $foundCart = Cart::of($employee);
 
         $this->assertEquals($cart->id, $foundCart->id);
-
-        $employeeB = factory(Employee::class)->create();
-
-        $foundCart = Cart::of($employeeB);
-
-        $this->assertNull($foundCart);
     }
 
-    /** @atest */
+    /** @test */
+    public function create_new_cart_when_not_found()
+    {
+        $employee = factory(Employee::class)->create();
+
+        $cart = Cart::of($employee);
+
+        $this->assertEquals($employee->id, $cart->employee_id);
+    }
+
+    /** @test */
     public function able_to_add_item()
     {
         $menuA = factory(Menu::class)->create([
@@ -52,11 +62,11 @@ class CartTest extends TestCase
         $this->assertDatabaseHas('cart_items', [
             'menu_id' => $menuA->id,
             'qty' => 2,
-            'date' => $nextModay->format('Y-m-d H:i:s'),
+            'date' => $nextModay->format('Y-m-d'),
         ]);
     }
 
-    /** @atest */
+    /** @test */
     public function bump_qty_when_same_menu_and_date_already_exists()
     {
         $menuA = factory(Menu::class)->create([
@@ -124,40 +134,50 @@ class CartTest extends TestCase
     }
 
     /** @test */
-    public function can_retrieve_meals()
+    public function cannot_reserve_meals_that_have_already_been_ordered()
     {
-        $menuA = factory(Menu::class)->create([
-            'price' => 20000,
-        ]);
-
-        $menuA->scheduleMeals('2017-08-7', 20);
-
-        $pretendedCurrentDate = Carbon::create(2017, 8, 7);
-
-        Carbon::setTestNow($pretendedCurrentDate);
-
-        $menuB = factory(Menu::class)->create([
-            'price' => 30000,
-        ]);
-        $menuC = factory(Menu::class)->create();
-
         $employee = factory(Employee::class)->create();
+
+        $menu = factory(Menu::class)->create();
+
+        $meals = $menu->scheduleMeals('2017-08-26', 3);
+        $order = factory(Order::class)->create();
+
+        $order->meals()->saveMany($meals->take(2));
 
         $cart = Cart::of($employee);
 
-        $nextMonday = Carbon::parse();
+        $cart->addItem($menu, 2, '2017-08-26');
 
-        $menuA->scheduleMeals('2017-08-14', 20);
-        $menuB->scheduleMeals('2017-08-17', 20);
+        try {
+            $cart->reserveMeals();
+        } catch (NotEnoughMealsException $e) {
+            return;
+        }
 
-        $cart->addItem($menuA, 2, '2017-08-14');
-        $cart->addItem($menuB, 1, '2017-08-17');
+        $this->fail("Reserving tickets succeeded even though the tickets were already sold.");
+    }
 
-        $meals = $cart->meals();
+    /** @test */
+    public function cannot_reserve_meals_that_have_already_been_reserved()
+    {
+        $employee = factory(Employee::class)->create();
 
-        $this->assertEquals(3, $meals->count());
-        $this->assertContains($menuA->id, $meals->pluck('menu_id'));
-        $this->assertContains($menuB->id, $meals->pluck('menu_id'));
-        $this->assertNotContains($menuC->id, $meals->pluck('menu_id'));
+        $menu = factory(Menu::class)->create();
+
+        $meals = $menu->scheduleMeals('2017-08-26', 2);
+        $meals->each->reserve();
+
+        $cart = Cart::of($employee);
+
+        $cart->addItem($menu, 1, '2017-08-26');
+
+        try {
+            $cart->reserveMeals();
+        } catch (NotEnoughMealsException $e) {
+            return;
+        }
+
+        $this->fail("Reserving tickets succeeded even though the tickets were already reserved.");
     }
 }

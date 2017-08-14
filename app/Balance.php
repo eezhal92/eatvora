@@ -23,4 +23,13 @@ class Balance extends Model
             'description' => sprintf('Top up from company %s', $employee->office->company->name),
         ]);
     }
+
+    public static function payOrder($amount, $employee)
+    {
+        return static::create([
+            'user_id' => $employee->user->id,
+            'type' => static::PAYMENT,
+            'amount' => -$amount,
+        ]);
+    }
 }
