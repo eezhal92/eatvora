@@ -7,7 +7,7 @@
             <img src="http://lorempixel.com/60/60" alt="meal" class="pull-left" />
             <div class="menu-detail__info">
               <p style="margin-bottom: 4px">{{ meal.name }}
-                <button class="cart-item__btn-remove">
+                <button @click="removeItem" class="cart-item__btn-remove">
                   Batalkan
                 </button>
               </p>
@@ -16,7 +16,7 @@
           </div>
         </div>
         <div class="col-xs-2">
-          <div>Qty <input class="cart-item-qty" @input="updateQuantity" type="number" min="1" max="5" v-model="qty" /></div>
+          <div>Qty <input class="cart-item-qty" @input="updateItemQuantity" type="number" min="1" max="5" v-model="qty" /></div>
         </div>
         <div class="col-xs-2">
           <div class="menu-price">{{ meal.qty * meal.price | rupiah }}</div>
@@ -36,18 +36,36 @@ export default {
     return { qty: this.meal.qty };
   },
   methods: {
-    ...mapActions(['updateCartItemQty']),
-    updateQuantity: debounce(function() {
+    ...mapActions(['updateCartItemQty', 'removeCartItem']),
+    updateItemQuantity: debounce(function() {
       const payload = { qty: Number(this.qty), menu_id: this.meal.id, date: this.meal.date };
       axios.patch(`/api/v1/cart`, payload)
         .then(() => {
           this.updateCartItemQty(payload);
         })
         .catch(() => {
-          alert('Sorry, Cannot update cart item quantity');
+          alert('Sorry, cannot update cart item quantity. Please try again later.');
         });
 
     }, 600),
+    removeItem() {
+      const confirmed = confirm(`Are you sure want to remove ${this.meal.name}?`);
+
+      if (!confirmed) {
+        return;
+      }
+
+      const payload = { _method: 'DELETE', menu_id: this.meal.id, date: this.meal.date };
+      axios.post('/api/v1/cart', payload)
+        .then(() => {
+          this.removeCartItem(payload);
+        })
+        .catch(err => {
+          alert('Sorry, cannot remove cart item. Please try again later.');
+
+          throw err;
+        });
+    },
   },
 };
 </script>

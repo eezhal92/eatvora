@@ -105,6 +105,8 @@ Route::group(['prefix' => 'api/v1', 'namespace' => 'Api\V1', 'middleware' => 'au
 
     Route::patch('/cart', 'CartController@update');
 
+    Route::delete('/cart', 'CartController@remove');
+
     Route::get('/employees', 'EmployeeController@index');
 
     Route::get('/menus', 'MenuController@index');

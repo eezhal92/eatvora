@@ -1,3 +1,4 @@
+import Vue from 'vue';
 import { TYPES } from './actions';
 
 export default {
@@ -33,5 +34,15 @@ export default {
     const item = state.cartItems[payload.date].find(item => item.id === payload.menu_id);
 
     item.qty = payload.qty;
+  },
+
+  [TYPES.REMOVE_CART_ITEM](state, payload) {
+    const items = state.cartItems[payload.date].filter(item => item.id !== payload.menu_id);
+
+    state.cartItems = { ...state.cartItems, [payload.date]: items };
+
+    if (state.cartItems[payload.date].length === 0) {
+      Vue.delete(state.cartItems, payload.date);
+    }
   },
 };

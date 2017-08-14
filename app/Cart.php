@@ -56,6 +56,18 @@ class Cart extends Model
         $item->save();
     }
 
+    public function removeItem($menuId, $date)
+    {
+        // @todo: cover unit test
+        $item = $this->findItem($menuId, $date);
+
+        if (!$item) {
+            throw new \Exception('Menu item is not found');
+        }
+
+        $item->delete();
+    }
+
     public function items()
     {
         return \DB::table('carts')->join('cart_items', 'carts.id', '=', 'cart_items.cart_id')

@@ -65,4 +65,18 @@ class CartController extends Controller
 
         return response()->json($cart->items());
     }
+
+    public function remove()
+    {
+        $employee = Employee::where('user_id', Auth::user()->id)
+            ->where('office_id', session('office_id'))
+            ->first();
+
+        // todo: make test and refactor
+        $cart = Cart::of($employee);
+
+        $cart->removeItem(request('menu_id'), Carbon::parse(request('date')));
+
+        return response()->json($cart->items());
+    }
 }

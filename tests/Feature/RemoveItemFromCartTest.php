@@ -12,16 +12,12 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-/**
- * @todo
- * Test input validation like negative qty number
- */
-class UpdateCartItemQuantityTest extends TestCase
+class RemoveItemFromCartTest extends TestCase
 {
     use DatabaseMigrations;
 
     /** @test */
-    public function can_update_cart_item_quantity()
+    public function can_remove_cart_item()
     {
         $employee = factory(Employee::class)->create();
 
@@ -42,12 +38,11 @@ class UpdateCartItemQuantityTest extends TestCase
 
         $cart->addItem($menu->id, 2, $nextWeekDayDates->first());
 
-        $response = $this->actingAs($employee->user)->json('PATCH', '/api/v1/cart', [
+        $response = $this->actingAs($employee->user)->json('DELETE', '/api/v1/cart', [
             'menu_id' => $menu->id,
-            'qty' => 1,
             'date' => $nextWeekDayDates->first()->format('Y-m-d'),
         ]);
 
-        $this->assertEquals(1, $cart->items()->first()->qty);
+        $this->assertNull($cart->items()->first());
     }
 }
