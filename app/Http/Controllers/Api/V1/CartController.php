@@ -12,6 +12,23 @@ use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
+    public function index()
+    {
+        $employee = Employee::where('user_id', Auth::user()->id)
+            ->where('office_id', session('office_id'))
+            ->first();
+
+        $cart = Cart::of($employee);
+
+        if (!$cart) {
+            return response()->json([]);
+        }
+
+        $items = $cart->items()->sortByDesc('date')->groupBy('date');
+
+        return response()->json($items);
+    }
+
     public function store()
     {
         $employee = Employee::where('user_id', Auth::user()->id)
@@ -35,20 +52,17 @@ class CartController extends Controller
             ->cookie('cart_id', $cart->id);
     }
 
-    public function index()
+    public function update()
     {
         $employee = Employee::where('user_id', Auth::user()->id)
             ->where('office_id', session('office_id'))
             ->first();
 
+        // todo: make test and refactor
         $cart = Cart::of($employee);
 
-        if (!$cart) {
-            return response()->json([]);
-        }
+        $cart->updateItem(request('menu_id'), request('qty'), Carbon::parse(request('date')));
 
-        $items = $cart->items()->sortByDesc('date')->groupBy('date');
-
-        return response()->json($items);
+        return response()->json($cart->items());
     }
 }

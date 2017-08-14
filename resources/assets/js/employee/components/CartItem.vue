@@ -16,7 +16,7 @@
           </div>
         </div>
         <div class="col-xs-2">
-          <div>Qty <input class="cart-item-qty" @input="updateQuantity" type="number" min="1" max="5" :value="meal.qty" /></div>
+          <div>Qty <input class="cart-item-qty" @input="updateQuantity" type="number" min="1" max="5" v-model="qty" /></div>
         </div>
         <div class="col-xs-2">
           <div class="menu-price">{{ meal.qty * meal.price | rupiah }}</div>
@@ -27,13 +27,26 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import debounce from 'lodash/debounce';
 
 export default {
-  props: ['meal'],
+  props: ['meal', 'cartId'],
+  data() {
+    return { qty: this.meal.qty };
+  },
   methods: {
-    updateQuantity: debounce(() => {
-      console.log('updating...')
+    ...mapActions(['updateCartItemQty']),
+    updateQuantity: debounce(function() {
+      const payload = { qty: Number(this.qty), menu_id: this.meal.id, date: this.meal.date };
+      axios.patch(`/api/v1/cart`, payload)
+        .then(() => {
+          this.updateCartItemQty(payload);
+        })
+        .catch(() => {
+          alert('Sorry, Cannot update cart item quantity');
+        });
+
     }, 600),
   },
 };

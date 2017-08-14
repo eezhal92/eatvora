@@ -13,6 +13,14 @@ class Cart extends Model
         return static::where('employee_id', $employee->id)->first();
     }
 
+    private function findItem($menuId, $date)
+    {
+        return $this->cartItems()
+            ->where('menu_id', $menuId)
+            ->where('date', $date->format('Y-m-d'))
+            ->first();
+    }
+
     public function addItem($menuId, $qty, $date)
     {
         $foundItem = $this->cartItems()
@@ -35,12 +43,25 @@ class Cart extends Model
         $foundItem->save();
     }
 
+    public function updateItem($menuId, $qty, $date)
+    {
+        // @todo: cover unit test
+        $item = $this->findItem($menuId, $date);
+
+        if (!$item) {
+            throw new \Exception('Menu item is not found');
+        }
+
+        $item->qty = $qty;
+        $item->save();
+    }
+
     public function items()
     {
-        return static::join('cart_items', 'carts.id', '=', 'cart_items.cart_id')
+        return \DB::table('carts')->join('cart_items', 'carts.id', '=', 'cart_items.cart_id')
             ->join('menus', 'cart_items.menu_id', '=', 'menus.id')
             ->join('vendors', 'menus.vendor_id', '=', 'vendors.id')
-            ->select('menus.*', 'cart_items.qty', 'cart_items.date', 'vendors.name as vendorName')
+            ->select('menus.*', \DB::raw('cart_items.id as cart_item_id'), 'cart_items.qty', 'cart_items.date', 'vendors.name as vendorName')
             ->get();
     }
 

@@ -103,6 +103,8 @@ Route::group(['prefix' => 'api/v1', 'namespace' => 'Api\V1', 'middleware' => 'au
 
     Route::get('/cart', 'CartController@index');
 
+    Route::patch('/cart', 'CartController@update');
+
     Route::get('/employees', 'EmployeeController@index');
 
     Route::get('/menus', 'MenuController@index');

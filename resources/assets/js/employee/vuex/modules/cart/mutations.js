@@ -29,4 +29,9 @@ export default {
     }
   },
 
+  [TYPES.UPDATE_CART_ITEM_QTY](state, payload) {
+    const item = state.cartItems[payload.date].find(item => item.id === payload.menu_id);
+
+    item.qty = payload.qty;
+  },
 };
