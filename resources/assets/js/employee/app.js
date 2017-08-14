@@ -11,7 +11,6 @@ window.Vue = require('vue');
 
 const Vuex = require('vuex');
 const store = require('./vuex/store').default;
-
 const moment = require('moment');
 moment.locale('ID');
 
@@ -22,7 +21,16 @@ Vue.component('cart-count', require('./components/CartCount.vue'));
 Vue.component('cart-summary', require('./components/CartSummary.vue'));
 
 Vue.filter('date',  value => moment(value).format('dddd, DD MMMM YYYY'));
+Vue.filter('day',  value => moment(value).format('dddd'));
+Vue.filter('dayMonth',  value => moment(value).format('DD / MM'));
 Vue.filter('rupiah',  value => `Rp. ${value.toLocaleString()}`);
+Vue.filter('limit',  (value, limit = 20) => {
+  if (value.length > limit) {
+    return `${value.slice(0, limit)}...`;
+  }
+
+  return value;
+});
 
 Vue.use(Vuex);
 const app = new Vue({

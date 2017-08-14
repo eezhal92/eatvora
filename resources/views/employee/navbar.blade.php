@@ -17,17 +17,16 @@
             <a href="/cart">
               <cart-count></cart-count>
             </a>
+            <a href="#">Rp. {{ number_format(auth()->user()->balance()) }}</a>
           </li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" id="account-btn" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
               <img src="http://lorempixel.com/32/32" class="img-circle" />
             </a>
             <ul class="dropdown-menu" aria-labelledby="account-btn">
-              <li>
+              <li class="dropdown-menu__username">
                 <a href="#">
                   {{ auth()->user()->name }}
-                  <br/>
-                  Balance: {{ auth()->user()->balance() }}
                 </a>
               </li>
               <li><a href="#">Pengaturan</a></li>

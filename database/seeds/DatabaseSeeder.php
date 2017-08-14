@@ -102,7 +102,7 @@ class DatabaseSeeder extends Seeder
         $vendors = $this->createVendors(15);
 
         $vendors->each(function ($vendor) use ($weekDays) {
-            $menus = $this->createMenuByVendor($vendor->id, 25);
+            $menus = $this->createMenuByVendor($vendor->id, 5);
 
             $weekDays->each(function ($day, $key) use ($menus) {
                 $menu = $menus[$key];

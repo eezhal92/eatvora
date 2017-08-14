@@ -28,11 +28,19 @@
     margin: 0;
     margin-top: 4px;
 
+    .divider {
+      background: rgba(0, 0, 0, 0.05);
+    }
+
     .dropdown-menu {
-        // box-shadow: 0 0 0 1px rgba(99, 114, 130, 0.16), 0 8px 16px rgba(27, 39, 51, 0.08);
+        box-shadow: 0 16px 32px 0 rgba(62, 57, 107, 0.2), 0 0px 10px rgba(0, 0, 0, 0.05);
         outline: none;
         border-radius: 4px;
-        border: 1px solid #E6E8EB;
+        border: none;
+
+        &__username {
+
+        }
     }
 
     &--right {
@@ -41,11 +49,21 @@
       .dropdown-menu {
         right: 0;
         left: auto;
+        margin-top: 12px;
+
+        a {
+          padding: 7px 25px !important;
+        }
       }
     }
 
     a {
       color: #86919F !important;
+
+      &:hover {
+        background: none !important;
+        color: #636b6f !important;
+      }
     }
 
     > li {

@@ -1,25 +1,10 @@
 <script>
 import { stringify as qsStringify } from 'querystring';
+
 import bus from './bus';
 import MealItem from './MealItem';
 import chunk from 'lodash/chunk';
-
-const DateSelector = {
-  props: ['weekdays'],
-  data() {
-    return { date: this.weekdays[0] };
-  },
-  template: `
-    <select id="meal-date" v-model="date" @change="emitDateChangedEvent">
-      <option v-for="day in weekdays" :value="day">{{ day | date }}</option>
-    </select>
-  `,
-  methods: {
-    emitDateChangedEvent() {
-      bus.$emit('date-selector:date-changed', this.date)
-    },
-  },
-};
+import DateSelector from './DateSelector.vue';
 
 export default {
   props: ['weekdays'],
@@ -27,7 +12,7 @@ export default {
     return {
       meals: [],
       isLoading: false,
-      category: 'all',
+      category: ['all'],
       date: this.weekdays[0],
       currentPage: 1,
       lastPage: 1,
@@ -109,9 +94,6 @@ export default {
 
     return (
       <div class="meal-list">
-        <label for="meal-date">
-          Tanggal
-        </label>
         <DateSelector weekdays={this.weekdays} />
         <br />
         <br />
@@ -122,8 +104,8 @@ export default {
             ))}
           </div>
         ))}
-        <div v-show={this.isLoading} class="col-sm-12">Memuat...</div>
-        <div v-show={this.remaining} class="text-center">
+        <div v-show={this.isLoading} style="margin-top: 20px" class="text-center">Memuat...</div>
+        <div v-show={this.remaining && !this.isLoading} style="margin-top: 20px" class="text-center">
           <button on-click={this.loadMore} class="btn btn--primary-outline">Muat Lebih Banyak</button>
         </div>
       </div>

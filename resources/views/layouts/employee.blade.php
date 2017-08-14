@@ -17,6 +17,14 @@
       @yield('body')
     </div>
 
+    <footer style="padding: 40px">
+      <div class="container container--small">
+        <div class="row">
+          <p >&copy; {{ date('Y') }} - eatvora.com</p>
+        </div>
+      </div>
+    </footer>
+
     @stack('beforeScripts')
     <script src="{{ mix('/js/manifest.js') }}"></script>
     <script src="{{ mix('/js/vendor.js') }}"></script>

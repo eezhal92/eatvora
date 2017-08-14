@@ -4,6 +4,8 @@
 // Bootstrap
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 
+@import 'base';
+
 @import 'components/buttons';
 
 @import 'components/employee/main';
