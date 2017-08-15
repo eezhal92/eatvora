@@ -1,0 +1,75 @@
+.form-condensed {
+  &__heading {
+    font-family: 'PoppinsLight', sans-serif;
+    margin-top: 0;
+    margin-bottom: 14px;
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: 2px;
+    font-size: 14px;
+
+    &--white {
+      color: #fff;
+    }
+  }
+
+  &__input {
+    display: block;
+    padding: 12px;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid rgba(#51565F, .1);
+
+    &:first-child {
+      border-radius: 3px 3px 0px 0px;
+    }
+
+    ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+      color: pink;
+    }
+    ::-moz-placeholder { /* Firefox 19+ */
+      color: pink;
+    }
+    :-ms-input-placeholder { /* IE 10+ */
+      color: pink;
+    }
+    :-moz-placeholder { /* Firefox 18- */
+      color: pink;
+    }
+  }
+
+  &__textarea {
+    display: block;
+    padding: 12px;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid rgba(#51565F, .1);
+
+    &:first-child {
+      border-radius: 3px 3px 0px 0px;
+    }
+
+    ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+      color: pink;
+    }
+    ::-moz-placeholder { /* Firefox 19+ */
+      color: pink;
+    }
+    :-ms-input-placeholder { /* IE 10+ */
+      color: pink;
+    }
+    :-moz-placeholder { /* Firefox 18- */
+      color: pink;
+    }
+  }
+
+  &__button {
+    display: block;
+    width: 100%;
+    border-radius: 0px 0px 3px 3px !important;
+    font-weight: bold;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+  }
+}

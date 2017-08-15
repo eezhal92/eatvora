@@ -3,6 +3,7 @@
     "/js/admin/admin.js": "/js/admin/admin.js",
     "/css/admin.css": "/css/admin.css",
     "/css/app.css": "/css/app.css",
+    "/css/style.css": "/css/style.css",
     "/js/vendor.js": "/js/vendor.js",
     "/js/manifest.js": "/js/manifest.js"
 }

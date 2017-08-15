@@ -1,0 +1,19 @@
+.featured-meals {
+  &__heading {
+    margin: 0;
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+  }
+
+  &__spoon {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 360px;
+    width: 100%;
+    background: url(/images/spoon.png) no-repeat;
+  }
+}

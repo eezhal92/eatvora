@@ -1,0 +1,26 @@
+.clients {
+  &__heading {
+    margin-bottom: 20px;
+  }
+
+  &__btn {
+    margin-top: 20px;
+    font-weight: bold;
+    padding: 12px 30px;
+  }
+
+  &__logos {
+    margin-top: 60px;
+  }
+
+  &__logo-row {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+
+  &__logo-item {
+    display: inline-block;
+  }
+}

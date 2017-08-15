@@ -16,4 +16,7 @@ mix.js('resources/assets/js/admin/admin.js', 'public/js/admin')
   .extract(['vue']);
 
 mix.sass('resources/assets/sass/admin/admin.scss', 'public/css')
-  .sass('resources/assets/sass/employee/app.scss', 'public/css');
+  .sass('resources/assets/sass/employee/app.scss', 'public/css')
+  .sass('resources/assets/sass/landing/style.scss', 'public/css');
+
+// mix.copyDirectory('resources/assets/fonts/poppins', 'public/fonts');

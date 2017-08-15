@@ -1,0 +1,53 @@
+.navigation {
+  position: absolute;
+  z-index: 99;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 100px;
+  background-color: transparent;
+
+  &__nav {
+    padding: 40px 0;
+  }
+
+  &__logo {
+    display: inline-block;
+  }
+
+  &__logo-typo {
+    font-family: 'PoppinsSemiBold', sans-serif;
+    font-weight: bold;
+    color: #fff;
+    font-size: 16px;
+    color: darken(#fff, .20);
+
+    &:hover {
+      text-decoration: none;
+      color: #fff;
+      transition: all .3s ease-in;
+    }
+  }
+
+  &__main-nav {
+    padding: 0;
+    margin: 0;
+    font-family: 'PoppinsSemiBold', sans-serif;
+
+    li {
+      display: inline-block;
+    }
+    a {
+      text-transform: uppercase;
+      font-weight: bold;
+      color: darken(#fff, .20);
+      padding: 10px 20px;
+
+      &:hover {
+        text-decoration: none;
+        color: #fff;
+        transition: all .3s ease-in;
+      }
+    }
+  }
+}

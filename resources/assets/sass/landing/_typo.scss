@@ -1,0 +1,60 @@
+.headline {
+  font-family: 'PoppinsSemiBold', sans-serif;
+  font-size: 54px;
+
+  &--white {
+    color: #fff;
+  }
+}
+
+.secondary-headline {
+  font-family: 'PoppinsSemiBold', sans-serif;
+  font-size: 42px;
+
+  &--white {
+    color: #fff;
+  }
+}
+
+.secondary-text {
+  font-size: 18px;
+  line-height: 34px;
+
+  &--gray {
+    color: #9B9B9B;
+  }
+
+  &--small {
+    font-size: 14px;
+    line-height: 2;
+  }
+
+  &--white {
+    color: #fff;
+  }
+
+  &--dark {
+    color: #51565F;
+  }
+}
+
+.section-heading {
+  font-size: 18px;
+  font-family: 'PoppinsLight';
+  text-transform: uppercase;
+  margin-bottom: 30px;
+  word-spacing: 4px;
+  letter-spacing: 1px;
+
+  &--centered {
+    text-align: center;
+  }
+
+  &--white {
+    color: #fff;
+  }
+
+  &--dark {
+    color: #51565F;
+  }
+}

@@ -1,0 +1,38 @@
+ .benefits {
+  &__headline {
+    margin-bottom: 60px;
+  }
+
+  &__item {
+    margin-bottom: 40px;
+  }
+
+  &__item-title {
+    margin-top: 0px;
+    margin-bottom: 14px;
+    text-transform: uppercase;
+    font-size: 16px;
+    word-spacing: 6px;
+    letter-spacing: 3px;
+  }
+
+  &__btn {
+    border: none;
+    margin-top: 20px;
+    font-weight: bold;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+
+  &__plate {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: url('/images/plate.png') no-repeat;
+  }
+
+}

@@ -1,0 +1,20 @@
+.footer {
+  padding-bottom: 20px;
+
+  &__copy {
+    color: #fff;
+  }
+
+  &__socials {
+    margin-bottom: 0;
+  }
+
+  &__socials-item {
+    display: inline-block;
+
+    a {
+      color: #fff;
+      padding: 6px 12px;
+    }
+  }
+}
