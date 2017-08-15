@@ -4,8 +4,9 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-4 col-lg-offset-4" style="padding-top: 120px">
-        <div class="panel">
-          <div class="panel-body">
+        <div class="panel account-panel">
+
+          <div class="panel-body account-panel__body">
 
             <form role="form" method="POST" action="{{ route('login') }}">
               {{ csrf_field() }}
@@ -39,16 +40,19 @@
               </div>
 
               <div class="form-group">
-                <button type="submit" class="btn btn-primary btn-block">
-                  Login
+                <button type="submit" class="btn btn--primary btn-block">
+                  Masuk
                 </button>
-                <a class="btn btn-link" href="{{ route('password.request') }}">
-                  Forgot Your Password?
-                </a>
               </div>
 
             </form>
 
+          </div>
+
+          <div class="panel-footer account-panel__footer">
+            <a href="{{ route('password.request') }}">
+              Lupa Password?
+            </a>
           </div>
         </div>
       </div>

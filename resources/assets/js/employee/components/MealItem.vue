@@ -11,7 +11,7 @@
       </a>
       <div class="meal-card__detail">
         <div class="meal-card__point">
-          16 Poin
+          {{ meal.final_price | rupiah }}
         </div>
         <div class="meal-card-info">
           <div class="meal-card-info__vendor">

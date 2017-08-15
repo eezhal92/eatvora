@@ -146,6 +146,7 @@
             <div class="meal-item__detail">
               <div class="meal-item__title">Nasi Kuning Ayam Bakar</div>
               <div class="meal-item__vendor">Oleh Dapur Lulu</div>
+              <div class="meal-item__qty">1 pcs</div>
             </div>
           </div>
           <div class="meal-item">
@@ -155,6 +156,7 @@
             <div class="meal-item__detail">
               <div class="meal-item__title">Gado-gado</div>
               <div class="meal-item__vendor">Oleh Dapur Lulu</div>
+              <div class="meal-item__qty">2 pcs</div>
             </div>
           </div>
         </div>
@@ -169,6 +171,7 @@
             <div class="meal-item__detail">
               <div class="meal-item__title">Nasi Kuning Ayam Bakar</div>
               <div class="meal-item__vendor">Oleh Dapur Lulu</div>
+              <div class="meal-item__qty">2 pcs</div>
             </div>
           </div>
         </div>
@@ -207,6 +210,7 @@
             <div class="meal-item__detail">
               <div class="meal-item__title">Nasi Kuning Ayam Bakar</div>
               <div class="meal-item__vendor">Oleh Dapur Lulu</div>
+              <div class="meal-item__qty">2 pcs</div>
             </div>
           </div>
           <div class="meal-item">
@@ -216,6 +220,7 @@
             <div class="meal-item__detail">
               <div class="meal-item__title">Gado-gado</div>
               <div class="meal-item__vendor">Oleh Dapur Lulu</div>
+              <div class="meal-item__qty">2 pcs</div>
             </div>
           </div>
         </div>

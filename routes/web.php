@@ -17,6 +17,10 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::get('/register', function () {
+    abort(404);
+});
+
 Route::get('/logout', 'Auth\LoginController@logout');
 
 Route::group(['middleware' => ['auth', 'company']], function () {

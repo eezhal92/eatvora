@@ -16,10 +16,13 @@
           </div>
         </div>
         <div class="col-xs-2">
-          <div>Qty <input class="cart-item-qty" @input="updateItemQuantity" type="number" min="1" max="5" v-model="qty" /></div>
+          <div>
+            Qty
+            <input class="cart-item-qty" onkeydown="return false;" @input="updateItemQuantity" type="number" min="1" max="5" v-model="qty" />
+          </div>
         </div>
         <div class="col-xs-2">
-          <div class="menu-price">{{ meal.qty * meal.price | rupiah }}</div>
+          <div class="menu-price">{{ meal.qty * meal.final_price | rupiah }}</div>
         </div>
       </div>
     </div>

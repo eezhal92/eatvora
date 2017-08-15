@@ -25,7 +25,7 @@ const groupedCartItems = state => {
 const cartTotal = state => {
   const { cartItems } = state;
   const total = Object.keys(cartItems).reduce((total, date) => {
-    const subTotal = cartItems[date].reduce((tot, item) => tot + (item.price * item.qty), 0);
+    const subTotal = cartItems[date].reduce((tot, item) => tot + (item.final_price * item.qty), 0);
 
     return subTotal + total;
   }, 0)

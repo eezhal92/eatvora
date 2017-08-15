@@ -101,11 +101,16 @@ class Cart extends Model
 
     public function items()
     {
-        return \DB::table('carts')->join('cart_items', 'carts.id', '=', 'cart_items.cart_id')
-            ->join('menus', 'cart_items.menu_id', '=', 'menus.id')
+        return Menu::join('cart_items', 'cart_items.menu_id', '=', 'menus.id')
             ->join('vendors', 'menus.vendor_id', '=', 'vendors.id')
+            ->join('carts', 'carts.id', '=', 'cart_items.cart_id')
             ->select('menus.*', \DB::raw('cart_items.id as cart_item_id'), 'cart_items.qty', 'cart_items.date', 'vendors.name as vendorName')
             ->get();
+        // return \DB::table('carts')->join('cart_items', 'carts.id', '=', 'cart_items.cart_id')
+        //     ->join('menus', 'cart_items.menu_id', '=', 'menus.id')
+        //     ->join('vendors', 'menus.vendor_id', '=', 'vendors.id')
+        //     ->select('menus.*', \DB::raw('cart_items.id as cart_item_id'), 'cart_items.qty', 'cart_items.date', 'vendors.name as vendorName')
+        //     ->get();
     }
 
     private function findMeals()
