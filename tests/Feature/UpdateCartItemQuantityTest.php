@@ -36,9 +36,7 @@ class UpdateCartItemQuantityTest extends TestCase
             'date' => $nextWeekDayDates->first()->format('Y-m-d'),
         ]);
 
-        $cart = Cart::create([
-            'employee_id' => $employee->id,
-        ]);
+        $cart = Cart::of($employee);
 
         $cart->addItem($menu->id, 2, $nextWeekDayDates->first());
 

@@ -29,6 +29,8 @@ class OrderController extends Controller
             $reservation = $cart->reserveMeals();
 
             $order = $reservation->complete($balanceService);
+
+            $cart->removeItems();
         } catch (NotEnoughBalanceException $e) {
             $reservation->cancel();
 

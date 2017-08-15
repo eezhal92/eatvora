@@ -8,6 +8,7 @@ use App\Order;
 use App\Employee;
 use Carbon\Carbon;
 use Tests\TestCase;
+use App\Services\ScheduleService;
 use App\Exceptions\NotEnoughMealsException;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -21,26 +22,54 @@ class CartTest extends TestCase
     use DatabaseMigrations;
 
     /** @test */
-    public function able_to_retrieve_a_cart_by_employee()
+    public function create_cart_for_next_week()
     {
-        $employee = factory(Employee::class)->create();
-        $cart = factory(Cart::class)->create([
-            'employee_id' => $employee->id,
-        ]);
+        $pretendedCurrentDate = Carbon::create(2017, 8, 14);
 
-        $foundCart = Cart::of($employee);
+        Carbon::setTestNow($pretendedCurrentDate);
 
-        $this->assertEquals($cart->id, $foundCart->id);
-    }
-
-    /** @test */
-    public function create_new_cart_when_not_found()
-    {
         $employee = factory(Employee::class)->create();
 
         $cart = Cart::of($employee);
 
-        $this->assertEquals($employee->id, $cart->employee_id);
+        $this->assertEquals($cart->employee_id, $employee->id);
+        $this->assertEquals($cart->start_date, '2017-08-21');
+        $this->assertEquals($cart->end_date, '2017-08-25');
+    }
+
+    /** @test */
+    public function can_retrieve_cart_for_next_week()
+    {
+        $pretendedCurrentDate = Carbon::create(2017, 8, 14);
+
+        Carbon::setTestNow($pretendedCurrentDate);
+
+        $schedule = app()->make(ScheduleService::class);
+
+        $currentWeekDays = $schedule->nextWeekDayDates()->map->subWeek();
+        $lastWeekDays = $schedule->nextWeekDayDates()->map->subWeek(2);
+
+        $employee = factory(Employee::class)->create();
+
+        // create this week and last week cart
+        factory(Cart::class)->create([
+            'employee_id' => $employee->id,
+            'start_date' => $lastWeekDays->first()->format('Y-m-d'),
+            'end_date' => $lastWeekDays->last()->format('Y-m-d'),
+        ]);
+
+        factory(Cart::class)->create([
+            'employee_id' => $employee->id,
+            'start_date' => $currentWeekDays->first()->format('Y-m-d'),
+            'end_date' => $currentWeekDays->last()->format('Y-m-d'),
+        ]);
+
+        // create next week cart
+        $cart = factory(Cart::class)->create(['employee_id' => $employee->id ]);
+
+        $foundCart = Cart::of($employee);
+
+        $this->assertEquals($cart->id, $foundCart->id);
     }
 
     /** @test */
@@ -52,9 +81,7 @@ class CartTest extends TestCase
 
         $employee = factory(Employee::class)->create();
 
-        $cart = Cart::create([
-            'employee_id' => $employee->id,
-        ]);
+        $cart = Cart::of($employee);
 
         $nextModay = Carbon::now()->addWeek()->startOfWeek();
         $cart->addItem($menuA->id, 2, $nextModay);
@@ -75,9 +102,7 @@ class CartTest extends TestCase
 
         $employee = factory(Employee::class)->create();
 
-        $cart = Cart::create([
-            'employee_id' => $employee->id,
-        ]);
+        $cart = Cart::of($employee);
 
         $nextMonday = Carbon::now()->addWeek()->startOfWeek();
         $cart->addItem($menuA->id, 2, $nextMonday);
@@ -91,7 +116,7 @@ class CartTest extends TestCase
     }
 
     /** @test */
-    public function able_to_retrieve_cart_items()
+    public function able_to_retrieve_correct_cart_items()
     {
         $menuA = factory(Menu::class)->create([
             'name' => 'Sate Sapi',
@@ -102,12 +127,20 @@ class CartTest extends TestCase
 
         $employee = factory(Employee::class)->create();
 
-        $cart = Cart::create([
+        // This week cart
+        $thisMonday = Carbon::now()->startOfWeek();
+        $cart = factory(Cart::class)->create([
             'employee_id' => $employee->id,
+            'start_date' => $thisMonday->format('Y-m-d'),
+            'end_date' => $thisMonday->addDay(5)->format('Y-m-d'),
         ]);
+        $cart->addItem($menuA->id, 90, $thisMonday);
 
-        $nextMonday = Carbon::now()->addWeek()->startOfWeek();
-        $nextTuesday = $nextMonday->copy()->startOfWeek();
+        // Next week cart
+        $cart = Cart::of($employee);
+
+        $nextMonday = $thisMonday->copy()->addWeek();
+        $nextTuesday = $nextMonday->copy()->addDay();
 
         $cart->addItem($menuA->id, 2, $nextMonday);
         $cart->addItem($menuA->id, 3, $nextMonday);
@@ -132,6 +165,27 @@ class CartTest extends TestCase
             ],
         ], $items);
     }
+
+    // /** @test */
+    // public function determine_whether_cart_already_has_order_placed()
+    // {
+    //     $menuA = factory(Menu::class)->create([
+    //         'name' => 'Sate Sapi',
+    //     ]);
+
+    //     $employee = factory(Employee::class)->create();
+
+    //     $cart = Cart::of($employee);
+
+    //     $nextModay = Carbon::now()->addWeek()->startOfWeek();
+    //     $cart->addItem($menuA->id, 2, $nextModay);
+
+    //     $this->assertDatabaseHas('cart_items', [
+    //         'menu_id' => $menuA->id,
+    //         'qty' => 2,
+    //         'date' => $nextModay->format('Y-m-d'),
+    //     ]);
+    // }
 
     /** @test */
     public function cannot_reserve_meals_that_have_already_been_ordered()

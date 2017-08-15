@@ -10,8 +10,9 @@ use App\Company;
 use App\Office;
 use App\Employee;
 use App\Schedule;
-use App\CompanyPayment;
 use Carbon\Carbon;
+use App\CompanyPayment;
+use App\Services\ScheduleService;
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 $factory->define(User::class, function (Faker\Generator $faker) {
@@ -111,10 +112,15 @@ $factory->state(Employee::class, 'admin', function (Faker\Generator $faker) {
 });
 
 $factory->define(Cart::class, function (Faker\Generator $faker) {
+    $schedule = new ScheduleService();
+    $dates = $schedule->nextWeekDayDates();
+
     return [
         'employee_id' => function () {
             return factory(Employee::class)->create()->id;
         },
+        'start_date' => $dates->first()->format('Y-m-d'),
+        'end_date' => $dates->last()->format('Y-m-d'),
     ];
 });
 

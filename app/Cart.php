@@ -3,12 +3,17 @@
 namespace App;
 
 use Carbon\Carbon;
+use App\Services\ScheduleService;
 use Illuminate\Database\Eloquent\Model;
 use App\Exceptions\NotEnoughMealsException;
 
 class Cart extends Model
 {
-    protected $fillable = ['employee_id'];
+    const NEXT_WEEK_ORDER_PLACED = 'placed';
+
+    const NEXT_WEEK_ORDER_NOT_PLACED_YET = 'not_placed_yet';
+
+    protected $guarded = [];
 
     public function menus()
     {
@@ -25,12 +30,29 @@ class Cart extends Model
         return $this->belongsTo(Employee::class);
     }
 
+    /**
+     * Create or retrieve employee cart for next week
+     *
+     * @param  Employee $employee
+     * @return self
+     */
     public static function of(Employee $employee)
     {
-        $cart = static::where('employee_id', $employee->id)->first();
+        $schedule = app()->make(ScheduleService::class);
+
+        $days = $schedule->nextWeekDayDates();
+
+        $cart = static::where('employee_id', $employee->id)
+            ->where('start_date', $days->first()->format('Y-m-d'))
+            ->where('end_date', $days->last()->format('Y-m-d'))
+            ->first();
 
         if (is_null($cart)) {
-            return static::create(['employee_id' => $employee->id]);
+            return static::create([
+                'employee_id' => $employee->id,
+                'start_date' => $days->first()->format('Y-m-d'),
+                'end_date' => $days->last()->format('Y-m-d'),
+            ]);
         }
 
         return $cart;
@@ -104,13 +126,15 @@ class Cart extends Model
         return Menu::join('cart_items', 'cart_items.menu_id', '=', 'menus.id')
             ->join('vendors', 'menus.vendor_id', '=', 'vendors.id')
             ->join('carts', 'carts.id', '=', 'cart_items.cart_id')
+            ->where('carts.start_date', $this->start_date)
+            ->where('carts.end_date', $this->end_date)
             ->select('menus.*', \DB::raw('cart_items.id as cart_item_id'), 'cart_items.qty', 'cart_items.date', 'vendors.name as vendorName')
             ->get();
-        // return \DB::table('carts')->join('cart_items', 'carts.id', '=', 'cart_items.cart_id')
-        //     ->join('menus', 'cart_items.menu_id', '=', 'menus.id')
-        //     ->join('vendors', 'menus.vendor_id', '=', 'vendors.id')
-        //     ->select('menus.*', \DB::raw('cart_items.id as cart_item_id'), 'cart_items.qty', 'cart_items.date', 'vendors.name as vendorName')
-        //     ->get();
+    }
+
+    public function removeItems()
+    {
+        return CartItem::where('cart_id', $this->id)->delete();
     }
 
     private function findMeals()
