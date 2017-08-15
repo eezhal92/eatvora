@@ -1,11 +1,19 @@
 .featured-meals {
   &__heading {
-    margin: 0;
+    margin: 20px 0;
+    text-align: center;
+
+    @media (min-width: 768px) {
+      margin: 0;
+      text-align: left;
+    }
   }
 
   &__row {
-    display: flex;
-    align-items: center;
+    @media (min-width: 768px) {
+      display: flex;
+      align-items: center;
+    }
   }
 
   &__spoon {

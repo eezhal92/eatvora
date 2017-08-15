@@ -4,7 +4,7 @@
       <div class="navigation__logo">
         <a href="#" class="navigation__logo-typo">eatvora</a>
       </div>
-      <ul class="navigation__main-nav pull-right">
+      <ul class="navigation__main-nav pull-right hidden-xs">
         @if (Route::has('login'))
             @if (Auth::check())
                 <li><a href="{{ url('/home') }}">Home</a></li>

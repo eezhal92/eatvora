@@ -1,6 +1,19 @@
 .clients {
   &__heading {
     margin-bottom: 20px;
+    text-align: center;
+
+    @media (min-width: 768px) {
+      text-align: left;
+    }
+  }
+
+  &__action {
+    text-align: center;
+
+    @media (min-width: 768px) {
+      text-align: left;
+    }
   }
 
   &__btn {
@@ -14,13 +27,24 @@
   }
 
   &__logo-row {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
     margin-bottom: 30px;
+
+    @media (min-width: 768px) {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
   }
 
   &__logo-item {
-    display: inline-block;
+    display: block;
+    margin-bottom: 30px;
+    text-align: center;
+
+    @media (min-width: 768px) {
+      text-align: none;
+      margin-bottom: 0px;
+      display: inline-block;
+    }
   }
 }

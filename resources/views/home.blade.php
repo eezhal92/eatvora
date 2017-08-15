@@ -1,6 +1,6 @@
 @extends('layouts.landing')
 
-@section('title', 'Awesome Title Goes Here')
+@section('title', 'eatvora - Your office lunch solution')
 
 @section('content')
 
@@ -9,23 +9,24 @@
     <div class="container container--small">
       <div class="row">
 
-        <div style="padding-top: 100px">
+        <div class="hero__content">
           <div class="col-xs-12 col-sm-6">
 
-            <h2 class="headline headline--white">Have problem with your lunch choice?</h2>
-            <p class="description secondary-text secondary-text--white">send our quick notes for order catering for your office or special event</p>
+            <h2 class="headline headline--white">Have problem with your office lunch?</h2>
+            <p class="description secondary-text secondary-text--white">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quia cum!</p>
 
           </div>
 
           <div class="col-xs-12 col-sm-offset-1 col-sm-5">
 
-            <div class="form-condensed">
-              <h3 class="form-condensed__heading">Find it more</h3>
-              <form class="form-condensed" action="">
+            <div class="form-condensed hero__form">
+              <h3 class="form-condensed__heading form-condensed__heading--white">Find it more</h3>
+              <form class="form-condensed" action="" method="post">
                 <input class="form-condensed__input" type="text" name="name" placeholder="Name" autocomplete="off">
                 <input class="form-condensed__input" type="text" name="email" placeholder="Email" autocomplete="off">
                 <input class="form-condensed__input" type="text" name="company" placeholder="Company" autocomplete="off">
-                <button class="form-condensed__button btn btn--primary">Submit</button>
+                {{ csrf_field() }}
+                <button class="form-condensed__button btn btn--primary">Submit <i class="fa fa-chevron-right form-condensed__chevron"></i></button>
               </form>
             </div>
         </div>
@@ -54,7 +55,7 @@
               <div class="steps__img-wrapper">
                 <img src="{{ url('/images/tray.png') }}" class="img-responsive steps__img" alt="">
               </div>
-              <h4 class="steps__heading">Rencanakan</h4>
+              <h4 class="steps__heading">Make Plan</h4>
               <p class="secondary-text  steps__item-desc secondary-text--small secondary-text--gray text-center">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis cum odit doloribus quibusdam minima, iste nulla placeat.</p>
             </div>
           </div>
@@ -64,7 +65,7 @@
               <div class="steps__img-wrapper">
                 <img src="{{ url('/images/chef.png') }}" class="img-responsive steps__img" alt="">
               </div>
-              <h4 class="steps__heading">Pesan</h4>
+              <h4 class="steps__heading">Checkout</h4>
               <p class="secondary-text steps__item-desc secondary-text--small secondary-text--gray text-center">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis cum odit doloribus quibusdam minima, iste nulla placeat.</p>
             </div>
           </div>
@@ -74,7 +75,7 @@
               <div class="steps__img-wrapper">
                 <img src="{{ url('/images/cutlery.png') }}" class="img-responsive steps__img" alt="">
               </div>
-              <h4 class="steps__heading">Nikmati!</h4>
+              <h4 class="steps__heading">Enjoy It!</h4>
               <p class="secondary-text  steps__item-desc secondary-text--small secondary-text--gray text-center">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis cum odit doloribus quibusdam minima, iste nulla placeat.</p>
             </div>
           </div>
@@ -97,13 +98,13 @@
             <div class="col-xs-12 col-sm-6">
               <div class="benefits__item">
                 <h4 class="benefits__item-title">Lotsa Choice</h4>
-                <p class="secondary-text secondary-text--small secondary-text--gray">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis cum odit doloribus quibusdam minima, iste nulla placeat.</p>
+                <p class="secondary-text secondary-text--small secondary-text--gray benefits__desc">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis cum odit doloribus quibusdam minima, iste nulla placeat.</p>
               </div>
             </div>
             <div class="col-xs-12 col-sm-6">
               <div class="benefits__item">
                 <h4 class="benefits__item-title">Healthy</h4>
-                <p class="secondary-text secondary-text--small secondary-text--gray">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis cum odit doloribus quibusdam minima, iste nulla placeat.</p>
+                <p class="secondary-text secondary-text--small secondary-text--gray benefits__desc">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis cum odit doloribus quibusdam minima, iste nulla placeat.</p>
               </div>
             </div>
           </div>
@@ -112,13 +113,13 @@
             <div class="col-xs-12 col-sm-6">
               <div class="benefits__item">
                 <h4 class="benefits__item-title">Fair point system</h4>
-                <p class="secondary-text secondary-text--small secondary-text--gray">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis cum odit doloribus quibusdam minima, iste nulla placeat.</p>
+                <p class="secondary-text secondary-text--small secondary-text--gray benefits__desc">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis cum odit doloribus quibusdam minima, iste nulla placeat.</p>
               </div>
             </div>
             <div class="col-xs-12 col-sm-6">
               <div class="benefits__item">
                 <h4 class="benefits__item-title">Halal</h4>
-                <p class="secondary-text secondary-text--small secondary-text--gray">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis cum odit doloribus quibusdam minima, iste nulla placeat.</p>
+                <p class="secondary-text secondary-text--small secondary-text--gray benefits__desc">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis cum odit doloribus quibusdam minima, iste nulla placeat.</p>
               </div>
             </div>
           </div>
@@ -156,7 +157,9 @@
         <div class="col-xs-12 col-sm-4">
           <h3 class="section-heading section-heading--white clients__heading">They Like Us</h3>
           <p class="secondary-text secondary-text--small secondary-text--white">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae nobis animi enim at ex! Excepturi libero ab saepe, numquam sequi ullam. Ipsa aut molestiae placeat eum.</p>
-          <a href="#" class="btn btn--outline clients__btn">Request Demo</a>
+          <div class="clients__action">
+            <a href="#" class="btn btn--outline clients__btn">Request Demo</a>
+          </div>
         </div>
         <div class="col-xs-12 col-sm-offset-1 col-sm-7">
           <div class="clients__logos">
@@ -199,12 +202,13 @@
             <div class="contact-form">
               <div class="form-condensed">
                 <h3 class="form-condensed__heading form-condensed__heading--white">Find it more</h3>
-                <form class="form-condensed" action="">
+                <form class="form-condensed" action="" method="post">
                   <input class="form-condensed__input" type="text" name="name" placeholder="Name" autocomplete="off">
                   <input class="form-condensed__input" type="text" name="email" placeholder="Email" autocomplete="off">
                   <input class="form-condensed__input" type="text" name="company" placeholder="Company" autocomplete="off">
                   <textarea row="6" class="form-condensed__textarea" type="text" name="message" placeholder="Message" autocomplete="off"></textarea>
-                  <button class="form-condensed__button btn btn--primary">Submit</button>
+                  {{ csrf_field() }}
+                  <button class="form-condensed__button btn btn--primary">Submit <i class="fa fa-chevron-right form-condensed__chevron"></i></button>
                 </form>
               </div>
             </div>

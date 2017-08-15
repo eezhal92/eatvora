@@ -1,0 +1,17 @@
+.hero {
+  &__content {
+    padding-top: 40px;
+
+    @media (min-width: 768px) {
+      padding-top: 100px;
+    }
+  }
+
+  &__form {
+    margin-top: 60px;
+
+    @media (min-width: 768px) {
+      margin-top: 0px;
+    }
+  }
+}

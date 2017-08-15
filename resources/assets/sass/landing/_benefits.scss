@@ -35,4 +35,10 @@
     background: url('/images/plate.png') no-repeat;
   }
 
+  &__desc {
+    @media (max-width: 767px) {
+      color: #333333;
+      text-shadow: 2px 3px 6px rbga(#fff, .8);
+    }
+  }
 }
