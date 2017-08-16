@@ -8,7 +8,7 @@
         <i class="glyphicon glyphicon-eye-open"></i> Lihat Menu
       </a>
     </p>
-    <p v-else>
+    <p v-if="alreadyPlacedOrder">
       Terima Kasih, Anda telah memesan makan siang untuk minggu depan :)
     </p>
     <cart-item-by-date

@@ -113,6 +113,7 @@
 
 @section('body')
 <div class="container container--small">
+
   <div class="row">
     <div class="col-xs-12">
       <div class="page-title-greeting" style="margin-bottom: 28px">
@@ -123,108 +124,30 @@
       </div>
     </div>
   </div>
-  <!-- <div class="row">
-    <div class="col-xs-12">
-      <div class="greetings" style="padding: 8px 0 12px">
-        <h4></h4>
-      </div>
-    </div>
-  </div> -->
+
   <div class="row">
     <div class="col-xs-12 col-sm-4">
       <h2 class="home-sub-title">Minggu Ini</h2>
-      <div class="no-plan">
-        <p>Ooops! Belum pesan siang minggu ini</p>
-      </div>
-      <div class="meal-day">
-        <div class="meal-day__date">Senin, 17 Desember 2017</div>
-        <div class="meal-day__items">
-          <div class="meal-item">
-            <div class="meal-item__img-container">
-              <img src="http://lorempixel.com/110/100/food" class="meal-item__img" />
-            </div>
-            <div class="meal-item__detail">
-              <div class="meal-item__title">Nasi Kuning Ayam Bakar</div>
-              <div class="meal-item__vendor">Oleh Dapur Lulu</div>
-              <div class="meal-item__qty">1 pcs</div>
-            </div>
-          </div>
-          <div class="meal-item">
-            <div class="meal-item__img-container">
-              <img src="http://lorempixel.com/110/100/food" class="meal-item__img" />
-            </div>
-            <div class="meal-item__detail">
-              <div class="meal-item__title">Gado-gado</div>
-              <div class="meal-item__vendor">Oleh Dapur Lulu</div>
-              <div class="meal-item__qty">2 pcs</div>
-            </div>
-          </div>
+
+      <my-meal for="this-week">
+        <div slot="noMealMessage" class="no-plan">
+          <p>Tidak ada pesanan makan siang...</p>
         </div>
-      </div>
-      <div class="meal-day">
-        <div class="meal-day__date">Selasa, 18 Desember 2017</div>
-        <div class="meal-day__items">
-          <div class="meal-item">
-            <div class="meal-item__img-container">
-              <img src="http://lorempixel.com/110/100/food" class="meal-item__img" />
-            </div>
-            <div class="meal-item__detail">
-              <div class="meal-item__title">Nasi Kuning Ayam Bakar</div>
-              <div class="meal-item__vendor">Oleh Dapur Lulu</div>
-              <div class="meal-item__qty">2 pcs</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="meal-day">
-        <div class="meal-day__date">Rabu, 19 Desember 2017</div>
-        <div class="meal-day__items">
-          <div class="meal-item">
-            <div class="meal-item__img-container">
-              <img src="http://lorempixel.com/110/100/food" class="meal-item__img" />
-            </div>
-            <div class="meal-item__detail">
-              <div class="meal-item__title">Nasi Kuning Ayam Bakar</div>
-              <div class="meal-item__vendor">Oleh Dapur Lulu</div>
-              <div class="meal-item__qty">2 pcs</div>
-            </div>
-          </div>
-        </div>
-      </div>
+      </my-meal>
+
     </div>
     <div class="col-xs-12 col-sm-4">
       <h2 class="home-sub-title">Minggu Depan</h2>
-      <div class="no-plan">
-        <p>Ooops! Belum pesan siang minggu depan</p>
-        <br />
-        <a href="/meals" class="btn btn--primary btn-sm">
-          <i class="glyphicon glyphicon-eye-open"></i> Lihat Katalog</a>
-      </div>
-      <div class="meal-day">
-        <div class="meal-day__date">Senin, 25 Desember 2017</div>
-        <div class="meal-day__items">
-          <div class="meal-item">
-            <div class="meal-item__img-container">
-              <img src="http://lorempixel.com/110/100/food" class="meal-item__img" />
-            </div>
-            <div class="meal-item__detail">
-              <div class="meal-item__title">Nasi Kuning Ayam Bakar</div>
-              <div class="meal-item__vendor">Oleh Dapur Lulu</div>
-              <div class="meal-item__qty">2 pcs</div>
-            </div>
-          </div>
-          <div class="meal-item">
-            <div class="meal-item__img-container">
-              <img src="http://lorempixel.com/110/100/food" class="meal-item__img" />
-            </div>
-            <div class="meal-item__detail">
-              <div class="meal-item__title">Gado-gado</div>
-              <div class="meal-item__vendor">Oleh Dapur Lulu</div>
-              <div class="meal-item__qty">2 pcs</div>
-            </div>
-          </div>
+
+      <my-meal for="next-week">
+        <div slot="noMealMessage" class="no-plan">
+          <p>Ooops! Belum pesan siang minggu depan</p>
+          <br />
+          <a href="/meals" class="btn btn--primary btn-sm">
+            <i class="glyphicon glyphicon-eye-open"></i> Lihat Katalog</a>
         </div>
-      </div>
+      </my-meal>
+
     </div>
     <div class="col-xs-12 col-sm-4">
       <div class="balance-panel">

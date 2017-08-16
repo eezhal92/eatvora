@@ -20,6 +20,7 @@ Vue.component('cart', require('./components/Cart.vue'));
 Vue.component('cart-count', require('./components/CartCount.vue'));
 Vue.component('cart-summary', require('./components/CartSummary.vue'));
 Vue.component('alert', require('./components/Alert.vue'));
+Vue.component('my-meal', require('./components/MyMeal.vue'));
 
 Vue.filter('date',  value => moment(value).format('dddd, DD MMMM YYYY'));
 Vue.filter('day',  value => moment(value).format('dddd'));

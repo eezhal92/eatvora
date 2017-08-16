@@ -22,7 +22,6 @@ class MealController extends Controller
         return view('employee.meals.index', compact('nextWeekDayDates'));
     }
 
-
     public function show($date, $menuId)
     {
         try {
