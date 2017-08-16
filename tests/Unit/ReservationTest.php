@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\Meal;
+use App\Cart;
 use App\Menu;
 use App\Balance;
 use App\Employee;
@@ -20,13 +21,15 @@ class ReservationTest extends TestCase
     function calculating_the_total_cost()
     {
         $employee = factory(Employee::class)->create();
+        $cart = factory(Cart::class)->create();
+
         $meals = collect([
             json_decode(json_encode(['menu' => ['final_price' => 1200]])),
             json_decode(json_encode(['menu' => ['final_price' => 1200]])),
             json_decode(json_encode(['menu' => ['final_price' => 1200]])),
         ]);
 
-        $reservation = new Reservation($meals, $employee);
+        $reservation = new Reservation($cart, $meals, $employee);
 
         $this->assertEquals(3600, $reservation->totalCost());
     }
@@ -38,11 +41,13 @@ class ReservationTest extends TestCase
 
         $menu = factory(Menu::class)->create(['price' => 20000]);
         $employee = factory(Employee::class)->create();
+        $cart = factory(Cart::class)->create();
+
         Balance::employeeTopUp($employee, 100000);
 
         $meals = factory(Meal::class, 3)->create(['menu_id' => $menu->id]);
 
-        $reservation = new Reservation($meals, $employee);
+        $reservation = new Reservation($cart, $meals, $employee);
 
         $order = $reservation->complete($this->app[BalanceService::class]);
 

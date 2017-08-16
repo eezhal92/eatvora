@@ -6,10 +6,14 @@ class Reservation
 {
     private $employee;
 
+    private $cart;
+
     private $meals;
 
-    public function __construct($meals, $employee)
+    public function __construct($cart, $meals, $employee)
     {
+        $this->cart = $cart;
+
         $this->meals = $meals;
 
         $this->employee = $employee;
@@ -31,6 +35,8 @@ class Reservation
         $balance->update([
             'description' => sprintf('Payment for order #%s', $order->id),
         ]);
+
+        $this->cart->update(['order_id' => $order->id]);
 
         return $order;
     }

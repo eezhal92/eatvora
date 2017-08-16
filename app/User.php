@@ -9,11 +9,6 @@ class User extends Authenticatable
 {
     use Notifiable;
 
-    const NEXT_WEEK_ORDER_PLACED = 'placed';
-
-    const NEXT_WEEK_ORDER_NOT_PLACED_YET = 'not_placed_yet';
-
-
     /**
      * The attributes that are mass assignable.
      *

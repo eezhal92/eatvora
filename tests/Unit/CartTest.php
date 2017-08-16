@@ -166,27 +166,6 @@ class CartTest extends TestCase
         ], $items);
     }
 
-    // /** @test */
-    // public function determine_whether_cart_already_has_order_placed()
-    // {
-    //     $menuA = factory(Menu::class)->create([
-    //         'name' => 'Sate Sapi',
-    //     ]);
-
-    //     $employee = factory(Employee::class)->create();
-
-    //     $cart = Cart::of($employee);
-
-    //     $nextModay = Carbon::now()->addWeek()->startOfWeek();
-    //     $cart->addItem($menuA->id, 2, $nextModay);
-
-    //     $this->assertDatabaseHas('cart_items', [
-    //         'menu_id' => $menuA->id,
-    //         'qty' => 2,
-    //         'date' => $nextModay->format('Y-m-d'),
-    //     ]);
-    // }
-
     /** @test */
     public function cannot_reserve_meals_that_have_already_been_ordered()
     {
@@ -233,5 +212,22 @@ class CartTest extends TestCase
         }
 
         $this->fail("Reserving tickets succeeded even though the tickets were already reserved.");
+    }
+
+      /** @test */
+    public function determine_whether_cart_already_has_order_placed()
+    {
+        $menuA = factory(Menu::class)->create(['name' => 'Sate Sapi']);
+        $menuB = factory(Menu::class)->create(['name' => 'Sate Ayam']);
+
+        $employee = factory(Employee::class)->create();
+
+        $cart = Cart::of($employee);
+
+        $order = factory(Order::class)->create();
+
+        $cart->update(['order_id' => $order->id]);
+
+        $this->assertTrue($cart->already_placed_order);
     }
 }

@@ -18,6 +18,7 @@ class CreateCartsTable extends Migration
             $table->integer('employee_id')->unsigned();
             $table->date('start_date');
             $table->date('end_date');
+            $table->integer('order_id')->unsigned()->nullable();
             $table->timestamps();
         });
     }

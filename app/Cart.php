@@ -30,6 +30,11 @@ class Cart extends Model
         return $this->belongsTo(Employee::class);
     }
 
+    public function getAlreadyPlacedOrderAttribute()
+    {
+        return !!$this->order_id;
+    }
+
     /**
      * Create or retrieve employee cart for next week
      *
@@ -160,6 +165,6 @@ class Cart extends Model
             $meal->reserve();
         });
 
-        return new Reservation($meals, $this->employee);
+        return new Reservation($this, $meals, $this->employee);
     }
 }
