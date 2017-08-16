@@ -2,19 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Balance;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-    }
-
     /**
      * Show the application dashboard.
      *
@@ -22,6 +14,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('dashboard');
+        $balances = Balance::where('user_id', auth()->user()->id)
+            ->take(5)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('dashboard', compact('balances'));
     }
 }

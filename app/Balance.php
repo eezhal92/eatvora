@@ -32,4 +32,15 @@ class Balance extends Model
             'amount' => -$amount,
         ]);
     }
+
+    public function formattedAmount()
+    {
+        $formattedAmount = number_format((string) abs($this->amount));
+
+        if ($this->amount < 0) {
+            return sprintf('- Rp. %s', $formattedAmount);
+        }
+
+        return sprintf('+ Rp. %s', $formattedAmount);
+    }
 }

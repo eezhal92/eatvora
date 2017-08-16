@@ -1,13 +1,15 @@
 <template>
   <div class="cart-summary">
-    <div class="cart-summary__total">
-      <div class="cart-summary__total-heading">Total</div>
-      <div class="cart-summary__total-amount">{{ cartTotal | rupiah }}</div>
+    <div v-if="!alreadyPlacedOrder">
+      <div class="cart-summary__total">
+        <div class="cart-summary__total-heading">Total</div>
+        <div class="cart-summary__total-amount">{{ cartTotal | rupiah }}</div>
+      </div>
+      <br>
+      <button @click="checkout" class="btn btn--primary btn-block">
+        Checkout
+      </button>
     </div>
-    <br>
-    <button @click="checkout" class="btn btn--primary btn-block">
-      Checkout
-    </button>
   </div>
 </template>
 
@@ -17,7 +19,7 @@ import { mapGetters, mapActions } from 'vuex';
 
 export default {
   computed: {
-    ...mapGetters(['cartTotal'])
+    ...mapGetters(['cartTotal', 'alreadyPlacedOrder'])
   },
   methods: {
     ...mapActions(['setAlreadyPlacedOrder']),

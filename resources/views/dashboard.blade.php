@@ -238,27 +238,21 @@
           <h2 class="home-panel__heading">Aktivitas</h2>
           <table class="balance-logs__table">
             <tbody>
+              @foreach ($balances as $balance)
               <tr>
-                <td>18/08</td>
-                <td>Top-up dari perusahaan ...</td>
+                <td>{{ $balance->created_at->format('d/m') }}</td>
                 <td>
-                  <span class="balance-added">+ 200 poin</span>
+                  <span title="{{ $balance->description }}">{{ str_limit($balance->description, 14, '...') }}</span>
+                </td>
+                <td>
+                  @if ($balance->amount > 0)
+                    <span class="balance-added">{{ $balance->formattedAmount() }}</span>
+                  @else
+                    <span>{{ $balance->formattedAmount() }}</span>
+                  @endif
                 </td>
               </tr>
-              <tr>
-                <td>17/08</td>
-                <td>Pembayaran order #27 ...</td>
-                <td>
-                  <span>- 120 poin</span>
-                </td>
-              </tr>
-              <tr>
-                <td>10/08</td>
-                <td>Top-up dari perusahaan ...</td>
-                <td>
-                  <span class="balance-added">+ 200 poin</span>
-                </td>
-              </tr>
+              @endforeach
             </tbody>
           </table>
           <div class="balance-log__action">
