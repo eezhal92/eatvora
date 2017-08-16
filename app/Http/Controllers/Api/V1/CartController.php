@@ -26,7 +26,10 @@ class CartController extends Controller
 
         $items = $cart->items()->sortByDesc('date')->groupBy('date');
 
-        return response()->json($items);
+        return response()->json([
+            'already_placed_order' => $cart->already_placed_order,
+            'items' => $items,
+        ]);
     }
 
     public function store()
@@ -64,7 +67,9 @@ class CartController extends Controller
 
         $cart->updateItem(request('menu_id'), request('qty'), Carbon::parse(request('date')));
 
-        return response()->json($cart->items());
+        return response()->json([
+            'items' => $cart->items(),
+        ]);
     }
 
     public function remove()
@@ -78,6 +83,8 @@ class CartController extends Controller
 
         $cart->removeItem(request('menu_id'), Carbon::parse(request('date')));
 
-        return response()->json($cart->items());
+        return response()->json([
+            'items' => $cart->items(),
+        ]);
     }
 }

@@ -46,10 +46,13 @@ const allCartItemIds = state => {
   return allIds;
 };
 
+const alreadyPlacedOrder = state => state.alreadyPlacedOrder;
+
 export default {
   count,
   cartTotal,
   cartItemsCount,
   allCartItemIds,
   groupedCartItems,
+  alreadyPlacedOrder,
 };

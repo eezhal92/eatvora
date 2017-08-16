@@ -5,6 +5,7 @@ import mutations from './mutations';
 const state = {
   counter: 0,
   cartItems: {},
+  alreadyPlacedOrder: false,
 };
 
 export default {

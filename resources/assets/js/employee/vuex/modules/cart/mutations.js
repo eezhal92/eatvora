@@ -45,4 +45,12 @@ export default {
       Vue.delete(state.cartItems, payload.date);
     }
   },
+
+  [TYPES.SET_ALREADY_PLACED_ORDER](state, payload) {
+    state.alreadyPlacedOrder = payload.alreadyPlacedOrder;
+  },
+
+  [TYPES.CLEAR_CART_ITEMS](state) {
+    state.cartItems = {};
+  }
 };

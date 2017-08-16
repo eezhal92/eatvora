@@ -13,19 +13,20 @@
 
 <script>
 import bus from './bus';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   computed: {
     ...mapGetters(['cartTotal'])
   },
   methods: {
+    ...mapActions(['setAlreadyPlacedOrder']),
     checkout() {
       bus.$emit('alert:hide');
 
       axios.post('/api/v1/orders')
         .then(() => {
-          alert('Successful');
+          this.setAlreadyPlacedOrder(true);
         })
         .catch(({ response }) => {
           if (response.data && response.data.message) {

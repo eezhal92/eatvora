@@ -1,7 +1,15 @@
 <template>
   <div class="cart">
-    <p v-if="!cartItemsCount">
-      Ooops! Keranjang Anda Masih Kosong
+    <p v-if="!cartItemsCount && !alreadyPlacedOrder">
+      Ooops! Keranjang Anda Masih Kosong.
+      <br />
+      <br />
+      <a href="/meals" class="btn btn--primary btn-sm">
+        <i class="glyphicon glyphicon-eye-open"></i> Lihat Menu
+      </a>
+    </p>
+    <p v-else>
+      Terima Kasih, Anda telah memesan makan siang untuk minggu depan :)
     </p>
     <cart-item-by-date
       v-for="group in groupedItems"
@@ -20,7 +28,8 @@ export default {
   computed: {
     ...mapGetters({
       groupedItems: 'groupedCartItems',
-      cartItemsCount:  'cartItemsCount',
+      cartItemsCount: 'cartItemsCount',
+      alreadyPlacedOrder: 'alreadyPlacedOrder',
     }),
   },
   components: {
