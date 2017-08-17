@@ -8,8 +8,8 @@ use App\Cart;
 use App\Vendor;
 use App\Office;
 use App\Company;
+use MealFactory;
 use App\Employee;
-use App\Schedule;
 use Carbon\Carbon;
 use Tests\TestCase;
 use App\Services\ScheduleService;
@@ -73,9 +73,8 @@ class AddMealToCartTest extends TestCase
             'vendor_id' => $vendor->id,
         ]));
 
-        $schedule = factory(Schedule::class)->create([
-            'menu_id' => $menu->id,
-            'date' => $nextMonday->format('Y-m-d'),
+        MealFactory::createWithDates([
+            $nextMonday->format('Y-m-d') => [$menu],
         ]);
 
         $company = factory(Company::class)->create([
@@ -94,7 +93,7 @@ class AddMealToCartTest extends TestCase
         // Act
         $response = $this->actingAs($user)
             ->withSession([
-                'office_id' => $office->id,
+                'employee_id' => $employee->id,
                 'company_id' => $company->id
             ])
             ->json('post', '/api/v1/cart', [
@@ -140,9 +139,8 @@ class AddMealToCartTest extends TestCase
             'vendor_id' => $vendor->id,
         ]));
 
-        $schedule = factory(Schedule::class)->create([
-            'menu_id' => $menu->id,
-            'date' => $nextMonday->format('Y-m-d'),
+        MealFactory::createWithDates([
+            $nextMonday->format('Y-m-d') => [$menu],
         ]);
 
         // Act

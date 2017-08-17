@@ -9,7 +9,6 @@ use App\Vendor;
 use App\Company;
 use App\Office;
 use App\Employee;
-use App\Schedule;
 use Carbon\Carbon;
 use App\CompanyPayment;
 use App\Services\ScheduleService;
@@ -160,11 +159,5 @@ $factory->define(Order::class, function (Faker\Generator $faker) {
             return $employee->user->id;
         },
         'amount' => 80000,
-    ];
-});
-
-$factory->define(Schedule::class, function (Faker\Generator $faker) {
-    return [
-
     ];
 });

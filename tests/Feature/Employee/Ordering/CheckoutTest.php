@@ -89,7 +89,7 @@ class CheckoutTest extends TestCase
     private function addMealsToCart()
     {
         $this->meals->each(function ($item) {
-            $this->cart->addItem($item['menu'], $item['cart_qty'], Carbon::parse($item['date']));
+            $this->cart->addItem($item['menu'], $item['cart_qty'], Carbon::parse($item['date'])->format('Y-m-d'));
         });
     }
 
@@ -111,9 +111,11 @@ class CheckoutTest extends TestCase
     /** @test */
     public function user_can_order_meals_in_cart()
     {
+        $this->withExceptionHandling();
+
         Balance::employeeTopUp($this->employee, 200000);
 
-        session(['office_id' => $this->employee->office_id]);
+        session(['employee_id' => $this->employee->id]);
 
         $this->setMealSchedule();
 
@@ -149,7 +151,7 @@ class CheckoutTest extends TestCase
     {
         Balance::employeeTopUp($this->employee, 200000);
 
-        session(['office_id' => $this->employee->office_id]);
+        session(['employee_id' => $this->employee->id]);
 
         $this->setMealSchedule();
 

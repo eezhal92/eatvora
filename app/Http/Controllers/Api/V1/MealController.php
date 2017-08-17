@@ -8,22 +8,39 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Services\ScheduleService;
 use App\Http\Controllers\Controller;
-
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class MealController extends Controller
 {
+    private function decoratePaginatedResponse(LengthAwarePaginator $result)
+    {
+        $result = $result->toArray();
+
+        $query = array_merge([
+            'page' => $result['current_page'],
+            'last_page' => $result['last_page'],
+            'limit' => $result['per_page'],
+        ], request()->all());
+
+        return [
+            'query' => $query,
+            'items' => $result['data'],
+            'total' => $result['total'],
+        ];
+    }
+
     public function index(Request $request)
     {
-        $date = $request->get('date');
-        $limit = $request->get('limit', 6);
+        // There's issue with these query
+        // when we are not using groupBy and select method
+        // Then value of id field oddly returns id of meal
+        $menus = Menu::with('vendor')->leftJoin('meals', 'meals.menu_id', '=', 'menus.id')
+            ->where('meals.date', Carbon::parse(request('date'))->format('Y-m-d'))
+            ->groupBy('menus.id')
+            ->select('menus.*')
+            ->paginate($request->get('limit', 6));
 
-        $menus = Menu::with('vendor')->join('schedules', 'schedules.menu_id', '=', 'menus.id')
-            ->where('schedules.date', Carbon::parse($date))
-            ->paginate($limit);
-
-        $result = $this->decoratePaginatedResponse($menus);
-
-        return response()->json($result);
+        return response()->json($this->decoratePaginatedResponse($menus));
     }
 
     public function myMeals(Request $request)

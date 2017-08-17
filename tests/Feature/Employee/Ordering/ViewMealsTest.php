@@ -5,13 +5,15 @@ namespace Tests\Feature\Employee\Ordering;
 use App\Menu;
 use App\User;
 use App\Vendor;
-use App\Schedule;
+use MealFactory;
+use MenuFactory;
 use App\Employee;
+use App\Schedule;
 use Carbon\Carbon;
+use Tests\TestCase;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Tests\TestCase;
 
 /**
  * To Assert
@@ -34,13 +36,18 @@ class ViewMealsTest extends TestCase
     }
 
     /** @test */
-    public function requires_authentication_and_company_session()
+    function requires_authentication()
     {
         $this->withExceptionHandling();
+
         $response = $this->get('/meals');
 
         $response->assertStatus(302);
+    }
 
+    /** @test */
+    function requires_to_be_employee_related_to_company()
+    {
         $user = factory(User::class)->create();
         $response = $this->actingAs($user)->get('/meals');
 
@@ -48,82 +55,45 @@ class ViewMealsTest extends TestCase
     }
 
     /** @test */
-    public function user_can_view_meal_schedule_list_for_a_specific_date()
+    public function user_can_view_scheduled_meal_list_for_a_specific_date()
     {
         $user = factory(User::class)->create();
-        $vendor = factory(Vendor::class)->create([
-            'name' => 'Dapur Lulu',
-            'capacity' => 200,
-        ]);
 
-        $menuA = factory(Menu::class)->create($this->validParams([
-            'name' => 'Nasi Padang',
-            'vendor_id' => $vendor->id,
-        ]));
+        $menuA = factory(Menu::class)->create($this->validParams(['name' => 'Nasi Padang']));
 
-        $menuB = factory(Menu::class)->create($this->validParams([
-            'name' => 'Nasi Kuning',
-            'vendor_id' => $vendor->id,
-        ]));
+        $menuB = factory(Menu::class)->create($this->validParams(['name' => 'Nasi Kuning']));
 
-        $scheduleA = factory(Schedule::class)->create([
-            'date' => Carbon::parse('2017-06-12'),
-            'menu_id' => $menuA->id,
-        ]);
-
-        $scheduleB = factory(Schedule::class)->create([
-            'date' => Carbon::parse('2017-06-13'),
-            'menu_id' => $menuB->id,
+        MealFactory::createWithDates([
+            '2017-06-12' => [$menuA],
+            '2017-06-13' => [$menuB],
         ]);
 
         $responseDayOne = $this->actingAs($user)->json('GET', '/api/v1/meals?date=2017-06-12');
         $responseDayTwo = $this->actingAs($user)->json('GET', '/api/v1/meals?date=2017-06-13');
 
-        $responseDayOne
-            ->assertStatus(200)
-            ->assertJsonFragment([
-                'name' => 'Nasi Padang',
-            ])
-            ->assertJsonMissing([
-                'name' => 'Nasi Kuning',
-            ]);
+        $responseDayOne->assertStatus(200);
+        $responseDayOne->assertJsonFragment(['name' => 'Nasi Padang']);
+        $responseDayOne->assertJsonMissing(['name' => 'Nasi Kuning']);
 
-        $responseDayTwo
-            ->assertStatus(200)
-            ->assertJsonFragment([
-                'name' => 'Nasi Kuning',
-            ])
-            ->assertJsonMissing([
-                'name' => 'Nasi Padang',
-            ]);
+        $responseDayTwo->assertStatus(200);
+        $responseDayTwo->assertJsonFragment(['name' => 'Nasi Kuning']);
+        $responseDayTwo->assertJsonMissing(['name' => 'Nasi Padang']);
     }
 
     /** @test */
-    public function user_can_see_a_scheduled_meal()
+    public function user_can_see_meal()
     {
-        // date and meal id should be present
-        $vendor = factory(Vendor::class)->create([
-            'name' => 'Dapur Lulu',
-            'capacity' => 200,
-        ]);
+        $vendor = factory(Vendor::class)->create(['name' => 'Dapur Lulu', 'capacity' => 200]);
 
-        $menu = factory(Menu::class)->create($this->validParams([
+        $menu = MenuFactory::createWithMeals($this->validParams([
             'name' => 'Nasi Padang',
             'price' => 30000,
             'vendor_id' => $vendor->id,
-        ]));
+        ]), '2017-06-12');
 
-        $schedule = factory(Schedule::class)->create([
-            'date' => Carbon::parse('2017-06-12'),
-            'menu_id' => $menu->id,
-        ]);
+        $employee = factory(Employee::class)->create()->load('user');
 
-        $user = factory(User::class)->create();
-        factory(Employee::class)->create([
-            'user_id' => $user,
-        ]);
-
-        $response = $this->actingAs($user)->get("/meals/2017-06-12/{$menu->id}");
+        $response = $this->actingAs($employee->user)->get("/meals/{$menu->id}");
 
         $this->assertEquals('Nasi Padang', $response->data('menu')->name);
         $this->assertEquals('Dapur Lulu', $response->data('menu')->vendor->name);
@@ -131,36 +101,38 @@ class ViewMealsTest extends TestCase
     }
 
     /** @test */
-    public function user_can_not_see_meal_detail_with_wrong_date_and_meal_id_combination()
+    public function user_can_see_add_to_cart_button_when_it_does_in_next_week_schedule()
     {
-        // date and meal id should be present
-        $vendor = factory(Vendor::class)->create([
-            'name' => 'Dapur Lulu',
-            'capacity' => 200,
-        ]);
+        $knownDate = Carbon::create(2017, 8, 7);
+        Carbon::setTestNow($knownDate);
 
-        $menu = factory(Menu::class)->create($this->validParams([
-            'name' => 'Nasi Padang',
-            'price' => 30000,
-            'vendor_id' => $vendor->id,
-        ]));
+        $menu = MenuFactory::createWithMeals($this->validParams(), '2017-08-14');
 
-        $schedule = factory(Schedule::class)->create([
-            'date' => Carbon::parse('2017-06-12'),
-            'menu_id' => $menu->id,
-        ]);
+        $employee = factory(Employee::class)->create()->load('user');
 
-        $user = factory(User::class)->create();
-        factory(Employee::class)->create([
-            'user_id' => $user,
-        ]);
+        $response = $this->actingAs($employee->user)->get("/meals/{$menu->id}");
 
-        $response = $this->actingAs($user)->get("/meals/2017-06-12/100");
+        $response->assertViewHas('renderAddToCartButton', true);
+    }
 
-        $response->assertSee('Not found!');
+    /** @test */
+    public function user_cannot_see_add_to_cart_button_when_it_does_not_in_next_week_schedule()
+    {
+        $knownDate = Carbon::create(2017, 8, 7);
+        Carbon::setTestNow($knownDate);
 
-        $response = $this->get("/meals/2017-06-13/{$menu->id}");
+        $menuA = MenuFactory::createWithMeals($this->validParams(), '2017-08-07');
 
-        $response->assertSee('Not found!');
+        $employee = factory(Employee::class)->create()->load('user');
+
+        $responseA = $this->actingAs($employee->user)->get("/meals/{$menuA->id}");
+
+        $responseA->assertViewHas('renderAddToCartButton', false);
+
+        $menuB = MenuFactory::createWithMeals($this->validParams(['name' => 'Nasi Ayam']), '2017-08-21');
+
+        $responseB = $this->actingAs($employee->user)->get("/meals/{$menuB->id}");
+
+        $responseB->assertViewHas('renderAddToCartButton', false);
     }
 }

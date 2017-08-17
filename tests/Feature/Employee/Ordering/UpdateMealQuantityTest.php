@@ -4,8 +4,8 @@ namespace Tests\Feature\Employee\Ordering;
 
 use App\Cart;
 use App\Menu;
+use MealFactory;
 use App\Employee;
-use App\Schedule;
 use Tests\TestCase;
 use App\Services\ScheduleService;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
@@ -25,15 +25,14 @@ class UpdateMealQuantityTest extends TestCase
     {
         $employee = factory(Employee::class)->create();
 
-        session(['office_id' => $employee->office->id]);
+        session(['employee_id' => $employee->id]);
 
         $menu = factory(Menu::class)->create();
 
         $nextWeekDayDates = $this->app->make(ScheduleService::class)->nextWeekDayDates();
 
-        $schedule = factory(Schedule::class)->create([
-            'menu_id' => $menu->id,
-            'date' => $nextWeekDayDates->first()->format('Y-m-d'),
+        MealFactory::createWithDates([
+            $nextWeekDayDates->first()->format('Y-m-d') => [$menu],
         ]);
 
         $cart = Cart::of($employee);

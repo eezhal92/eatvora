@@ -25,13 +25,11 @@ Route::get('/logout', 'Auth\LoginController@logout');
 
 Route::group(['middleware' => ['auth', 'company']], function () {
 
-    Route::get('/meals/{date}/{menuId}', 'Employee\MealController@show');
-
     Route::get('/cart', 'Employee\CartController@index');
 
     Route::get('/meals', 'Employee\MealController@index');
 
-    Route::get('/meals/{date}/{mealId}', 'Employee\MealController@show');
+    Route::get('/meals/{menuId}', 'Employee\MealController@show');
 
     Route::get('/home', 'HomeController@index')->name('home');
 

@@ -146,7 +146,7 @@ class Cart extends Model
     {
         return $this->items()->map(function ($item) {
             $meals = Meal::where('menu_id', $item->id)
-                ->where('date', Carbon::parse($item->date))
+                ->where('date', Carbon::parse($item->date)->format('Y-m-d'))
                 ->available()
                 ->take($item->qty)
                 ->get();

@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Employee;
 
-use App\Http\Controllers\Controller;
+use App\Meal;
 use App\Menu;
-use App\Services\ScheduleService;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Services\ScheduleService;
+use App\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class MealController extends Controller
 {
@@ -22,21 +23,26 @@ class MealController extends Controller
         return view('employee.meals.index', compact('nextWeekDayDates'));
     }
 
-    public function show($date, $menuId)
+    public function show($id)
     {
         try {
-            $menu = Menu::with('vendor')
-                ->join('schedules', 'schedules.menu_id', '=', 'menus.id')
-                ->where('schedules.date', Carbon::parse($date))
-                ->where('menus.id', $menuId)
-                ->firstOrFail();
-        } catch (\Exception $e) {
-            return 'Not found!';
+            $menu = Menu::with('vendor')->findOrFail($id);
+
+            $nextWeekDays = app()->make(ScheduleService::class)
+                ->nextWeekDayDates()
+                ->map(function ($day) {
+                    return $day->format('Y-m-d');
+                });
+
+            $mealCount = Meal::where('menu_id', $menu->id)
+                ->whereBetween('date', [$nextWeekDays->first(), $nextWeekDays->last()])
+                ->count();
+
+            $renderAddToCartButton = !!$mealCount;
+        } catch (ModelNotFoundException $e) {
+            abort(404);
         }
 
-        return view('employee.meals.show', [
-            'menu' => $menu,
-            'date' => $date,
-        ]);
+        return view('employee.meals.show', compact('menu', 'renderAddToCartButton'));
     }
 }

@@ -40,13 +40,13 @@ export default {
         .then(({ data }) => {
           this.isLoading = false;
           if (push) {
-            this.meals = this.meals.concat(data.entries);
+            this.meals = this.meals.concat(data.items);
           } else {
-            this.meals = data.entries;
+            this.meals = data.items;
           }
 
           this.currentPage = +data.query.page;
-          this.lastPage = +data.query.lastPage;
+          this.lastPage = +data.query.last_page;
         })
         .catch(() => {
           this.isLoading = false;

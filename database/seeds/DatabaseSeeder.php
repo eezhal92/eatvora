@@ -30,24 +30,32 @@ class DatabaseSeeder extends Seeder
     {
         $menu = Menu::find($menuId);
 
-        $menu->scheduleMeals($date, 2);
-        return factory(Schedule::class)->create([
-            'menu_id' => $menuId,
-            'date' => $date,
-        ]);
+        $menu->scheduleMeals($date, 3);
     }
 
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
-    public function run()
+    private function setUpVendor()
     {
-        factory(User::class)->states('admin')
-            ->create(['email' => 'admin@mail.com', 'password' => bcrypt('password')]);
+        // senin-jum'at lihat hari bsok
+        $weekDays = (new ScheduleService())->nextWeekDayDates();
 
-        $user = factory(User::class)->create(['email' => 'john@mail.com', 'password' => bcrypt('password')]);
+        $vendors = $this->createVendors(12);
+
+        $vendors->each(function ($vendor) use ($weekDays) {
+            $menus = $this->createMenuByVendor($vendor->id, 5);
+
+            $weekDays->each(function ($day, $key) use ($menus) {
+                $menu = $menus[$key];
+
+                $this->createSchedule($menu->id, $day->format('Y-m-d'));
+            });
+        });
+    }
+
+    private function setUpCompany()
+    {
+        factory(User::class)->states('admin')->create(['email' => 'admin@mail.com', 'password' => bcrypt('password')]);
+
+        $userA = factory(User::class)->create(['email' => 'john@mail.com', 'password' => bcrypt('password')]);
         $userB = factory(User::class)->create(['email' => 'jane@mail.com', 'password' => bcrypt('password')]);
 
         $company = factory(Company::class)->create(['name' => 'Traveloka']);
@@ -90,7 +98,7 @@ class DatabaseSeeder extends Seeder
         }
 
         $employeeA = factory(Employee::class)->create([
-            'user_id' => $user->id,
+            'user_id' => $userA->id,
             'is_admin' => true,
             'office_id' => $office->id,
         ]);
@@ -100,24 +108,19 @@ class DatabaseSeeder extends Seeder
             'office_id' => $officeB->id,
         ]);
 
-        Balance::employeeTopUp($employeeA, 100000);
-        Balance::employeeTopUp($employeeB, 100000);
+        Balance::employeeTopUp($employeeA, 150000);
+        Balance::employeeTopUp($employeeB, 150000);
+    }
 
-        // senin-jum'at lihat hari bsok
-        $weekDays = (new ScheduleService())->nextWeekDayDates();
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        $this->setUpCompany();
 
-        $vendors = $this->createVendors(15);
-
-        $vendors->each(function ($vendor) use ($weekDays) {
-            $menus = $this->createMenuByVendor($vendor->id, 5);
-
-            $weekDays->each(function ($day, $key) use ($menus) {
-                $menu = $menus[$key];
-
-
-                $this->createSchedule($menu->id, $day);
-            });
-        });
-        // $this->call(UsersTableSeeder::class);
+        $this->setUpVendor();
     }
 }

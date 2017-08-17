@@ -8,7 +8,6 @@
           <img class="img-responsive" src="http://lorempixel.com/600/480/food" />
         </div>
         <div class="col-xs-12 col-sm-8">
-          <h3 class="page-sub-title" style="margin-top: 0"><?php echo $date ?></h3>
           <h1>{{ $menu->name }}</h1>
           <p style="font-size: 16px; font-weight: bold">Oleh {{ $menu->vendorName() }}</p>
           <p style="font-size: 18px; font-weight: bold">{{ $menu->formattedPrice() }}</p>

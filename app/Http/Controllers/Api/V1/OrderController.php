@@ -20,7 +20,7 @@ class OrderController extends Controller
         // @todo validate user whether has employee
         $employee = Employee::with('user')->where([
             'user_id' => auth()->user()->id,
-            'office_id' => session('office_id'),
+            'id' => session('employee_id'),
         ])->first();
 
         $cart = Cart::of($employee);

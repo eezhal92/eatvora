@@ -15,7 +15,7 @@ class CartController extends Controller
     public function index()
     {
         $employee = Employee::where('user_id', Auth::user()->id)
-            ->where('office_id', session('office_id'))
+            ->where('id', session('employee_id'))
             ->first();
 
         $cart = Cart::of($employee);
@@ -36,7 +36,7 @@ class CartController extends Controller
     {
         //@ todo add validation when trying menu / meal that are not scheduled
         $employee = Employee::where('user_id', Auth::user()->id)
-            ->where('office_id', session('office_id'))
+            ->where('id', session('employee_id'))
             ->first();
 
         // todo: make test and refactor
@@ -59,7 +59,7 @@ class CartController extends Controller
     public function update()
     {
         $employee = Employee::where('user_id', Auth::user()->id)
-            ->where('office_id', session('office_id'))
+            ->where('id', session('employee_id'))
             ->first();
 
         // todo: make test and refactor
@@ -75,7 +75,7 @@ class CartController extends Controller
     public function remove()
     {
         $employee = Employee::where('user_id', Auth::user()->id)
-            ->where('office_id', session('office_id'))
+            ->where('id', session('employee_id'))
             ->first();
 
         // todo: make test and refactor

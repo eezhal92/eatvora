@@ -52,10 +52,12 @@ class Menu extends Model
             $date = Carbon::parse($date);
         }
 
+        // dd($date);
+
         $meals = collect([]);
 
         foreach (range(1, $quantity) as $i) {
-            $meals->push($this->meals()->create(['date' => $date->format('Y-m-d H:i:s')]));
+            $meals->push($this->meals()->create(['date' => $date->format('Y-m-d')]));
         }
 
         return $meals;
