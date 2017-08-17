@@ -2,25 +2,29 @@
   <div class="col-xs-12 col-sm-4">
     <div class="meal-card">
       <a :href="'/meals/' + date + '/' + meal.id" class="meal-card-cover">
-        <div class="meal-card-cover_overlay">
+        <div class="meal-card-cover__overlay">
           <div class="meal-card-title">
             {{ meal.name }}
           </div>
         </div>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Good_Food_Display_-_NCI_Visuals_Online.jpg/1200px-Good_Food_Display_-_NCI_Visuals_Online.jpg" class="meal-card-cover_img" alt="">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Good_Food_Display_-_NCI_Visuals_Online.jpg/1200px-Good_Food_Display_-_NCI_Visuals_Online.jpg" class="meal-card-cover__img" alt="">
       </a>
       <div class="meal-card__detail">
         <div class="meal-card__point">
           {{ meal.final_price | rupiah }}
         </div>
-        <div class="meal-card-info">
+        <div class="meal-card-info clearfix">
           <div class="meal-card-info__vendor">
+            <div class="meal-cart-info__tag">
+              <i class="fa fa-cutlery"></i> Diet
+            </div>
             <span class="meal-card-info__vendor-name" :title="meal.vendor.name">
-              Oleh {{ meal.vendor.name | limit(9) }}
+              <i class="fa fa-user"></i> {{ meal.vendor.name | limit(15) }}
             </span>
           </div>
-          <button @click="addToCart" :disabled="adding" class="btn pull-right btn-default" :class="{'meal-card__button': !isInCart}">
-            {{ isInCart ? 'Tambah' : 'Ingin Ini' }}
+          <button v-if="!alreadyPlacedOrder" @click="addToCart" :disabled="adding" class="btn pull-right btn-default" :class="{'meal-card__button': !isInCart}">
+            <i v-if="adding" class="fa fa-circle-o-notch icon-spin"></i>
+            <span v-else>{{ isInCart ? 'Tambah' : 'Ingin Ini' }}</span>
           </button>
         </div>
       </div>
@@ -29,12 +33,15 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   data() {
     return { adding: false };
   },
   props: ['meal', 'date'],
   computed: {
+    ...mapGetters(['alreadyPlacedOrder']),
     isInCart() {
       return this.$store.getters.allCartItemIds.indexOf(this.meal.id) !== -1;
     },
@@ -42,12 +49,14 @@ export default {
   methods: {
     addToCart() {
       const item = this.meal.name;
+      this.adding = true;
 
       axios.post('/api/v1/cart', {
         qty: 1,
         menuId: this.meal.id,
         date: this.date,
       }).then(({ data }) => {
+        this.adding = false;
         // Currently endpoint response is an array
         // It might be a single object in the future
         // If so, update this code
@@ -56,20 +65,43 @@ export default {
         this.$store.commit('@cart/ADD_CART_ITEM', {
           date: this.date,
           meal,
-        });
-      });
+        })
+      }).catch(err => {
+        this.adding = false;
+
+        throw err;
+      });;
     }
   }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@keyframes spin-around {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(359deg); }
+}
+
+.icon-spin {
+  animation: spin-around 800ms ease-in-out infinite;
+}
+
+.btn-default {
+  min-width: 77px;
+}
+
 .meal-card__button {
   border-radius: 3px;
   background: #FD8421;
   color: #fff;
   font-weight: bold;
   border: 1px solid #FD8421;
+  min-width: 77px;
+
+  &[disabled]:hover{
+    background-color: #feaf6f;
+    border-color: #feaf6f;
+  }
 }
 
 .meal-card {
@@ -86,7 +118,7 @@ export default {
   display: block;
 }
 
-.meal-card-cover_overlay {
+.meal-card-cover__overlay {
   position: absolute;
   top: 0;
   right: 0;
@@ -104,7 +136,7 @@ export default {
   padding: 1em;
 }
 
-.meal-card-cover_img {
+.meal-card-cover__img {
   height: inherit;
   width: 100%;
   object-fit: cover;
@@ -122,14 +154,14 @@ export default {
 }
 
 .meal-card-info {
-  overflow: hidden;
-  margin-top: 10px;
+  margin-top: 5px;
   position: relative;
+  height: 44px;
 }
 
 .meal-card-info__vendor {
   float: left;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: bold;
   position: absolute;
   bottom: 7px;
