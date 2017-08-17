@@ -14,7 +14,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 /**
  * @todo
- * Test input validation like negative qty number
+ * - cannot update meal quantity with negative number
  */
 class UpdateMealQuantityTest extends TestCase
 {

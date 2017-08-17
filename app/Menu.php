@@ -48,11 +48,10 @@ class Menu extends Model
 
     public function scheduleMeals($date, $quantity)
     {
+        // @todo add test
         if (is_string($date)) {
             $date = Carbon::parse($date);
         }
-
-        // dd($date);
 
         $meals = collect([]);
 
@@ -65,6 +64,7 @@ class Menu extends Model
 
     public function getFinalPriceAttribute()
     {
+        // @todo add test
         $commissionPercentage = config('eatvora.commission_percentage');
 
         return $this->roundUpByPerPoint($this->price + ($this->price * $commissionPercentage));
@@ -72,6 +72,7 @@ class Menu extends Model
 
     public function formattedFinalPrice()
     {
+        // @todo add test
         return 'Rp. ' . number_format($this->final_price);
     }
 

@@ -20,13 +20,8 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 /**
  * What to assert:
  * - It should able to retrieve correct items based on current date. eg. last week has cart but not checkout, it should create new one when friday 3pm - friday 2.59pm
- * - It should not able to add item when in not schedule
- * - It should not able to order when is not active
- * - It should not able to add item when not in correct week range
- * - It should not able to add 3 item in one day
- * - It should not able to add item when vendor capacity is exceeded (It should be in dedicated CheckoutTest)
- * - It should not able to checkout when the cart is less than 3 day (It should be in dedicated CheckoutTest)
- * - It should not able to checkout when user balance is not enough total order (It should be in dedicated CheckoutTest)
+ * - It should not able to add item when in not schedule / correct week range
+ * - It should not able to order when is employee not active
  */
 class AddMealToCartTest extends TestCase
 {
@@ -58,43 +53,19 @@ class AddMealToCartTest extends TestCase
     {
         $scheduleService = $this->app->make(ScheduleService::class);
 
-        $nextWeekDayDates = $scheduleService->nextWeekDayDates();
+        $nextMonday = $this->nextWeekDayDates->first();
 
-        $nextMonday = $nextWeekDayDates->first();
+        $menu = factory(Menu::class)->create($this->validParams(['name' => 'Nasi Kuning']));
 
-        $vendor = factory(Vendor::class)->create();
+        MealFactory::createWithDates([$nextMonday->format('Y-m-d') => [$menu]]);
 
-        $user = factory(User::class)->create([
-            'name' => 'John Doe',
-        ]);
-
-        $menu = factory(Menu::class)->create($this->validParams([
-            'name' => 'Nasi Kuning',
-            'vendor_id' => $vendor->id,
-        ]));
-
-        MealFactory::createWithDates([
-            $nextMonday->format('Y-m-d') => [$menu],
-        ]);
-
-        $company = factory(Company::class)->create([
-            'name' => 'Traveloka',
-        ]);
-
-        $office = factory(Office::class)->create([
-            'company_id' => $company->id,
-        ]);
-
-        $employee = factory(Employee::class)->create([
-            'user_id' => $user->id,
-            'office_id' => $office->id,
-        ]);
+        $employee = factory(Employee::class)->create()->load('office.company');
 
         // Act
-        $response = $this->actingAs($user)
+        $response = $this->actingAs($employee->user)
             ->withSession([
                 'employee_id' => $employee->id,
-                'company_id' => $company->id
+                'company_id' => $employee->office->company->id
             ])
             ->json('post', '/api/v1/cart', [
                 'menuId' => $menu->id,
@@ -103,15 +74,12 @@ class AddMealToCartTest extends TestCase
             ]);
 
         // Assert
-        $response
-            ->assertStatus(200)
-            ->assertJson([
-                [
-                    'name' => 'Nasi Kuning',
-                    'qty' => 2,
-                    'date' => $nextMonday->format('Y-m-d'),
-                ]
-            ]); // todo maybe should create another assertion method like seeJsonSubset
+        $response->assertStatus(200);
+        $response->assertJsonFragment([
+            'name' => 'Nasi Kuning',
+            'qty' => (string) 2,
+            'date' => $nextMonday->format('Y-m-d'),
+        ]);
 
         // Make sure product were added with correct quantity and date
         $cart = Cart::of($employee);
@@ -128,30 +96,20 @@ class AddMealToCartTest extends TestCase
     {
         $this->withExceptionHandling();
 
-        $nextWeekDayDates = $this->nextWeekDayDates;
+        $nextMonday = $this->nextWeekDayDates->first();
 
-        $nextMonday = $nextWeekDayDates->first();
-
-        $vendor = factory(Vendor::class)->create();
-
-        $menu = factory(Menu::class)->create($this->validParams([
-            'name' => 'Nasi Kuning',
-            'vendor_id' => $vendor->id,
-        ]));
+        $menu = factory(Menu::class)->create($this->validParams(['name' => 'Nasi Kuning']));
 
         MealFactory::createWithDates([
             $nextMonday->format('Y-m-d') => [$menu],
         ]);
 
-        // Act
         $response = $this->json('post', '/api/v1/cart', [
             'menuId' => $menu->id,
             'date' => $nextMonday->format('Y-m-d'),
             'qty' => 2,
         ]);
 
-        // Assert
-        $response
-            ->assertStatus(401);
+        $response->assertStatus(401);
     }
 }

@@ -16,10 +16,8 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 /**
- * To Assert
- * - requires authentication
- * - user cannot see past meal schedule
- * - can see by category etc
+ * @todo
+ * - user can see by category
  */
 class ViewMealsTest extends TestCase
 {
@@ -49,6 +47,7 @@ class ViewMealsTest extends TestCase
     function requires_to_be_employee_related_to_company()
     {
         $user = factory(User::class)->create();
+
         $response = $this->actingAs($user)->get('/meals');
 
         $response->assertStatus(302);
@@ -104,6 +103,7 @@ class ViewMealsTest extends TestCase
     public function user_can_see_add_to_cart_button_when_it_does_in_next_week_schedule()
     {
         $knownDate = Carbon::create(2017, 8, 7);
+
         Carbon::setTestNow($knownDate);
 
         $menu = MenuFactory::createWithMeals($this->validParams(), '2017-08-14');
@@ -119,6 +119,7 @@ class ViewMealsTest extends TestCase
     public function user_cannot_see_add_to_cart_button_when_it_does_not_in_next_week_schedule()
     {
         $knownDate = Carbon::create(2017, 8, 7);
+
         Carbon::setTestNow($knownDate);
 
         $menuA = MenuFactory::createWithMeals($this->validParams(), '2017-08-07');
