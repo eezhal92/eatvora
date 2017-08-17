@@ -1,7 +1,7 @@
 <template>
-  <form @submit.prevent="updateFilter">
+  <form class="meal-filter" @submit.prevent="updateFilter">
     <div class="form-group">
-      <label for="category">Kategori</label>
+      <label for="category" class="meal-filter__label">Kategori</label>
       <meal-tag></meal-tag>
     </div>
     <button class="btn btn-sm btn--primary" type="submit">
@@ -31,3 +31,13 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.meal-filter {
+  &__label {
+    color: #86919F;
+    font-size: 16px;
+    font-weight: bold;
+  }
+}
+</style>

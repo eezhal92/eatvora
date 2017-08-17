@@ -1,14 +1,9 @@
 @extends('layouts.employee')
 
 @section('body')
-  <div class="meal-list">
+  <div class="meal-list" style="padding: 22px 0">
     <div class="container container--small">
       <div class="row">
-        <div class="col-xs-12">
-          <h1 class="page-title">Katalog</h1>
-        </div>
-      </div>
-      <div class="row" style="margin-top: 22px">
         <div class="col-xs-12 col-sm-3">
           <meal-filter></meal-filter>
         </div>

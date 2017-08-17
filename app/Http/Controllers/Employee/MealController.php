@@ -43,6 +43,7 @@ class MealController extends Controller
             abort(404);
         }
 
-        return view('employee.meals.show', compact('menu', 'renderAddToCartButton'));
+        // return view('employee.meals.show', compact('menu', 'renderAddToCartButton'));
+        return view('employee.meals.detail', compact('menu', 'renderAddToCartButton'));
     }
 }

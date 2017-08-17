@@ -4,7 +4,7 @@
     <div class="meal-day__items">
       <div class="meal-item" v-for="meal in meals">
         <div class="meal-item__img-container">
-          <img src="http://lorempixel.com/110/100/food" class="meal-item__img" />
+          <a :href="`/meals/${meal.id}`"><img src="http://lorempixel.com/110/100/food" class="meal-item__img" /></a>
         </div>
         <div class="meal-item__detail">
           <div class="meal-item__title">{{ meal.name }}</div>

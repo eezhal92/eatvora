@@ -1,14 +1,14 @@
 @extends('layouts.employee')
 
 @section('body')
-  <div class="meal-list">
+  <div class="cart-items">
     <div class="container container--small">
       <div class="row">
         <div class="col-xs-12">
           <h1 class="page-title">Keranjang</h1>
         </div>
       </div>
-      <div class="row" style="margin-top: 22px;">
+      <div class="row">
         <div class="col-xs-12">
           <alert id="checkout" type="danger"></alert>
         </div>

@@ -20,7 +20,9 @@
     <footer style="padding: 40px">
       <div class="container container--small">
         <div class="row">
-          <p >&copy; {{ date('Y') }} - eatvora.com</p>
+          <div class="col-xs-12">
+            <p>&copy; {{ date('Y') }} - eatvora.com</p>
+          </div>
         </div>
       </div>
     </footer>

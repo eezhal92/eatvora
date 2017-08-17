@@ -65,13 +65,15 @@ export default {
     }
 
     &__total-heading {
-      font-size: 18px;
+      font-size: 16px;
       font-weight: bold;
+      color: #86919F;
     }
 
     &__total-amount {
       font-size: 22px;
       font-weight: bold;
+      color: #4caf50;
     }
   }
 </style>

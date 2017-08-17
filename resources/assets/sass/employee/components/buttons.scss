@@ -21,3 +21,23 @@
     border-color: lighten(#2196f3, 5%);
   }
 }
+
+.btn--primary-orange {
+  border-radius: 3px;
+  background: #FD8421;
+  color: #fff;
+  font-weight: bold;
+  border: 1px solid #FD8421;
+  min-width: 77px;
+
+  &:focus, &:hover {
+    color: #fff;
+    background: rgba(#FD8421, .8);
+    border-color: rgba(#FD8421, .8);
+  }
+
+  &[disabled]:hover{
+    background-color: #feaf6f;
+    border-color: #feaf6f;
+  }
+}

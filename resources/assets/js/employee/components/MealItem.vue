@@ -22,7 +22,7 @@
               <i class="fa fa-user"></i> {{ meal.vendor.name | limit(15) }}
             </span>
           </div>
-          <button v-if="!alreadyPlacedOrder" @click="addToCart" :disabled="adding" class="btn pull-right btn-default" :class="{'meal-card__button': !isInCart}">
+          <button v-if="!alreadyPlacedOrder" @click="addToCart" :disabled="adding" class="btn pull-right meal-card__btn" :class="[isInCart ? 'btn-default' :'btn--primary']">
             <i v-if="adding" class="fa fa-circle-o-notch icon-spin"></i>
             <span v-else>{{ isInCart ? 'Tambah' : 'Ingin Ini' }}</span>
           </button>
@@ -86,29 +86,15 @@ export default {
   animation: spin-around 800ms ease-in-out infinite;
 }
 
-.btn-default {
-  min-width: 77px;
-}
-
-.meal-card__button {
-  border-radius: 3px;
-  background: #FD8421;
-  color: #fff;
-  font-weight: bold;
-  border: 1px solid #FD8421;
-  min-width: 77px;
-
-  &[disabled]:hover{
-    background-color: #feaf6f;
-    border-color: #feaf6f;
-  }
-}
-
 .meal-card {
   overflow: hidden;
   border-radius: 4px;
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
   margin-bottom: 32px;
+}
+
+.meal-card__btn {
+  min-width: 77px;
 }
 
 .meal-card-cover {
@@ -149,7 +135,7 @@ export default {
 
 .meal-card__point {
   font-size: 12px;
-  color: #7E8998;
+  color: #4caf50;
   font-weight: bold;
 }
 
