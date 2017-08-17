@@ -2,14 +2,14 @@
 
 namespace Tests\Unit;
 
-use App\Meal;
 use App\Cart;
+use App\Meal;
 use App\Menu;
 use App\Balance;
 use App\Employee;
 use Tests\TestCase;
 use App\Reservation;
-use App\Services\BalanceService;
+use App\Lib\BalancePaymentGateway;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -49,7 +49,7 @@ class ReservationTest extends TestCase
 
         $reservation = new Reservation($cart, $meals, $employee);
 
-        $order = $reservation->complete($this->app[BalanceService::class]);
+        $order = $reservation->complete(new BalancePaymentGateway);
 
         $this->assertEquals($employee->id, $order->employee_id);
         $this->assertEquals($employee->user->id, $order->user_id);

@@ -2,14 +2,16 @@
 
 namespace Tests\Feature\Employee\Ordering;
 
-use App\User;
-use App\Menu;
 use App\Cart;
+use App\Menu;
+use App\User;
 use App\Order;
 use App\Balance;
+use MenuFactory;
 use App\Employee;
 use Carbon\Carbon;
 use Tests\TestCase;
+use App\Lib\BalancePaymentGateway;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -26,9 +28,15 @@ class CheckoutTest extends TestCase
 
     private $meals;
 
+    private $paymentGateway;
+
     public function setUp()
     {
         parent::setUp();
+
+        $this->paymentGateway = new BalancePaymentGateway;
+
+        $this->app->instance(BalancePaymentGateway::class, $this->paymentGateway);
 
         $this->setEmployeeAndCart();
     }
@@ -151,8 +159,6 @@ class CheckoutTest extends TestCase
     {
         Balance::employeeTopUp($this->employee, 200000);
 
-        session(['employee_id' => $this->employee->id]);
-
         $this->setMealSchedule();
 
         // Add meal to cart
@@ -160,9 +166,9 @@ class CheckoutTest extends TestCase
 
         $this->cart->addItem($item['menu'], 30, Carbon::parse($item['date']));
 
-        $response = $this->actingAs($this->user)->json('post', '/api/v1/orders', [
-            'employee_id' => $this->employee->id,
-        ]);
+        $response = $this->actingAs($this->user)
+            ->withSession(['employee_id' => $this->employee->id])
+            ->json('post', '/api/v1/orders');
 
         $response->assertStatus(422);
 
@@ -173,5 +179,48 @@ class CheckoutTest extends TestCase
         $this->assertNull($order);
         $this->assertEquals(200000, $this->employee->user->balance());
         $this->assertEquals(200000, $balance->amount);
+    }
+
+    /** @test */
+    function cannot_order_meals_another_customer_is_already_trying_to_order()
+    {
+        $knownDate = Carbon::create(2017, 8, 7);
+        Carbon::setTestNow($knownDate);
+
+        $menu = MenuFactory::createWithMeals(['price' => 20000], '2017-08-14', 2);
+
+        $employeeA = factory(Employee::class)->create();
+
+        $cart = Cart::of($employeeA);
+
+        Balance::employeeTopUp($employeeA, 200000);
+
+        $cart->addItem($menu, 2, '2017-08-14');
+
+        $this->paymentGateway->beforeFirstCharge(function ($paymentGateway) use ($menu) {
+            $employeeB = factory(Employee::class)->create();
+
+            Balance::employeeTopUp($employeeB, 200000);
+
+            $cart = Cart::of($employeeB);
+
+            $cart->addItem($menu, 2, '2017-08-14');
+
+            $response = $this->actingAs($employeeB->user)
+                ->withSession(['employee_id' => $employeeB->id])
+                ->json('post', '/api/v1/orders');
+
+            $response->assertStatus(422);
+            $this->assertEquals(0, $this->paymentGateway->totalCharges());
+            // assert there is no order for this user
+        });
+
+        $response = $this->actingAs($employeeA->user)
+                ->withSession(['employee_id' => $employeeA->id])
+                ->json('post', '/api/v1/orders');
+
+        $this->assertEquals(44000, $this->paymentGateway->totalCharges());
+        // assert there is an order for this user
+        // assert meals count is 2
     }
 }

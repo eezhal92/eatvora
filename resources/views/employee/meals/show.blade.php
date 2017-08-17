@@ -1,7 +1,17 @@
 @extends('layouts.employee')
 
 @section('body')
-  <div class="meal-list" style="padding: 40px">
+<p>{{ $menu->name }}</p>
+<p>{{ $menu->vendor->name }}</p>
+<p>{{ $menu->formattedFinalPrice() }}</p>
+<p>{{ $menu->contents }}</p>
+<p>{{ $menu->description }}</p>
+
+@if ($renderAddToCartButton)
+  <button>Add To Cart</button>
+@endif
+
+  <!-- <div class="meal-list" style="padding: 40px">
     <div class="container container--small">
       <div class="row">
         <div class="col-xs-12 col-sm-4">
@@ -19,14 +29,5 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 @endsection
-
-@push('afterScripts')
-  <script type="text/javascript">
-    axios.get('/api/v1/meals?date=2017-06-19')
-      .then(response => {
-        console.log(response.data);
-      })
-  </script>
-@endpush

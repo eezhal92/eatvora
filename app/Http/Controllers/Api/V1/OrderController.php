@@ -8,14 +8,14 @@ use App\Order;
 use App\Employee;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Services\BalanceService;
+use App\Lib\BalancePaymentGateway;
 use App\Http\Controllers\Controller;
 use App\Exceptions\NotEnoughMealsException;
 use App\Exceptions\NotEnoughBalanceException;
 
 class OrderController extends Controller
 {
-    public function store(BalanceService $balanceService)
+    public function store(BalancePaymentGateway $balanceService)
     {
         // @todo validate user whether has employee
         $employee = Employee::with('user')->where([

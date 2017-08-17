@@ -1,7 +1,7 @@
 <template>
   <div class="col-xs-12 col-sm-4">
     <div class="meal-card">
-      <a :href="'/meals/' + date + '/' + meal.id" class="meal-card-cover">
+      <a :href="'/meals/' + meal.id" class="meal-card-cover">
         <div class="meal-card-cover__overlay">
           <div class="meal-card-title">
             {{ meal.name }}
