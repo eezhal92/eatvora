@@ -16,6 +16,10 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
+/**
+ * @todo
+ * Refactor setup methods
+ */
 class CheckoutTest extends TestCase
 {
     use DatabaseMigrations;
@@ -152,10 +156,10 @@ class CheckoutTest extends TestCase
         $balance = Balance::all()->last();
 
         $this->assertEquals(7, $order->meals()->count());
-        // assert order amount
-        // assert vendor bill of order
-        // assert revenue of order
-        // user charged correct amount
+        $this->assertEquals($orderAmount, $order->amount);
+        $this->assertEquals(-$orderAmount, $balance->amount);
+        $this->assertEquals($vendorBill, $order->vendorBill());
+        $this->assertEquals($revenue, $order->revenue());
     }
 
     /** @test */
@@ -224,7 +228,7 @@ class CheckoutTest extends TestCase
                 ->json('post', '/api/v1/orders');
 
         $this->assertEquals(44000, $this->paymentGateway->totalCharges());
-        // assert there is an order for this user
-        // assert meals count is 2
+        $this->assertCount(1, Order::where('user_id', $employeeA->user_id)->get());
+        $this->assertCount(2, Order::where('user_id', $employeeA->user_id)->first()->meals()->get());
     }
 }

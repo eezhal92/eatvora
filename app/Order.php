@@ -25,4 +25,18 @@ class Order extends Model
 
         return $order;
     }
+
+    public function vendorBill()
+    {
+        // @todo: add test
+        return $this->meals()->with('menu')->get()->map(function ($meal) {
+            return $meal->menu->price;
+        })->sum();
+    }
+
+    public function revenue()
+    {
+        // @todo: add test
+        return $this->amount - $this->vendorBill();
+    }
 }

@@ -45,7 +45,6 @@ class MealController extends Controller
 
     public function myMeals(Request $request)
     {
-        // @todo: add test
         $for = $request->get('for', 'this_week');
 
         $weekDays = app()->make(ScheduleService::class)
@@ -64,7 +63,7 @@ class MealController extends Controller
         $meals = Menu::with('vendor')->join('meals', 'menus.id', '=', 'meals.menu_id')
             ->join('orders', 'orders.id', '=', 'meals.order_id')
             ->whereBetween('meals.date', [$weekDays->first(), $weekDays->last()])
-            ->select('menus.*', \DB::raw('count(*) as qty'), \DB::raw("DATE_FORMAT(meals.date, '%Y-%m-%d') as date"))
+            ->select('menus.*', \DB::raw('count(*) as qty'), 'meals.date')
             ->groupBy('menus.id', 'meals.date')
             ->get();
 
