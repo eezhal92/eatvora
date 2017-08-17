@@ -15,8 +15,7 @@ class CompanySession
      */
     public function handle($request, Closure $next)
     {
-        $user = $request->user();
-        $employees = $user->employees()->get();
+        $employees = $request->user()->employees()->get();
 
         if ($employees->count() > 1) {
             return redirect('/choose-company');
@@ -24,15 +23,12 @@ class CompanySession
 
         if (!$employees->count()) {
             return redirect('/')
-                ->withSession('error', 'Maaf, Anda tidak terdaftar di perusahaan mana pun.');
+                ->withSession('error', 'Maaf, Anda belum terdaftar di perusahaan mana pun.');
         }
 
-        $office = $employees->first()->office;
+        $employee = $employees->first()->load('office');
 
-        session([
-            'office_id' => $office->id,
-            'company_id' => $office->company_id,
-        ]);
+        session(['employee_id' => $employee->id, 'company_id' => $employee->office->company_id]);
 
         return $next($request);
     }
