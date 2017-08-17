@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Employee\Ordering;
 
 use App\User;
 use App\Menu;
@@ -14,7 +14,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class OrderMealTest extends TestCase
+class CheckoutTest extends TestCase
 {
     use DatabaseMigrations;
 

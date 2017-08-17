@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Employee\Ordering;
 
 use App\Menu;
 use App\User;
@@ -19,7 +19,7 @@ use Tests\TestCase;
  * - user cannot see past meal schedule
  * - can see by category etc
  */
-class ViewMealScheduleTest extends TestCase
+class ViewMealsTest extends TestCase
 {
     use DatabaseMigrations;
 

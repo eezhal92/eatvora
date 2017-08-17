@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Employee\Ordering;
 
-use App\Menu;
 use App\Cart;
+use App\Menu;
 use App\Employee;
 use App\Schedule;
 use Tests\TestCase;
@@ -12,12 +12,16 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class RemoveItemFromCartTest extends TestCase
+/**
+ * @todo
+ * Test input validation like negative qty number
+ */
+class UpdateMealQuantityTest extends TestCase
 {
     use DatabaseMigrations;
 
     /** @test */
-    public function can_remove_cart_item()
+    public function can_update_cart_item_quantity()
     {
         $employee = factory(Employee::class)->create();
 
@@ -36,11 +40,12 @@ class RemoveItemFromCartTest extends TestCase
 
         $cart->addItem($menu->id, 2, $nextWeekDayDates->first());
 
-        $response = $this->actingAs($employee->user)->json('DELETE', '/api/v1/cart', [
+        $response = $this->actingAs($employee->user)->json('PATCH', '/api/v1/cart', [
             'menu_id' => $menu->id,
+            'qty' => 1,
             'date' => $nextWeekDayDates->first()->format('Y-m-d'),
         ]);
 
-        $this->assertNull($cart->items()->first());
+        $this->assertEquals(1, $cart->items()->first()->qty);
     }
 }

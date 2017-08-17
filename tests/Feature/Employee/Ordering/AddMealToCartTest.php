@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Employee\Ordering;
 
 use App\User;
 use App\Menu;
