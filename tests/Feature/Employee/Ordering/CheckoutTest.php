@@ -34,6 +34,10 @@ class CheckoutTest extends TestCase
     {
         parent::setUp();
 
+        $now = Carbon::create(2017, 8, 7);
+
+        Carbon::setTestNow($now);
+
         $this->paymentGateway = new BalancePaymentGateway;
 
         $this->app->instance(BalancePaymentGateway::class, $this->paymentGateway);

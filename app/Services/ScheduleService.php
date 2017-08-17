@@ -23,10 +23,10 @@ class ScheduleService
 
             return collect([
                 $nextMonday,
-                $nextMonday->copy()->addDay(1),    
-                $nextMonday->copy()->addDay(2),    
-                $nextMonday->copy()->addDay(3),    
-                $nextMonday->copy()->addDay(4),    
+                $nextMonday->copy()->addDay(1),
+                $nextMonday->copy()->addDay(2),
+                $nextMonday->copy()->addDay(3),
+                $nextMonday->copy()->addDay(4),
             ]);
         }
 
@@ -34,10 +34,17 @@ class ScheduleService
 
         return collect([
             $nextMonday,
-            $nextMonday->copy()->addDay(1),    
-            $nextMonday->copy()->addDay(2),    
-            $nextMonday->copy()->addDay(3),    
-            $nextMonday->copy()->addDay(4),    
+            $nextMonday->copy()->addDay(1),
+            $nextMonday->copy()->addDay(2),
+            $nextMonday->copy()->addDay(3),
+            $nextMonday->copy()->addDay(4),
         ]);
+    }
+
+    public function nextWeekDaysRange()
+    {
+        $dates =  $this->nextWeekDayDates()->map->format('Y-m-d');
+
+        return [$dates->first(), $dates->last()];
     }
 }

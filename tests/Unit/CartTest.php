@@ -21,13 +21,25 @@ class CartTest extends TestCase
 {
     use DatabaseMigrations;
 
+    private $thisMonday;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->thisMonday = Carbon::create(2017, 8, 14);
+
+        Carbon::setTestNow($this->thisMonday);
+    }
+
+    private function getThisMonday()
+    {
+        return $this->thisMonday->copy();
+    }
+
     /** @test */
     public function create_cart_for_next_week()
     {
-        $pretendedCurrentDate = Carbon::create(2017, 8, 14);
-
-        Carbon::setTestNow($pretendedCurrentDate);
-
         $employee = factory(Employee::class)->create();
 
         $cart = Cart::of($employee);
@@ -40,10 +52,6 @@ class CartTest extends TestCase
     /** @test */
     public function can_retrieve_cart_for_next_week()
     {
-        $pretendedCurrentDate = Carbon::create(2017, 8, 14);
-
-        Carbon::setTestNow($pretendedCurrentDate);
-
         $schedule = app()->make(ScheduleService::class);
 
         $currentWeekDays = $schedule->nextWeekDayDates()->map->subWeek();
@@ -75,19 +83,19 @@ class CartTest extends TestCase
     /** @test */
     public function able_to_add_item()
     {
-        $menuA = factory(Menu::class)->create([
-            'name' => 'Sate Sapi',
-        ]);
+        $menu = factory(Menu::class)->create();
+        $menu->scheduleMeals($this->getThisMonday()->addWeek(), 4);
 
         $employee = factory(Employee::class)->create();
 
         $cart = Cart::of($employee);
 
-        $nextModay = Carbon::now()->addWeek()->startOfWeek();
-        $cart->addItem($menuA->id, 2, $nextModay);
+        $nextModay = $this->getThisMonday()->addWeek();
+
+        $cart->addItem($menu, 2, $nextModay);
 
         $this->assertDatabaseHas('cart_items', [
-            'menu_id' => $menuA->id,
+            'menu_id' => $menu->id,
             'qty' => 2,
             'date' => $nextModay->format('Y-m-d'),
         ]);
@@ -96,20 +104,20 @@ class CartTest extends TestCase
     /** @test */
     public function bump_qty_when_same_menu_and_date_already_exists()
     {
-        $menuA = factory(Menu::class)->create([
-            'name' => 'Sate Sapi',
-        ]);
+        $nextMonday = $this->getThisMonday()->addWeek();
+
+        $menu = factory(Menu::class)->create();
+        $menu->scheduleMeals($nextMonday, 4);
 
         $employee = factory(Employee::class)->create();
 
         $cart = Cart::of($employee);
 
-        $nextMonday = Carbon::now()->addWeek()->startOfWeek();
-        $cart->addItem($menuA->id, 2, $nextMonday);
-        $cart->addItem($menuA->id, 3, $nextMonday);
+        $cart->addItem($menu, 2, $nextMonday);
+        $cart->addItem($menu, 3, $nextMonday);
 
         $this->assertDatabaseHas('cart_items', [
-            'menu_id' => $menuA->id,
+            'menu_id' => $menu->id,
             'qty' => 5,
             'date' => $nextMonday->format('Y-m-d'),
         ]);
@@ -118,35 +126,41 @@ class CartTest extends TestCase
     /** @test */
     public function able_to_retrieve_correct_cart_items()
     {
-        $menuA = factory(Menu::class)->create([
-            'name' => 'Sate Sapi',
-        ]);
-        $menuB = factory(Menu::class)->create([
-            'name' => 'Kaledo Spesial',
-        ]);
+        $menuA = factory(Menu::class)->create(['name' => 'Sate Sapi']);
+        $menuB = factory(Menu::class)->create(['name' => 'Kaledo Spesial']);
+
+        $nextMonday = $this->getThisMonday()->addWeek();
+        $nextTuesday = $nextMonday->copy()->addDay();
+
+        $menuA->scheduleMeals($this->thisMonday, 5);
+        $menuA->scheduleMeals($nextMonday, 5);
+        $menuB->scheduleMeals($nextTuesday, 5);
 
         $employee = factory(Employee::class)->create();
 
-        // This week cart
-        $thisMonday = Carbon::now()->startOfWeek();
-        $cart = factory(Cart::class)->create([
+        // Cart for this week meals
+        $cartForThisWeek = factory(Cart::class)->create([
             'employee_id' => $employee->id,
-            'start_date' => $thisMonday->format('Y-m-d'),
-            'end_date' => $thisMonday->addDay(5)->format('Y-m-d'),
+            'start_date' => $this->getThisMonday()->format('Y-m-d'),
+            'end_date' => $this->getThisMonday()->addDay(5)->format('Y-m-d'),
         ]);
-        $cart->addItem($menuA->id, 90, $thisMonday);
 
-        // Next week cart
-        $cart = Cart::of($employee);
+        // We cannot use addItem to add items of this week
+        $cartForThisWeek->cartItems()->create([
+            'cart_id' => $cartForThisWeek->id,
+            'menu_id' => $menuA->id,
+            'qty' => 2,
+            'date' => $this->thisMonday->format('Y-m-d'),
+        ]);
 
-        $nextMonday = $thisMonday->copy()->addWeek();
-        $nextTuesday = $nextMonday->copy()->addDay();
+        // Cart for next week meals
+        $cartForNextWeek = Cart::of($employee);
 
-        $cart->addItem($menuA->id, 2, $nextMonday);
-        $cart->addItem($menuA->id, 3, $nextMonday);
-        $cart->addItem($menuB->id, 1, $nextTuesday->addDay());
+        $cartForNextWeek->addItem($menuA, 2, $nextMonday);
+        $cartForNextWeek->addItem($menuA, 3, $nextMonday);
+        $cartForNextWeek->addItem($menuB, 1, $nextTuesday);
 
-        $items = $cart->items()
+        $items = $cartForNextWeek->items()
             ->map(function ($item) {
                 return ['menu_id' => $item->id, 'qty' => $item->qty, 'date' => $item->date];
             })
@@ -173,14 +187,17 @@ class CartTest extends TestCase
 
         $menu = factory(Menu::class)->create();
 
-        $meals = $menu->scheduleMeals('2017-08-26', 3);
+        $nextMonday = $this->getThisMonday()->addWeek();
+
+        $meals = $menu->scheduleMeals($nextMonday, 3);
+
         $order = factory(Order::class)->create();
 
         $order->meals()->saveMany($meals->take(2));
 
         $cart = Cart::of($employee);
 
-        $cart->addItem($menu, 2, '2017-08-26');
+        $cart->addItem($menu, 2, $nextMonday);
 
         try {
             $cart->reserveMeals();
@@ -198,12 +215,12 @@ class CartTest extends TestCase
 
         $menu = factory(Menu::class)->create();
 
-        $meals = $menu->scheduleMeals('2017-08-26', 2);
+        $meals = $menu->scheduleMeals($this->getThisMonday()->addWeek(), 2);
         $meals->each->reserve();
 
         $cart = Cart::of($employee);
 
-        $cart->addItem($menu, 1, '2017-08-26');
+        $cart->addItem($menu, 1, $this->getThisMonday()->addWeek());
 
         try {
             $cart->reserveMeals();

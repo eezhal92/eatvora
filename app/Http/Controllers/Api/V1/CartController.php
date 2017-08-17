@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use Auth;
 use App\Cart;
+use App\Menu;
 use App\CartItem;
 use App\Employee;
-use App\Http\Controllers\Controller;
-use Auth;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Exceptions\IncorrectMealDateException;
 
 class CartController extends Controller
 {
@@ -39,21 +41,19 @@ class CartController extends Controller
             ->where('id', session('employee_id'))
             ->first();
 
-        // todo: make test and refactor
         $cart = Cart::of($employee);
 
-        if (!$cart) {
-            $cart = Cart::create([
-                'employee_id' => $employee->id,
-            ]);
+        if ($cart->already_placed_order) {
+            return response()->json(['message' => 'Cannot add item to the cart. Order for this cart has been placed.'], 422);
         }
 
-        $cart->addItem(request('menuId'), request('qty'), Carbon::parse(request('date')));
+        try {
+            $cart->addItem(Menu::find(request('menuId')), request('qty'), Carbon::parse(request('date')));
+        } catch (IncorrectMealDateException $e) {
+            return response()->json(['message' => $e->getMessage()], 422);
+        }
 
-        $items = $cart->items();
-
-        return response()->json($items)
-            ->cookie('cart_id', $cart->id);
+        return response()->json($cart->items());
     }
 
     public function update()
@@ -62,14 +62,11 @@ class CartController extends Controller
             ->where('id', session('employee_id'))
             ->first();
 
-        // todo: make test and refactor
         $cart = Cart::of($employee);
 
         $cart->updateItem(request('menu_id'), request('qty'), Carbon::parse(request('date')));
 
-        return response()->json([
-            'items' => $cart->items(),
-        ]);
+        return response()->json($cart->items());
     }
 
     public function remove()
@@ -78,13 +75,10 @@ class CartController extends Controller
             ->where('id', session('employee_id'))
             ->first();
 
-        // todo: make test and refactor
         $cart = Cart::of($employee);
 
         $cart->removeItem(request('menu_id'), Carbon::parse(request('date')));
 
-        return response()->json([
-            'items' => $cart->items(),
-        ]);
+        return response()->json($cart->items());
     }
 }

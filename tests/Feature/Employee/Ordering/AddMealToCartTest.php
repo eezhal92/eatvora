@@ -2,11 +2,13 @@
 
 namespace Tests\Feature\Employee\Ordering;
 
-use App\User;
-use App\Menu;
+use App\Meal;
 use App\Cart;
-use App\Vendor;
+use App\Menu;
+use App\User;
+use App\Order;
 use App\Office;
+use App\Vendor;
 use App\Company;
 use MealFactory;
 use App\Employee;
@@ -27,15 +29,21 @@ class AddMealToCartTest extends TestCase
 {
     use DatabaseMigrations;
 
-    private $nextWeekDayDates;
+    private $nextWeekDays;
+
+    private $mondayThisWeek;
 
     public function setUp()
     {
         parent::setUp();
 
+        $this->mondayThisWeek = Carbon::create(2017, 8, 14);
+
+        Carbon::setTestNow($this->mondayThisWeek);
+
         $scheduleService = $this->app->make(ScheduleService::class);
 
-        $this->nextWeekDayDates = $scheduleService->nextWeekDayDates();
+        $this->nextWeekDays = $scheduleService->nextWeekDayDates();
     }
 
     private function validParams($overrides = [])
@@ -49,11 +57,11 @@ class AddMealToCartTest extends TestCase
     }
 
     /** @test */
-    public function employee_can_add_meal_to_cart()
+    function employee_can_add_meal_to_cart()
     {
         $scheduleService = $this->app->make(ScheduleService::class);
 
-        $nextMonday = $this->nextWeekDayDates->first();
+        $nextMonday = $this->nextWeekDays->first();
 
         $menu = factory(Menu::class)->create($this->validParams(['name' => 'Nasi Kuning']));
 
@@ -92,13 +100,13 @@ class AddMealToCartTest extends TestCase
     }
 
     /** @test */
-    public function requires_authentication_with()
+    function requires_authentication()
     {
         $this->withExceptionHandling();
 
-        $nextMonday = $this->nextWeekDayDates->first();
+        $nextMonday = $this->nextWeekDays->first();
 
-        $menu = factory(Menu::class)->create($this->validParams(['name' => 'Nasi Kuning']));
+        $menu = factory(Menu::class)->create($this->validParams());
 
         MealFactory::createWithDates([
             $nextMonday->format('Y-m-d') => [$menu],
@@ -111,5 +119,73 @@ class AddMealToCartTest extends TestCase
         ]);
 
         $response->assertStatus(401);
+    }
+
+    /** @test */
+    function cannot_add_meal_when_cart_has_been_ordered()
+    {
+        $this->withExceptionHandling();
+
+        $menu = factory(Menu::class)->create($this->validParams());
+
+        $employee = factory(Employee::class)->create();
+
+        $cart = Cart::of($employee);
+
+        $order = factory(Order::class)->create();
+
+        $cart->update(['order_id' => $order->id]);
+
+        $response = $this->actingAs($employee->user)
+            ->withSession([
+                'employee_id' => $employee->id,
+            ])
+            ->json('post', '/api/v1/cart', [
+                'menuId' => $menu->id,
+                'date' => $this->nextWeekDays->first()->format('Y-m-d'),
+                'qty' => 2,
+            ]);
+
+        $response->assertStatus(422);
+    }
+
+    /** @test */
+    function cannot_add_meal_that_is_not_in_next_week_schedule()
+    {
+        // $this->withExceptionHandling();
+
+        $menuA = factory(Menu::class)->create($this->validParams(['name' => 'Nasi Kuning']));
+        $menuB = factory(Menu::class)->create($this->validParams(['name' => 'Nasi Ayam']));
+
+        $employee = factory(Employee::class)->create();
+
+        $menuA->scheduleMeals($this->mondayThisWeek, 3);
+        $menuB->scheduleMeals($this->mondayThisWeek->addDay(14), 3);
+
+        $cart = Cart::of($employee);
+
+        $responseA = $this->actingAs($employee->user)
+            ->withSession([
+                'employee_id' => $employee->id,
+            ])
+            ->json('post', '/api/v1/cart', [
+                'menuId' => $menuA->id,
+                'date' => $this->nextWeekDays->first()->format('Y-m-d'),
+                'qty' => 2,
+            ]);
+
+        $responseA->assertStatus(422);
+
+        $responseB = $this->actingAs($employee->user)
+            ->withSession([
+                'employee_id' => $employee->id,
+            ])
+            ->json('post', '/api/v1/cart', [
+                'menuId' => $menuB->id,
+                'date' => $this->nextWeekDays->first()->format('Y-m-d'),
+                'qty' => 2,
+            ]);
+
+        $responseB->assertStatus(422);
     }
 }

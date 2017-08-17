@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Services\ScheduleService;
 use Illuminate\Database\Eloquent\Model;
 use App\Exceptions\NotEnoughMealsException;
+use App\Exceptions\IncorrectMealDateException;
 
 class Cart extends Model
 {
@@ -71,25 +72,39 @@ class Cart extends Model
             ->first();
     }
 
-    public function addItem($menuId, $qty, $date)
+    public function addItem($menu, $qty, $date)
     {
-        if ($menuId instanceof Menu) {
-            $menuId = $menuId->id;
+        if (is_numeric($menu)) {
+            $menu = Menu::find($menu)->first();
         }
 
         if (is_string($date)) {
             $date = Carbon::parse($date);
         }
 
+        $schedule = app()->make(ScheduleService::class);
+
+        // dd(Meal::all()->toArray());
+        // dd(Carbon::now());
+        // dd($schedule->nextWeekDaysRange());
+        // dd($menu->meals()->get()->toArray());
+        $mealCount = $menu->meals()->whereBetween('date', $schedule->nextWeekDaysRange())->count();
+
+        // dd($schedule->nextWeekDaysRange());
+
+        if (!$mealCount) {
+            throw new IncorrectMealDateException("{$menu->name} is not scheduled for next week.");
+        }
+
         $foundItem = $this->cartItems()
-            ->where('menu_id', $menuId)
+            ->where('menu_id', $menu->id)
             ->where('date', $date->format('Y-m-d'))
             ->first();
 
         if (!$foundItem) {
             $this->cartItems()->create([
                 'cart_id' => $this->id,
-                'menu_id' => $menuId,
+                'menu_id' => $menu->id,
                 'qty' => $qty,
                 'date' => $date->format('Y-m-d'),
             ]);
