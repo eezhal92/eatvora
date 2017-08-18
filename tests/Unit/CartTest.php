@@ -10,12 +10,13 @@ use Carbon\Carbon;
 use Tests\TestCase;
 use App\Services\ScheduleService;
 use App\Exceptions\NotEnoughMealsException;
+use App\Exceptions\CartItemNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 /**
  * @todo
- * - Assert given example. get/create cart for next week, not get cart for this week or past weeks
+ * - Consider for refactoring method signatures of addItem, updateItem, deleteItem.
  */
 class CartTest extends TestCase
 {
@@ -50,7 +51,7 @@ class CartTest extends TestCase
     }
 
     /** @test */
-    public function can_retrieve_cart_for_next_week()
+    public function can_retrieve_correct_cart_for_next_week()
     {
         $schedule = app()->make(ScheduleService::class);
 
@@ -246,5 +247,37 @@ class CartTest extends TestCase
         $cart->update(['order_id' => $order->id]);
 
         $this->assertTrue($cart->already_placed_order);
+    }
+
+    /** @test */
+    function cannot_update_non_existent_cart_item_throws_exception()
+    {
+        $employee = factory(Employee::class)->create();
+
+        $cart = Cart::of($employee);
+
+        try {
+            $cart->updateItem(1000, 2, Carbon::now());
+        } catch (CartItemNotFoundException $e) {
+            return;
+        }
+
+        $this->fail("Updating non existent cart item is not throwing CartItemNotFoundException");
+    }
+
+    /** @test */
+    function cannot_remove_non_existent_cart_item_throws_exception()
+    {
+        $employee = factory(Employee::class)->create();
+
+        $cart = Cart::of($employee);
+
+        try {
+            $cart->removeItem(1000, Carbon::now());
+        } catch (CartItemNotFoundException $e) {
+            return;
+        }
+
+        $this->fail("Removing non existent cart item is not throwing CartItemNotFoundException");
     }
 }

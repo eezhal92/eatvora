@@ -33,7 +33,7 @@ class RemoveMealFromCartTest extends TestCase
 
         $cart = Cart::of($employee);
 
-        $cart->addItem($menu->id, 2, $nextWeekDayDates->first());
+        $cart->addItem($menu, 2, $nextWeekDayDates->first());
 
         $response = $this->actingAs($employee->user)->json('DELETE', '/api/v1/cart', [
             'menu_id' => $menu->id,
@@ -41,5 +41,35 @@ class RemoveMealFromCartTest extends TestCase
         ]);
 
         $this->assertNull($cart->items()->first());
+    }
+
+    /** @test */
+    public function cannot_remove_not_existent_cart_item()
+    {
+        $this->withExceptionHandling();
+
+        $employee = factory(Employee::class)->create();
+
+        session(['employee_id' => $employee->id]);
+
+        $menu = factory(Menu::class)->create();
+
+        $nextWeekDayDates = $this->app->make(ScheduleService::class)->nextWeekDayDates();
+
+        MealFactory::createWithDates([
+            $nextWeekDayDates->first()->format('Y-m-d') => [$menu],
+        ]);
+
+        $cart = Cart::of($employee);
+
+        $cart->addItem($menu, 2, $nextWeekDayDates->first());
+
+        $response = $this->actingAs($employee->user)->json('DELETE', '/api/v1/cart', [
+            'menu_id' => 999,
+            'date' => $nextWeekDayDates->first()->format('Y-m-d'),
+        ]);
+
+        $response->assertStatus(422);
+        $this->assertNotNull($cart->items()->first());
     }
 }

@@ -20,10 +20,9 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 /**
- * What to assert:
- * - It should able to retrieve correct items based on current date. eg. last week has cart but not checkout, it should create new one when friday 3pm - friday 2.59pm
- * - It should not able to add item when in not schedule / correct week range
- * - It should not able to order when is employee not active
+ * @todo
+ * - It should able to retrieve correct items based on current date. eg. last week has cart but not checkout, it should create new one when friday 3pm - friday 2.59pm (need to be discussed further)
+ * - It should not able to order when is employee not active (need to be discussed further)
  */
 class AddMealToCartTest extends TestCase
 {
@@ -152,7 +151,7 @@ class AddMealToCartTest extends TestCase
     /** @test */
     function cannot_add_meal_that_is_not_in_next_week_schedule()
     {
-        // $this->withExceptionHandling();
+        $this->withExceptionHandling();
 
         $menuA = factory(Menu::class)->create($this->validParams(['name' => 'Nasi Kuning']));
         $menuB = factory(Menu::class)->create($this->validParams(['name' => 'Nasi Ayam']));
@@ -187,5 +186,27 @@ class AddMealToCartTest extends TestCase
             ]);
 
         $responseB->assertStatus(422);
+    }
+
+    /** @test */
+    function cannot_add_non_existent_meal()
+    {
+        $this->withExceptionHandling();
+
+        $employee = factory(Employee::class)->create();
+
+        $cart = Cart::of($employee);
+
+        $response = $this->actingAs($employee->user)
+            ->withSession([
+                'employee_id' => $employee->id,
+            ])
+            ->json('post', '/api/v1/cart', [
+                'menuId' => 999,
+                'date' => $this->nextWeekDays->first()->format('Y-m-d'),
+                'qty' => 2,
+            ]);
+
+        $response->assertStatus(422);
     }
 }

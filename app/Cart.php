@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Services\ScheduleService;
 use Illuminate\Database\Eloquent\Model;
 use App\Exceptions\NotEnoughMealsException;
+use App\Exceptions\CartItemNotFoundException;
 use App\Exceptions\IncorrectMealDateException;
 
 class Cart extends Model
@@ -74,8 +75,8 @@ class Cart extends Model
 
     public function addItem($menu, $qty, $date)
     {
-        if (is_numeric($menu)) {
-            $menu = Menu::find($menu)->first();
+        if (!$menu) {
+            throw new CartItemNotFoundException("Cannot find mel item");
         }
 
         if (is_string($date)) {
@@ -84,22 +85,13 @@ class Cart extends Model
 
         $schedule = app()->make(ScheduleService::class);
 
-        // dd(Meal::all()->toArray());
-        // dd(Carbon::now());
-        // dd($schedule->nextWeekDaysRange());
-        // dd($menu->meals()->get()->toArray());
         $mealCount = $menu->meals()->whereBetween('date', $schedule->nextWeekDaysRange())->count();
-
-        // dd($schedule->nextWeekDaysRange());
 
         if (!$mealCount) {
             throw new IncorrectMealDateException("{$menu->name} is not scheduled for next week.");
         }
 
-        $foundItem = $this->cartItems()
-            ->where('menu_id', $menu->id)
-            ->where('date', $date->format('Y-m-d'))
-            ->first();
+        $foundItem = $this->findItem($menu->id, $date);
 
         if (!$foundItem) {
             $this->cartItems()->create([
@@ -118,11 +110,10 @@ class Cart extends Model
 
     public function updateItem($menuId, $qty, $date)
     {
-        // @todo: cover unit test
         $item = $this->findItem($menuId, $date);
 
         if (!$item) {
-            throw new \Exception('Menu item is not found');
+            throw new CartItemNotFoundException("Menu item with id {$menuId} and date {$date} is not found");
         }
 
         $item->qty = $qty;
@@ -131,11 +122,10 @@ class Cart extends Model
 
     public function removeItem($menuId, $date)
     {
-        // @todo: cover unit test
         $item = $this->findItem($menuId, $date);
 
         if (!$item) {
-            throw new \Exception('Menu item is not found');
+            throw new CartItemNotFoundException("Menu item with id {$menuId} and date {$date} is not found");
         }
 
         $item->delete();

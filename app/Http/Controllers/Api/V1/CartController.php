@@ -10,6 +10,7 @@ use App\Employee;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Exceptions\CartItemNotFoundException;
 use App\Exceptions\IncorrectMealDateException;
 
 class CartController extends Controller
@@ -36,7 +37,6 @@ class CartController extends Controller
 
     public function store()
     {
-        //@ todo add validation when trying menu / meal that are not scheduled
         $employee = Employee::where('user_id', Auth::user()->id)
             ->where('id', session('employee_id'))
             ->first();
@@ -51,20 +51,30 @@ class CartController extends Controller
             $cart->addItem(Menu::find(request('menuId')), request('qty'), Carbon::parse(request('date')));
         } catch (IncorrectMealDateException $e) {
             return response()->json(['message' => $e->getMessage()], 422);
+        } catch (CartItemNotFoundException $e) {
+            return response()->json(['message' => $e->getMessage()], 422);
         }
 
         return response()->json($cart->items());
     }
 
-    public function update()
+    public function update(Request $request)
     {
+        $this->validate($request, [
+            'qty' => 'numeric|min:1',
+        ]);
+
         $employee = Employee::where('user_id', Auth::user()->id)
             ->where('id', session('employee_id'))
             ->first();
 
         $cart = Cart::of($employee);
 
-        $cart->updateItem(request('menu_id'), request('qty'), Carbon::parse(request('date')));
+        try {
+            $cart->updateItem(request('menu_id'), request('qty'), Carbon::parse(request('date')));
+        } catch (CartItemNotFoundException $e) {
+            return response()->json(['message' => $e->getMessage()], 422);
+        }
 
         return response()->json($cart->items());
     }
@@ -77,7 +87,11 @@ class CartController extends Controller
 
         $cart = Cart::of($employee);
 
-        $cart->removeItem(request('menu_id'), Carbon::parse(request('date')));
+        try {
+            $cart->removeItem(request('menu_id'), Carbon::parse(request('date')));
+        } catch (CartItemNotFoundException $e) {
+            return response()->json(['message' => $e->getMessage()], 422);
+        }
 
         return response()->json($cart->items());
     }
