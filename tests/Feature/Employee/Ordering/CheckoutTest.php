@@ -127,7 +127,7 @@ class CheckoutTest extends TestCase
     /** @test */
     public function user_can_order_meals_in_cart()
     {
-        $this->withExceptionHandling();
+        // $this->withExceptionHandling();
 
         Balance::employeeTopUp($this->employee, 200000);
 
@@ -158,8 +158,8 @@ class CheckoutTest extends TestCase
         $this->assertEquals(7, $order->meals()->count());
         $this->assertEquals($orderAmount, $order->amount);
         $this->assertEquals(-$orderAmount, $balance->amount);
-        $this->assertEquals($vendorBill, $order->vendorBill());
-        $this->assertEquals($revenue, $order->revenue());
+        $this->assertEquals($vendorBill, $order->vendor_bill);
+        $this->assertEquals($revenue, $order->revenue);
     }
 
     /** @test */

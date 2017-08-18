@@ -18,7 +18,7 @@ class MealTest extends TestCase
     function a_meal_can_be_claimed_for_an_order()
     {
         $employee = factory(Employee::class)->create();
-        $order = Order::create([
+        $order = factory(Order::class)->create([
             'user_id' => $employee->user->id,
             'employee_id' => $employee->id,
             'amount' => 50000,

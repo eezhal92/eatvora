@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Lib\Cost;
+
 class Reservation
 {
     private $employee;
@@ -10,6 +12,8 @@ class Reservation
 
     private $meals;
 
+    private $cost;
+
     public function __construct($cart, $meals, $employee)
     {
         $this->cart = $cart;
@@ -17,24 +21,22 @@ class Reservation
         $this->meals = $meals;
 
         $this->employee = $employee;
+
+        $this->cost = new Cost($this->meals->map->menu);
     }
 
     public function totalCost()
     {
-        return $this->meals->reduce(function ($total, $item) {
-            return $total + $item->menu->final_price;
-        }, 0);
+        return $this->cost->total();
     }
 
     public function complete($balanceService)
     {
         $balance = $balanceService->charge($this->employee, $this->totalCost());
 
-        $order = Order::forMeals($this->meals, $this->employee, $this->totalCost());
+        $order = Order::forMeals($this->meals, $this->employee, $this->cost);
 
-        $balance->update([
-            'description' => sprintf('Payment for order #%s', $order->id),
-        ]);
+        $balance->update(['description' => sprintf('Payment for order #%s', $order->id)]);
 
         $this->cart->update(['order_id' => $order->id]);
 

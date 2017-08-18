@@ -158,6 +158,10 @@ $factory->define(Order::class, function (Faker\Generator $faker) {
         'user_id' => function () use ($employee)  {
             return $employee->user->id;
         },
-        'amount' => 80000,
+        'amount' => 220000,
+        'vendor_bill' => 200000,
+        'revenue' => 20000,
+        'commission_percentage_per_meal' => '0.1',
+        'delivery_address' => 'Fake delivery address',
     ];
 });

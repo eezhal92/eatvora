@@ -13,30 +13,20 @@ class Order extends Model
         return $this->hasMany(Meal::class);
     }
 
-    public static function forMeals($meals, $employee, $amount)
+    public static function forMeals($meals, $employee, $charge)
     {
         $order = self::create([
             'user_id' => $employee->user->id,
             'employee_id' => $employee->id,
-            'amount' => $amount,
+            'vendor_bill' => $charge->vendorBill(),
+            'revenue' => $charge->revenue(),
+            'amount' => $charge->total(),
+            'delivery_address' => $employee->office->address,
+            'commission_percentage_per_meal' => config('eatvora.commission_percentage'),
         ]);
 
         $meals->each->claimFor($order);
 
         return $order;
-    }
-
-    public function vendorBill()
-    {
-        // @todo: add test
-        return $this->meals()->with('menu')->get()->map(function ($meal) {
-            return $meal->menu->price;
-        })->sum();
-    }
-
-    public function revenue()
-    {
-        // @todo: add test
-        return $this->amount - $this->vendorBill();
     }
 }

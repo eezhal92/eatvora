@@ -18,6 +18,10 @@ class CreateOrdersTable extends Migration
             $table->integer('user_id');
             $table->integer('employee_id');
             $table->integer('amount');
+            $table->integer('vendor_bill');
+            $table->integer('revenue');
+            $table->text('delivery_address');
+            $table->string('commission_percentage_per_meal');
             $table->timestamps();
         });
     }
