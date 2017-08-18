@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Menu;
 use App\Vendor;
 use Illuminate\Http\Request;
+use App\Services\ScheduleService;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -78,5 +80,20 @@ class VendorController extends Controller
         ]));
 
         return redirect("/ap/vendors/{$vendor->id}");
+    }
+
+    public function order($vendorId)
+    {
+        $menus = Menu::with('vendor')
+            ->join('vendors', 'vendors.id', '=', 'menus.vendor_id')
+            ->join('meals', 'menus.id', '=', 'meals.menu_id')
+            ->join('orders', 'orders.id', '=', 'meals.order_id')
+            ->where('vendors.id', $vendorId)
+            ->whereBetween('meals.date', [app()->make(ScheduleService::class)->nextWeekDaysRange()])
+            ->select('menus.*', \DB::raw('count(*) as qty'), 'meals.date')
+            ->groupBy('menus.id', 'meals.date')
+            ->get();
+
+        return view('admin.vendors.orders', compact('menus'));
     }
 }

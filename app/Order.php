@@ -13,6 +13,11 @@ class Order extends Model
         return $this->hasMany(Meal::class);
     }
 
+    public function employee()
+    {
+        return $this->belongsTo(Employee::class);
+    }
+
     public static function forMeals($meals, $employee, $charge)
     {
         $order = self::create([

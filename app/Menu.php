@@ -25,6 +25,19 @@ class Menu extends Model
         return $this->hasMany(Meal::class);
     }
 
+    public function orders()
+    {
+        return Meal::with('menu')->join('orders', 'orders.id', '=', 'meals.order_id')
+            ->join('employees', 'employees.id', '=', 'orders.employee_id')
+            ->join('users', 'users.id', '=', 'employees.user_id')
+            ->join('offices', 'offices.id', '=', 'employees.office_id')
+            ->join('companies', 'companies.id', '=', 'offices.company_id')
+            ->where('meals.menu_id', $this->id)
+            ->select('meals.menu_id', \DB::raw('users.name as customer_name'), \DB::raw('count(*) as qty'), \DB::raw('companies.name as company_name'), \DB::raw('offices.name as office_name'), \DB::raw('orders.delivery_address as delivery_address'))
+            ->groupBy('meals.menu_id', 'customer_name', 'office_name', 'company_name', 'delivery_address')
+            ->get();
+    }
+
     public function vendorName()
     {
         return $this->vendor->name;

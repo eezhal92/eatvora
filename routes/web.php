@@ -35,65 +35,69 @@ Route::group(['middleware' => ['auth', 'company']], function () {
 
 });
 
-Route::group(['prefix' => '/ap'], function () {
+Route::group(['prefix' => '/ap', 'namespace' => 'Admin'], function () {
 
-    Route::get('/login', 'Admin\AuthController@showLoginForm');
+    Route::get('/login', 'AuthController@showLoginForm');
 
-    Route::post('/login', 'Admin\AuthController@login');
+    Route::post('/login', 'AuthController@login');
 
     Route::group(['middleware' => ['eatvora-admin']], function () {
 
-        Route::get('/dashboard', 'Admin\DashboardController@index');
+        Route::get('/dashboard', 'DashboardController@index');
 
-        Route::get('/companies/create', 'Admin\CompanyController@create');
+        Route::get('/companies/create', 'CompanyController@create');
 
-        Route::get('/companies', 'Admin\CompanyController@index');
+        Route::get('/companies', 'CompanyController@index');
 
-        Route::post('/companies', 'Admin\CompanyController@store');
+        Route::post('/companies', 'CompanyController@store');
 
-        Route::get('/companies/{id}', 'Admin\CompanyController@show');
+        Route::get('/companies/{id}', 'CompanyController@show');
 
-        Route::get('/companies/{id}/edit', 'Admin\CompanyController@edit');
+        Route::get('/companies/{id}/edit', 'CompanyController@edit');
 
-        Route::patch('/companies/{id}', 'Admin\CompanyController@update');
+        Route::patch('/companies/{id}', 'CompanyController@update');
 
-        Route::get('/companies/{companyId}/offices/create', 'Admin\OfficeController@create');
+        Route::get('/companies/{companyId}/offices/create', 'OfficeController@create');
 
-        Route::post('/companies/{companyId}/offices', 'Admin\OfficeController@store');
+        Route::post('/companies/{companyId}/offices', 'OfficeController@store');
 
-        Route::get('/companies/{companyId}/offices/{id}/edit', 'Admin\OfficeController@edit');
+        Route::get('/companies/{companyId}/offices/{id}/edit', 'OfficeController@edit');
 
-        Route::patch('/companies/{companyId}/offices/{id}', 'Admin\OfficeController@update');
+        Route::patch('/companies/{companyId}/offices/{id}', 'OfficeController@update');
 
-        Route::get('/companies/{companyId}/employees', 'Admin\CompanyController@employees');
+        Route::get('/companies/{companyId}/employees', 'CompanyController@employees');
 
-        Route::get('/companies/{companyId}/payments', 'Admin\CompanyController@payments');
+        Route::get('/companies/{companyId}/payments', 'CompanyController@payments');
 
-        Route::get('/vendors', 'Admin\VendorController@index');
+        Route::get('/vendors', 'VendorController@index');
 
-        Route::post('/vendors', 'Admin\VendorController@store');
+        Route::post('/vendors', 'VendorController@store');
 
-        Route::get('/vendors/create', 'Admin\VendorController@create');
+        Route::get('/vendors/create', 'VendorController@create');
 
-        Route::get('/vendors/{id}', 'Admin\VendorController@show');
+        Route::get('/vendors/{id}', 'VendorController@show');
 
-        Route::get('/vendors/{id}/edit', 'Admin\VendorController@edit');
+        Route::get('/vendors/{id}/edit', 'VendorController@edit');
 
-        Route::patch('/vendors/{id}', 'Admin\VendorController@update');
+        Route::patch('/vendors/{id}', 'VendorController@update');
 
-        Route::get('/menus', 'Admin\MenuController@index');
+        Route::get('/vendors/{id}/orders', 'VendorController@order');
 
-        Route::get('/menus/create', 'Admin\MenuController@create');
+        Route::get('/menus', 'MenuController@index');
 
-        Route::post('/menus', 'Admin\MenuController@store');
+        Route::get('/menus/create', 'MenuController@create');
 
-        Route::get('/menus/{id}', 'Admin\MenuController@show');
+        Route::post('/menus', 'MenuController@store');
 
-        Route::get('/menus/{id}/edit', 'Admin\MenuController@edit');
+        Route::get('/menus/{id}', 'MenuController@show');
 
-        Route::patch('/menus/{id}', 'Admin\MenuController@update');
+        Route::get('/menus/{id}/edit', 'MenuController@edit');
 
-        Route::get('/payments', 'Admin\PaymentController@index');
+        Route::patch('/menus/{id}', 'MenuController@update');
+
+        Route::get('/payments', 'PaymentController@index');
+
+        Route::get('/orders', 'OrderController@index');
     });
 });
 
