@@ -157,7 +157,7 @@ class Cart extends Model
                 ->get();
 
             if ($meals->count() < $item->qty) {
-                throw new NotEnoughMealsException("Maaf, Stok menu {$item->name} tinggal {$meals->count()}.");
+                throw new NotEnoughMealsException("Maaf, Jumlah item {$item->name} yang tersedia tinggal {$meals->count()} pcs.");
             }
 
             return $meals;

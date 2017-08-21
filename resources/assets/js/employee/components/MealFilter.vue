@@ -2,7 +2,7 @@
   <form class="meal-filter" @submit.prevent="updateFilter">
     <div class="form-group">
       <label for="category" class="meal-filter__label">Kategori</label>
-      <meal-tag></meal-tag>
+      <meal-tag :selected-tags="category" @update:selected-tags="val => category = val"></meal-tag>
     </div>
     <button class="btn btn-sm btn--primary" type="submit">
       <i class="glyphicon glyphicon-search"></i> Perbarui &amp; Dapatkan
@@ -17,7 +17,7 @@ import MealTag from './MealTag';
 
 export default {
   data() {
-    return { category: 'all' };
+    return { category: ['all'] };
   },
   methods: {
     updateFilter() {

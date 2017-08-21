@@ -62,7 +62,7 @@ class MealController extends Controller
 
         $meals = Menu::with('vendor')->join('meals', 'menus.id', '=', 'meals.menu_id')
             ->join('orders', 'orders.id', '=', 'meals.order_id')
-            ->where('orders.user_id', auth()->user()->id)
+            ->where('orders.user_id', auth()->user()->id) // @todo <-- cover in test
             ->whereBetween('meals.date', [$weekDays->first(), $weekDays->last()])
             ->select('menus.*', \DB::raw('count(*) as qty'), 'meals.date')
             ->groupBy('menus.id', 'meals.date')

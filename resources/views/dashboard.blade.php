@@ -108,6 +108,10 @@
       text-align: center;
       margin-top: 18px;
     }
+
+    .balance-desc {
+      cursor: pointer;
+    }
   </style>
 @endpush
 
@@ -165,7 +169,7 @@
               <tr>
                 <td>{{ $balance->created_at->format('d/m') }}</td>
                 <td>
-                  <span title="{{ $balance->description }}">{{ str_limit($balance->description, 14, '...') }}</span>
+                  <span class="balance-desc" data-toggle="tooltip" data-placement="bottom" title="{{ $balance->description }}">{{ str_limit($balance->description, 14, '...') }}</span>
                 </td>
                 <td>
                   @if ($balance->amount > 0)
@@ -187,3 +191,9 @@
   </div>
 </div>
 @endsection
+
+@push('afterScripts')
+  <script>
+    $('.balance-desc').tooltip();
+  </script>
+@endpush

@@ -22,7 +22,8 @@
               <i class="fa fa-user"></i> {{ meal.vendor.name | limit(15) }}
             </span>
           </div>
-          <button v-if="!alreadyPlacedOrder" @click="addToCart" :disabled="adding" class="btn pull-right meal-card__btn" :class="[isInCart ? 'btn-default' :'btn--primary']">
+          <p v-if="!alreadyPlacedOrder && soldOut" style="color: #f44336; padding: 6px 12px" class="pull-right">Habis</p>
+          <button v-if="!alreadyPlacedOrder && !soldOut" @click="addToCart" :disabled="adding" class="btn pull-right meal-card__btn" :class="[isInCart ? 'btn-default' :'btn--primary']">
             <i v-if="adding" class="fa fa-circle-o-notch icon-spin"></i>
             <span v-else>{{ isInCart ? 'Tambah' : 'Ingin Ini' }}</span>
           </button>
@@ -44,6 +45,9 @@ export default {
     ...mapGetters(['alreadyPlacedOrder']),
     isInCart() {
       return this.$store.getters.allCartItemIds.indexOf(this.meal.id) !== -1;
+    },
+    soldOut() {
+      return !this.meal.nextweek_remaining_qty;
     },
   },
   methods: {

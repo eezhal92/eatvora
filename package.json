@@ -26,5 +26,8 @@
     "vue": "@2.4.2",
     "vue-click-outside": "^1.0.6",
     "vuex": "^2.3.1"
+  },
+  "dependencies": {
+    "qs": "^6.5.0"
   }
 }

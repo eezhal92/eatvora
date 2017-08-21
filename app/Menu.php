@@ -4,6 +4,7 @@ namespace App;
 
 use App\Vendor;
 use Carbon\Carbon;
+use App\Services\ScheduleService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -13,7 +14,7 @@ class Menu extends Model
 
     protected $guarded = [];
 
-    protected $appends = ['final_price'];
+    protected $appends = ['final_price', 'nextweek_remaining_qty', 'nextweek_available_qty'];
 
     public function vendor()
     {
@@ -73,6 +74,22 @@ class Menu extends Model
         }
 
         return $meals;
+    }
+
+    public function getNextWeekRemainingQtyAttribute()
+    {
+        $range = app()->make(ScheduleService::class)->nextWeekDaysRange();
+
+        return $this->meals()->whereBetween('date', $range)
+            ->whereNull('order_id')
+            ->count();
+    }
+
+    public function getNextWeekAvailableQtyAttribute()
+    {
+        $range = app()->make(ScheduleService::class)->nextWeekDaysRange();
+
+        return $this->meals()->whereBetween('date', $range)->count();
     }
 
     public function getFinalPriceAttribute()

@@ -1,7 +1,7 @@
 <template>
   <div class="meal-tags">
     <button class="meal-tag" @click="setTagAll" :class="{ 'meal-tag--selected': isSelected('all') }">All</button>
-    <button v-for="tag in tags" class="meal-tag" @click="toggleSelect(tag.id)" :class="{ 'meal-tag--selected': isSelected(tag.id) }">{{ tag.name }}</button>
+    <button type="button" v-for="tag in tags" class="meal-tag" @click="toggleSelect(tag.id)" :class="{ 'meal-tag--selected': isSelected(tag.id) }">{{ tag.name }}</button>
   </div>
 </template>
 
@@ -11,19 +11,18 @@ const tags = [
   { id: 2, name: 'Spicy', slug: 'spicy' },
   { id: 3, name: 'Diet', slug: 'dite' },
 ];
+
 export default {
+  props: ['selectedTags'],
   data() {
-    return { tags, selected: ['all'] };
+    return { tags, selected: this.selectedTags };
   },
   methods: {
     isSelected(id) {
-      return this.selected.indexOf(id) !== -1;
+      return !!this.selected.find(tagId => tagId === id);
     },
     removeTagAll() {
-      const i = this.selected.indexOf('all');
-      if (i !== -1) {
-        this.selected.splice(i, 1);
-      }
+      this.selected = this.selected.filter(tagId => tagId !== 'all');
     },
     setTagAll() {
       this.selected = ['all'];
@@ -42,7 +41,12 @@ export default {
         this.selected.push(id);
       }
     }
-  }
+  },
+  watch: {
+    selected(newValue) {
+      this.$emit('update:selected-tags', newValue)
+    }
+  },
 };
 </script>
 

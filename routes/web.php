@@ -100,6 +100,12 @@ Route::group(['prefix' => '/ap', 'namespace' => 'Admin'], function () {
         Route::get('/orders', 'OrderController@index');
 
         Route::get('/orders/{id}', 'OrderController@show');
+
+        Route::get('/schedules/create', 'ScheduleController@create');
+
+        Route::get('/schedules', 'ScheduleController@index');
+
+        Route::post('/schedules', 'ScheduleController@store');
     });
 });
 

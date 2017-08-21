@@ -49,7 +49,7 @@
             </div>
           </div>
           <br>
-          @if ($renderAddToCartButton)
+          @if ($renderAddToCartButton && $menu->nextweek_remaining_qty)
             <button class="btn btn-block btn--primary">Ingin Ini</button>
           @endif
         </div>

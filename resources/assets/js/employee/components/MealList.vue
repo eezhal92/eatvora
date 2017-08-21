@@ -1,5 +1,5 @@
 <script>
-import { stringify as qsStringify } from 'querystring';
+import { stringify } from 'qs';
 
 import bus from './bus';
 import MealItem from './MealItem';
@@ -11,6 +11,7 @@ export default {
   data() {
     return {
       meals: [],
+      total: 0,
       isLoading: false,
       category: ['all'],
       date: this.weekdays[0],
@@ -34,7 +35,7 @@ export default {
   },
   methods: {
     fetchMeals(query = {}, push = false) {
-      query = qsStringify(query);
+      query = stringify(query);
       this.isLoading = true;
       axios.get(`/api/v1/meals?${query}`)
         .then(({ data }) => {
@@ -46,6 +47,7 @@ export default {
           }
 
           this.currentPage = +data.query.page;
+          this.total = +data.total;
           this.lastPage = +data.query.last_page;
         })
         .catch(() => {
@@ -86,6 +88,10 @@ export default {
       return this.currentPage + 1;
     },
     remaining() {
+      if (!this.total) {
+        return false;
+      }
+
       return !(this.currentPage === this.lastPage);
     }
   },
@@ -97,6 +103,7 @@ export default {
         <DateSelector weekdays={this.weekdays} />
         <br />
         <br />
+        {!this.total && <div>Makan siang untuk hari ini telah habis atau tidak tersedia :(</div>}
         {chunkedMeals.map(meals => (
           <div class="row">
             {meals.map(meal => (

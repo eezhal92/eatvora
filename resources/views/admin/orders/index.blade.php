@@ -55,6 +55,7 @@
           <table class="table">
             <thead>
               <tr>
+                <th>ID</th>
                 <th>Order By</th>
                 <th>Delivery Address</th>
                 <th>Amount</th>
@@ -66,6 +67,7 @@
             <tbody>
               @foreach($orders as $order)
                 <tr>
+                  <td>#{{ $order->id }}</td>
                   <td>{{ $order->employee->user->name }}</td>
                   <td>{{ $order->delivery_address }}</td>
                   <td>Rp. {{ number_format($order->amount) }}</td>
