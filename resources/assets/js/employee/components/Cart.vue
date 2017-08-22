@@ -1,7 +1,7 @@
 <template>
   <div class="cart">
     <p v-if="!cartItemsCount && !alreadyPlacedOrder">
-      Ooops! Keranjang Anda Masih Kosong.
+      Ooops! Keranjang Anda Masih Kosong
       <br />
       <br />
       <a href="/meals" class="btn btn--primary btn-sm">

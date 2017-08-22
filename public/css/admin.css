@@ -8380,12 +8380,16 @@ a:focus {
   border-color: #005DD6;
 }
 
+.btn-default {
+  border-color: #e6e6e6;
+}
+
 label {
   font-weight: 300;
 }
 
 .form-control {
-  border-color: #bdc4c9;
+  border-color: #e6e6e6;
   border-radius: 3px;
   -webkit-box-shadow: none;
           box-shadow: none;
@@ -8407,6 +8411,11 @@ label {
   font-size: 16px;
   margin-top: 20px;
   margin-bottom: 20px;
+}
+
+.input-group-addon {
+  border: 1px solid #e6e6e6;
+  background-color: #f6f9fc;
 }
 
 .modal-content {
@@ -8457,6 +8466,12 @@ body {
 
 .app-content-container {
   padding-left: 240px;
+}
+
+.intent-negative {
+  padding: 120px 20px;
+  text-align: center;
+  color: rgba(99, 114, 130, 0.6);
 }
 
 .eatvora-header {
@@ -8693,5 +8708,23 @@ body {
 
 .action-panel {
   margin-bottom: 15px;
+}
+
+.stats-widget {
+  background: #f6f9fc;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 3px;
+}
+
+.stats-widget__number {
+  color: #4CAF50;
+  font-size: 18px;
+  margin: 0;
+}
+
+.stats-widget__title {
+  color: rgba(99, 114, 130, 0.8);
+  font-size: 12px;
 }
 

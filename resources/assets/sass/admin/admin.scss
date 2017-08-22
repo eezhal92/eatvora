@@ -4,9 +4,11 @@
 @import "overrides/entry";
 @import "base";
 @import "layout";
+@import "utils";
 
 @import "components/navigation";
 @import "components/office-list";
 @import "components/vendor-detail";
 @import "components/info-subset";
 @import "components/action-panel";
+@import "components/stats-widget";

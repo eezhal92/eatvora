@@ -13,19 +13,26 @@
         <div class="col-lg-12">
           <div class="row">
             <div class="col-lg-12">
-              This Week Stats
+              <h4>Next Week Stats</h4>
+              <br>
             </div>
             <div class="col-lg-4">
-              <h3>Total Order</h3>
-              <div>Rp. 25,000,000</div>
+              <div class="stats-widget">
+                <div class="stats-widget__number">Rp. {{ number_format($totalOrder) }}</div>
+                <div class="stats-widget__title">Total Orders</div>
+              </div>
             </div>
             <div class="col-lg-4">
-              <h3>Total Vendor Bill</h3>
-              <div>Rp. 20,000,000</div>
+              <div class="stats-widget">
+                <div class="stats-widget__number">Rp. {{ number_format($totalVendorBill) }}</div>
+                <div class="stats-widget__title">Total Vendor Bill</div>
+              </div>
             </div>
             <div class="col-lg-4">
-              <h3>Total Revenue</h3>
-              <div>Rp. 5,000,000</div>
+              <div class="stats-widget">
+                <div class="stats-widget__number">Rp. {{ number_format($totalRevenue) }}</div>
+                <div class="stats-widget__title">Total Revenue</div>
+              </div>
             </div>
           </div>
         </div>

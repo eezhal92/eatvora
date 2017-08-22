@@ -39,7 +39,7 @@
         <div class="col-lg-12">
           <div class="meal-group">
             @if (!$mealCount)
-            <p>No meal scheduled</p>
+            <div class="intent-negative">No meal scheduled</div>
             @endif
             @foreach($mealGroups as $date => $meals)
             <h3>{{ date_format(date_create($date), 'l, d M Y') }}</h3>

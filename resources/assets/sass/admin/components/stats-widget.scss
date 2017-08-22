@@ -1,0 +1,17 @@
+.stats-widget {
+  background: #f6f9fc;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 3px;
+
+  &__number {
+    color: #4CAF50;
+    font-size: 18px;
+    margin: 0;
+  }
+
+  &__title {
+    color: rgba(99, 114, 130, 0.8);
+    font-size: 12px;
+  }
+}

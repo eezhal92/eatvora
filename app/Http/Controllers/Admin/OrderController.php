@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Order;
 use Illuminate\Http\Request;
+use App\Services\ScheduleService;
 use App\Http\Controllers\Controller;
 
 class OrderController extends Controller
@@ -13,7 +14,16 @@ class OrderController extends Controller
         // @todo add test
         $orders = Order::orderBy('created_at', 'desc')->paginate(20);
 
-        return view('admin.orders.index', compact('orders'));
+        $order = Order::join('meals', 'meals.order_id', '=', 'orders.id')
+            ->whereBetween('meals.date', app()->make(ScheduleService::class)->nextWeekDaysRange())
+            ->select('orders.*')
+            ->groupBy('orders.id')
+            ->get();
+        $totalOrder = $order->sum('amount');
+        $totalVendorBill = $order->sum('vendor_bill');
+        $totalRevenue = $order->sum('revenue');
+
+        return view('admin.orders.index', compact('orders', 'totalOrder', 'totalVendorBill', 'totalRevenue'));
     }
 
     public function show($id)

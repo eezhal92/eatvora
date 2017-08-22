@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Balance;
 use Illuminate\Http\Request;
+use App\Services\ScheduleService;
 
 class HomeController extends Controller
 {

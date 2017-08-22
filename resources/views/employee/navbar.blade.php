@@ -17,7 +17,7 @@
             <a href="/cart">
               <cart-count></cart-count>
             </a>
-            <a href="#">Rp. {{ number_format(auth()->user()->balance()) }}</a>
+            <a id="balance" href="#">Rp. {{ number_format(auth()->user()->balance()) }}</a>
           </li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" id="account-btn" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">

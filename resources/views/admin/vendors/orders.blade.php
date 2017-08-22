@@ -34,7 +34,9 @@
         <div class="col-lg-12">
 
           @if ($mealsCount === 0)
-          <p>No orders in {{ $range[0] }} - {{ $range[1] }}</p>
+          <div class="intent-negative">
+            No orders in {{ date_format(date_create($range[0]), 'l, d M Y') }} - {{ date_format(date_create($range[1]), 'l, d M Y') }}
+          </div>
           @endif
 
           @foreach($groupedMeals as $date => $meals)
