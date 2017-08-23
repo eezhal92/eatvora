@@ -128,7 +128,7 @@ class CompanyController extends Controller
 
         $query = User::join('employees', 'users.id', '=', 'employees.user_id')
             ->join('offices', 'employees.office_id', '=', 'offices.id')
-            ->select(\DB::raw('employees.id as id'), 'users.name', 'users.email', 'employees.active', 'employees.created_at', \DB::raw('offices.name as office_name'))
+            ->select(\DB::raw('employees.id as id'), \DB::raw('users.id as user_id'), 'users.name', 'users.email', 'employees.active', 'employees.created_at', \DB::raw('offices.name as office_name'))
             ->where('offices.company_id', $id);
 
         if ($q = $request->get('query')) {

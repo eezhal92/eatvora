@@ -182,9 +182,6 @@
               @endforeach
             </tbody>
           </table>
-          <div class="balance-log__action">
-            <button class="btn btn--primary-outline btn-sm">Selengkapnya</button>
-          </div>
         </div>
       </div>
     </div>

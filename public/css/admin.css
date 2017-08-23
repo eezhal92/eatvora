@@ -8381,7 +8381,15 @@ a:focus {
 }
 
 .btn-default {
-  border-color: #e6e6e6;
+  color: #007ee5;
+  border-color: #007ee5;
+}
+
+.btn-default:hover,
+.btn-default:focus {
+  background: #f0f7fd;
+  color: #007ee5;
+  border-color: #007ee5;
 }
 
 label {
@@ -8455,6 +8463,25 @@ label {
   color: #006bd6;
 }
 
+.table > thead > tr > th {
+  font-weight: normal;
+  color: #6A7C8F;
+}
+
+.table > thead > tr > th {
+  border-bottom: 1px solid #E6E8EB;
+}
+
+.table > thead > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > th,
+.table > tbody > tr > td,
+.table > tfoot > tr > th,
+.table > tfoot > tr > td {
+  padding: 12px 8px;
+  border-bottom: 1px solid #E6E8EB;
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
 }
@@ -8476,6 +8503,7 @@ body {
 
 .eatvora-header {
   padding-top: 40px;
+  margin-bottom: 20px;
 }
 
 .eatvora-header__page-title {
@@ -8715,6 +8743,7 @@ body {
   padding: 20px;
   margin-bottom: 20px;
   border-radius: 3px;
+  border: 1px solid #E6E8EB;
 }
 
 .stats-widget__number {

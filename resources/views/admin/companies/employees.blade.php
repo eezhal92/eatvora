@@ -61,6 +61,7 @@
                 <td>{{ $employee->office_name }}</td>
                 <td>{{ $employee->active ? 'Yes' : 'No' }}</td>
                 <td>{{ $employee->created_at->format('d M Y, H:i') }}</td>
+                <td><a href="{{ url(sprintf('/ap/users/%s/balances', $employee->user_id)) }}">Balance Log</a></td>
               </tr>
               @endforeach
             </tbody>

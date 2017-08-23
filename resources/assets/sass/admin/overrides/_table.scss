@@ -1,0 +1,18 @@
+.table > thead > tr > th {
+  font-weight: normal;
+  color: #6A7C8F;
+}
+
+.table > thead > tr > th {
+  border-bottom: 1px solid #E6E8EB;
+}
+
+.table > thead > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > th,
+.table > tbody > tr > td,
+.table > tfoot > tr > th,
+.table > tfoot > tr > td {
+  padding: 12px 8px;
+  border-bottom: 1px solid #E6E8EB;
+}

@@ -15,5 +15,12 @@
 }
 
 .btn-default {
-  border-color: #e6e6e6;
+  color: #007ee5;
+  border-color: #007ee5;
+
+  &:hover, &:focus {
+    background: #f0f7fd;
+    color: #007ee5;
+    border-color: #007ee5;
+  }
 }

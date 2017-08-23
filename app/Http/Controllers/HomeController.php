@@ -16,7 +16,7 @@ class HomeController extends Controller
     public function index()
     {
         $balances = Balance::where('user_id', auth()->user()->id)
-            ->take(5)
+            ->take(10)
             ->orderBy('created_at', 'desc')
             ->get();
 

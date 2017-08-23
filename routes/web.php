@@ -106,6 +106,8 @@ Route::group(['prefix' => '/ap', 'namespace' => 'Admin'], function () {
         Route::get('/schedules', 'ScheduleController@index');
 
         Route::post('/schedules', 'ScheduleController@store');
+
+        Route::get('/users/{id}/balances', 'UserController@balance');
     });
 });
 
