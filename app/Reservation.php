@@ -22,7 +22,9 @@ class Reservation
 
         $this->employee = $employee;
 
-        $this->cost = new Cost($this->meals->map->menu);
+        // dd($this->meals->sum('final_price'));
+
+        $this->cost = new Cost($this->meals);
     }
 
     public function totalCost()

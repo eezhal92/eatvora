@@ -49,6 +49,7 @@
                 <tr>
                   <th style="width: 400px">Name</th>
                   <th>Vendor</th>
+                  <th>Price</th>
                   <th style="width: 80px">Qty</th>
                   <th style="width: 80px"></th>
                 </tr>
@@ -58,6 +59,7 @@
                   <tr>
                     <td>{{ $meal->name }}</td>
                     <td>{{ $meal->vendor->name }}</td>
+                    <td>Rp. {{ number_format($meal->meal_price) }}</td>
                     <td>{{ $meal->qty }}</td>
                     <td><a href="#">Remove</a></td>
                   </tr>

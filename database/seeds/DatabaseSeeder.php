@@ -90,7 +90,7 @@ class DatabaseSeeder extends Seeder
         }
 
         foreach (range(1, 25) as $number) {
-            $u = factory(User::class)->create();
+            $u = factory(User::class)->create(['password' => bcrypt('password')]);
             factory(Employee::class)->create([
                 'user_id' => $u->id,
                 'office_id' => $office->id,

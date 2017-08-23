@@ -24,9 +24,9 @@ class ReservationTest extends TestCase
         $cart = factory(Cart::class)->create();
 
         $meals = collect([
-            json_decode(json_encode(['menu' => ['final_price' => 1200]])),
-            json_decode(json_encode(['menu' => ['final_price' => 1200]])),
-            json_decode(json_encode(['menu' => ['final_price' => 1200]])),
+            json_decode(json_encode(['final_price' => 1200])),
+            json_decode(json_encode(['final_price' => 1200])),
+            json_decode(json_encode(['final_price' => 1200])),
         ]);
 
         $reservation = new Reservation($cart, $meals, $employee);
@@ -45,7 +45,7 @@ class ReservationTest extends TestCase
 
         Balance::employeeTopUp($employee, 100000);
 
-        $meals = factory(Meal::class, 3)->create(['menu_id' => $menu->id]);
+        $meals = factory(Meal::class, 3)->create(['menu_id' => $menu->id, 'price' => $menu->price]);
 
         $reservation = new Reservation($cart, $meals, $employee);
 

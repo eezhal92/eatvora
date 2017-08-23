@@ -133,12 +133,35 @@ class Cart extends Model
 
     public function items()
     {
+        $itemsDate = CartItem::where('cart_id', $this->id)
+            ->select('date')
+            ->get()
+            ->pluck('date')
+            ->unique()
+            ->toArray();
+
         return Menu::join('cart_items', 'cart_items.menu_id', '=', 'menus.id')
-            ->join('vendors', 'menus.vendor_id', '=', 'vendors.id')
+            ->join('meals', 'meals.menu_id', '=', 'menus.id')
+            ->join('vendors', 'vendors.id', '=', 'menus.vendor_id')
             ->join('carts', 'carts.id', '=', 'cart_items.cart_id')
             ->where('carts.start_date', $this->start_date)
             ->where('carts.end_date', $this->end_date)
-            ->select('menus.*', \DB::raw('cart_items.id as cart_item_id'), 'cart_items.qty', 'cart_items.date', 'vendors.name as vendorName')
+            ->whereIn('meals.date', $itemsDate)
+            ->select(
+                'menus.id',
+                'menus.name',
+                'meals.price',
+                'cart_items.qty',
+                'vendors.name as vendor_name',
+                'meals.menu_id',
+                'meals.date'
+            )
+            ->groupBy(
+                'cart_items.qty',
+                'meals.price',
+                'meals.menu_id',
+                'meals.date'
+            )
             ->get();
     }
 
@@ -149,6 +172,7 @@ class Cart extends Model
 
     private function findMeals()
     {
+
         return $this->items()->map(function ($item) {
             $meals = Meal::where('menu_id', $item->id)
                 ->where('date', Carbon::parse($item->date)->format('Y-m-d'))

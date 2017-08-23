@@ -18,6 +18,7 @@ class CreateMealsTable extends Migration
             $table->integer('order_id')->unsigned()->nullable();
             $table->integer('menu_id')->unsigned();
             $table->dateTime('reserved_at')->nullable();
+            $table->integer('price')->unsigned();
             $table->date('date');
             $table->timestamps();
         });

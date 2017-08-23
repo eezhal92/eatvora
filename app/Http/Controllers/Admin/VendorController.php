@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Menu;
 use App\Vendor;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Services\ScheduleService;
 use App\Http\Controllers\Controller;
@@ -97,13 +98,20 @@ class VendorController extends Controller
             ->join('orders', 'orders.id', '=', 'meals.order_id')
             ->where('vendors.id', $vendorId)
             ->whereBetween('meals.date', $range)
-            ->select('menus.*', \DB::raw('count(*) as qty'), 'meals.date')
-            ->groupBy('menus.id', 'meals.date')
+            ->select('menus.*', \DB::raw('meals.price as price_when_ordered'), \DB::raw('count(*) as qty'), 'meals.date')
+            ->groupBy('menus.id', 'meals.date', 'meals.price')
             ->get();
 
         $groupedMeals = $meals->groupBy('date');
         $mealsCount = $meals->count();
 
-        return view('admin.vendors.orders', compact('groupedMeals', 'mealsCount', 'range', 'vendor'));
+        $carbonRange = array_map(function ($date) {
+            return Carbon::parse($date);
+        }, $range);
+
+        $nextLink = url(sprintf('/ap/vendors/%s/orders?date_from=%s&date_to=%s', $vendorId, $carbonRange[0]->copy()->addWeek()->format('Y-m-d'), $carbonRange[1]->copy()->addWeek()->format('Y-m-d')));
+        $prevLink = url(sprintf('/ap/vendors/%s/orders?date_from=%s&date_to=%s', $vendorId, $carbonRange[0]->copy()->subWeek()->format('Y-m-d'), $carbonRange[1]->copy()->subWeek()->format('Y-m-d')));
+
+        return view('admin.vendors.orders', compact('groupedMeals', 'mealsCount', 'range', 'vendor', 'nextLink', 'prevLink'));
     }
 }

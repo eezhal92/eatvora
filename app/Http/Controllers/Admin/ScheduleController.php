@@ -29,8 +29,8 @@ class ScheduleController extends Controller
 
         $meals = Menu::with('vendor')->join('meals', 'meals.menu_id', '=', 'menus.id')
             ->whereBetween('meals.date', $dateRange)
-            ->select('menus.*', 'meals.date', \DB::raw('count(*) as qty'))
-            ->groupBy('menus.id', 'meals.date')
+            ->select('menus.*', \DB::raw('meals.price as meal_price'), 'meals.date', \DB::raw('count(*) as qty'))
+            ->groupBy('menus.id', 'meals.date', 'meal_price')
             ->get();
         $mealCount = $meals->count();
         $mealGroups = $meals->groupBy('date');

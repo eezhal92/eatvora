@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use Auth;
+use App\Meal;
 use App\Menu;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -31,13 +32,12 @@ class MealController extends Controller
 
     public function index(Request $request)
     {
-        // There's issue with these query
-        // when we are not using groupBy and select method
-        // Then value of id field oddly returns id of meal
-        $menus = Menu::with('vendor')->leftJoin('meals', 'meals.menu_id', '=', 'menus.id')
+        $menus = Meal::join('menus', 'menus.id', '=', 'meals.menu_id')
+            ->join('vendors', 'vendors.id', '=', 'menus.vendor_id')
             ->where('meals.date', Carbon::parse(request('date'))->format('Y-m-d'))
-            ->groupBy('menus.id')
-            ->select('menus.*')
+            ->groupBy('menus.id', 'meals.price')
+            // select menu_id so Meal accessor can access menu_id field
+            ->select('menus.*', 'meals.price', 'meals.menu_id', \DB::raw('vendors.name as vendor_name'))
             ->paginate($request->get('limit', 6));
 
         return response()->json($this->decoratePaginatedResponse($menus));

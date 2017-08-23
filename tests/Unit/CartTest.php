@@ -169,14 +169,14 @@ class CartTest extends TestCase
 
         $this->assertEquals([
             [
-                'menu_id' => $menuA->id,
-                'qty' => 5,
-                'date' => $nextMonday->format('Y-m-d'),
+                'menu_id' => $menuB->id,
+                'qty' => '1',
+                'date' => $nextTuesday->format('Y-m-d'),
             ],
             [
-                'menu_id' => $menuB->id,
-                'qty' => 1,
-                'date' => $nextTuesday->format('Y-m-d'),
+                'menu_id' => $menuA->id,
+                'qty' => '5',
+                'date' => $nextMonday->format('Y-m-d'),
             ],
         ], $items);
     }

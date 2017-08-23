@@ -18,8 +18,8 @@
             <div class="meal-cart-info__tag">
               <i class="fa fa-cutlery"></i> Diet
             </div>
-            <span class="meal-card-info__vendor-name" :title="meal.vendor.name">
-              <i class="fa fa-user"></i> {{ meal.vendor.name | limit(15) }}
+            <span class="meal-card-info__vendor-name" :title="meal.vendor_name">
+              <i class="fa fa-user"></i> {{ meal.vendor_name | limit(15) }}
             </span>
           </div>
           <p v-if="!alreadyPlacedOrder && soldOut" style="color: #f44336; padding: 6px 12px" class="pull-right">Habis</p>

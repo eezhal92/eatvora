@@ -4,11 +4,11 @@ namespace App\Lib;
 
 class Cost
 {
-    private $mealMenus;
+    private $meals;
 
-    public function __construct($mealMenus)
+    public function __construct($meals)
     {
-        $this->mealMenus = $mealMenus;
+        $this->meals = $meals;
     }
 
     /**
@@ -17,8 +17,8 @@ class Cost
      */
     public function total()
     {
-        return $this->mealMenus->map(function ($menu) {
-            return $menu->final_price;
+        return $this->meals->map(function ($meal) {
+            return $meal->final_price;
         })->sum();
     }
 
@@ -28,8 +28,8 @@ class Cost
      */
     public function vendorBill()
     {
-        return $this->mealMenus->map(function ($menu) {
-            return $menu->price;
+        return $this->meals->map(function ($meal) {
+            return $meal->price;
         })->sum();
     }
 

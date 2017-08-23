@@ -140,10 +140,14 @@ $factory->define(CompanyPayment::class, function (Faker\Generator $faker) {
 });
 
 $factory->define(Meal::class, function (Faker\Generator $faker) {
+    $meal = factory(Menu::class)->create();
     return [
         'date' => Carbon::now(),
-        'menu_id' => function () {
-            return factory(Menu::class)->create()->id;
+        'menu_id' => function () use ($meal) {
+            return $meal->id;
+        },
+        'price' => function () use ($meal) {
+            return $meal->price;
         },
     ];
 });

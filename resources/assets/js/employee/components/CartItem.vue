@@ -11,7 +11,7 @@
                   Batalkan
                 </button>
               </p>
-              <small>{{ meal.vendorName }}</small>
+              <small>{{ meal.vendor_name }}</small>
             </div>
           </div>
         </div>
