@@ -25,13 +25,21 @@ Route::get('/logout', 'Auth\LoginController@logout');
 
 Route::group(['middleware' => ['auth', 'company']], function () {
 
-    Route::get('/cart', 'Employee\CartController@index');
+    Route::get('/home', 'HomeController@index')->name('home');
 
     Route::get('/meals', 'Employee\MealController@index');
 
     Route::get('/meals/{menuId}', 'Employee\MealController@show');
 
-    Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/cart', 'Employee\CartController@index');
+
+    Route::get('/profile', 'ProfileController@show')->name('profile.show');
+
+    Route::post('/profile', 'ProfileController@store')->name('profile.store');
+
+    Route::get('/change-password', 'ChangePasswordController@show')->name('change-password.show');
+
+    Route::post('/change-password', 'ChangePasswordController@store')->name('change-password.store');
 
 });
 

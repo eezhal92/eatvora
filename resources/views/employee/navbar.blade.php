@@ -25,11 +25,11 @@
             </a>
             <ul class="dropdown-menu" aria-labelledby="account-btn">
               <li class="dropdown-menu__username">
-                <a href="#">
-                  {{ auth()->user()->name }}
+                <a href="{{ url('/profile') }}">
+                  <span style="font-size: 10px; display: block;">{{ auth()->user()->name }}</span>
+                  Profile
                 </a>
               </li>
-              <li><a href="#">Pengaturan</a></li>
               <li role="separator" class="divider"></li>
               <li><a href="/logout">Logout</a></li>
             </ul>

@@ -8493,6 +8493,42 @@ label {
   color: #86919F;
 }
 
+.stacked-nav {
+  border-radius: 4px;
+  -webkit-box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
+          box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
+  padding-left: 0;
+}
+
+.stacked-nav li {
+  background: #fff;
+  padding: 14px 20px;
+  list-style: none;
+  border-bottom: 1px solid #eeeeee;
+}
+
+.stacked-nav li:first-child {
+  border-radius: 4px 4px 0 0;
+}
+
+.stacked-nav li:last-child {
+  border-bottom: none;
+  border-radius: 0px 0px 4px 4px;
+}
+
+.stacked-nav a {
+  color: #86919F;
+}
+
+.stacked-nav a.active {
+  font-weight: bold;
+  color: #111315;
+}
+
+.stacked-nav a:hover {
+  text-decoration: none;
+}
+
 .navbar {
   top: 0;
   right: 0;
