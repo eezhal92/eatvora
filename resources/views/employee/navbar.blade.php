@@ -14,14 +14,17 @@
         </ul>
         <ul class="navbar__menu navbar__menu--right hidden-xs">
           <li>
-            <a href="/cart">
+            <a href="/cart" class="cart-container">
               <cart-count></cart-count>
             </a>
             <a id="balance" href="#">Rp. {{ number_format(auth()->user()->balance()) }}</a>
           </li>
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle" id="account-btn" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-              <img src="http://lorempixel.com/32/32" class="img-circle" />
+            <a href="#" class="dropdown-toggle avatar-container" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+              <img src="http://lorempixel.com/32/32" class="img-circle avatar avatar--not-present" />
+              <div data-icon="default-user" class="default-avatar">
+                @include('employee.default-avatar')
+              </div>
             </a>
             <ul class="dropdown-menu" aria-labelledby="account-btn">
               <li class="dropdown-menu__username">
