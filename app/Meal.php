@@ -14,7 +14,7 @@ class Meal extends Model
 
     protected $dates = ['reserved_at'];
 
-    protected $appends = ['final_price', 'categories', 'nextweek_remaining_qty', 'nextweek_available_qty'];
+    protected $appends = ['final_price', 'image_url', 'categories', 'nextweek_remaining_qty', 'nextweek_available_qty'];
 
     public function scopeAvailable($query)
     {
@@ -53,6 +53,17 @@ class Meal extends Model
         return static::whereBetween('date', $range)
             ->where('menu_id', $this->menu_id)
             ->count();
+    }
+
+    public function getImageUrlAttribute()
+    {
+        $path = $this->menu->image_path;
+
+        if (!$path) {
+            return asset('/images/menu-placeholder.png');
+        }
+
+        return \Storage::disk('public')->url($path);
     }
 
     public function claimFor($order)

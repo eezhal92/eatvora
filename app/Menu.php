@@ -14,7 +14,7 @@ class Menu extends Model
 
     protected $guarded = [];
 
-    protected $appends = ['final_price', 'nextweek_remaining_qty', 'nextweek_available_qty'];
+    protected $appends = ['final_price', 'image_url', 'nextweek_remaining_qty', 'nextweek_available_qty'];
 
     public function vendor()
     {
@@ -72,7 +72,7 @@ class Menu extends Model
         $path = $this->image_path;
 
         if (!$path) {
-            return '';
+            return '/images/menu-placeholder.png';
         }
 
         return \Storage::disk('public')->url($path);

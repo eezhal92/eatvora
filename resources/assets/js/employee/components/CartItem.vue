@@ -4,7 +4,7 @@
       <div class="row cart-items-by-date__item-row">
         <div class="col-xs-8">
           <div class="menu-detail">
-            <img src="http://lorempixel.com/60/60" alt="meal" class="pull-left" />
+            <img :src="meal.image_url" style="width: 80px; height: 60px;" alt="meal" class="pull-left" />
             <div class="menu-detail__info">
               <p style="margin-bottom: 4px">{{ meal.name }}
                 <button @click="removeItem" class="cart-item__btn-remove">

@@ -1,13 +1,16 @@
 <template>
   <div class="col-xs-12 col-sm-4">
     <div class="meal-card">
-      <a :href="'/meals/' + meal.id" class="meal-card-cover">
+      <a
+        class="meal-card-cover"
+        :href="'/meals/' + meal.id"
+        :style="{ color: 'red', 'background-image': `url(${meal.image_url})` }"
+      >
         <div class="meal-card-cover__overlay">
           <div class="meal-card-title">
             {{ meal.name }}
           </div>
         </div>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Good_Food_Display_-_NCI_Visuals_Online.jpg/1200px-Good_Food_Display_-_NCI_Visuals_Online.jpg" class="meal-card-cover__img" alt="">
       </a>
       <div class="meal-card__detail">
         <div class="meal-card__point">
@@ -15,8 +18,8 @@
         </div>
         <div class="meal-card-info clearfix">
           <div class="meal-card-info__vendor">
-            <div class="meal-cart-info__tag" v-if="meal.categories.length">
-              <i class="fa fa-cutlery"></i> {{ meal.categories.join(', ') }}
+            <div class="meal-card-info__tag" v-if="meal.categories.length" :title="meal.categories.join(', ')">
+              <i class="fa fa-cutlery"></i> {{ meal.categories.join(', ') | limit(15) }}
             </div>
             <span class="meal-card-info__vendor-name" :title="meal.vendor_name">
               <i class="fa fa-user"></i> {{ meal.vendor_name | limit(15) }}
@@ -106,6 +109,9 @@ export default {
   height: 180px;
   overflow: hidden;
   display: block;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
 }
 
 .meal-card-cover__overlay {
@@ -158,6 +164,10 @@ export default {
 }
 
 .meal-card-info__vendor-name {
-  cursor: pointer;
+  cursor: help;
+}
+
+.meal-card-info__tag {
+  cursor: help;
 }
 </style>
