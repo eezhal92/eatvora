@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Employee;
 
 use App\Meal;
 use App\Menu;
+use App\Category;
 use Illuminate\Http\Request;
 use App\Services\ScheduleService;
 use App\Http\Controllers\Controller;

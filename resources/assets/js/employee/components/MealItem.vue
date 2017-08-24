@@ -15,8 +15,8 @@
         </div>
         <div class="meal-card-info clearfix">
           <div class="meal-card-info__vendor">
-            <div class="meal-cart-info__tag">
-              <i class="fa fa-cutlery"></i> Diet
+            <div class="meal-cart-info__tag" v-if="meal.categories.length">
+              <i class="fa fa-cutlery"></i> {{ meal.categories.join(', ') }}
             </div>
             <span class="meal-card-info__vendor-name" :title="meal.vendor_name">
               <i class="fa fa-user"></i> {{ meal.vendor_name | limit(15) }}

@@ -32,13 +32,20 @@ class MealController extends Controller
 
     public function index(Request $request)
     {
-        $menus = Meal::join('menus', 'menus.id', '=', 'meals.menu_id')
+        $q = Meal::join('menus', 'menus.id', '=', 'meals.menu_id')
             ->join('vendors', 'vendors.id', '=', 'menus.vendor_id')
             ->where('meals.date', Carbon::parse(request('date'))->format('Y-m-d'))
             ->groupBy('menus.id', 'meals.price')
             // select menu_id so Meal accessor can access menu_id field
-            ->select('menus.*', 'meals.price', 'meals.menu_id', \DB::raw('vendors.name as vendor_name'))
-            ->paginate($request->get('limit', 6));
+            ->select('menus.*', 'meals.price', 'meals.menu_id', \DB::raw('vendors.name as vendor_name'));
+
+        if ($request->get('category') && !in_array('all', $request->get('category'))) {
+            // @todo add test
+            $q->join('category_menu', 'category_menu.menu_id', '=', 'menus.id')
+                ->whereIn('category_menu.category_id', $request->get('category'));
+        }
+
+        $menus = $q->paginate($request->get('limit', 6));
 
         return response()->json($this->decoratePaginatedResponse($menus));
     }

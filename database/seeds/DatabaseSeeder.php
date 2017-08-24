@@ -6,6 +6,7 @@ use App\Office;
 use App\Vendor;
 use App\Balance;
 use App\Company;
+use App\Category;
 use App\Employee;
 use App\Schedule;
 use Carbon\Carbon;
@@ -33,6 +34,17 @@ class DatabaseSeeder extends Seeder
         $menu->scheduleMeals($date, 3);
     }
 
+    private function createCategories()
+    {
+        return collect([
+            Category::create(['name' => 'Diet', 'slug' => 'diet']),
+            Category::create(['name' => 'Spicy', 'slug' => 'spicy']),
+            Category::create(['name' => 'Veggie', 'slug' => 'veggie']),
+            Category::create(['name' => 'Japanese', 'slug' => 'japanese']),
+            Category::create(['name' => 'Sunda', 'slug' => 'sunda']),
+        ]);
+    }
+
     private function setUpVendor()
     {
         // senin-jum'at lihat hari bsok
@@ -40,11 +52,16 @@ class DatabaseSeeder extends Seeder
 
         $vendors = $this->createVendors(12);
 
-        $vendors->each(function ($vendor) use ($weekDays) {
+        $categories = $this->createCategories();
+
+        $vendors->each(function ($vendor) use ($weekDays, $categories) {
             $menus = $this->createMenuByVendor($vendor->id, 5);
 
-            $weekDays->each(function ($day, $key) use ($menus) {
+            $weekDays->each(function ($day, $key) use ($menus, $categories) {
                 $menu = $menus[$key];
+
+                $catIds = $categories->shuffle()->take(2);
+                $menu->categories()->saveMany($catIds);
 
                 $this->createSchedule($menu->id, $day->format('Y-m-d'));
             });

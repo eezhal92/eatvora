@@ -24,6 +24,14 @@
         </div>
 
         <div class="col-lg-offset-1 col-lg-7 info-subset">
+        <div class="menu-detail__categories info-subset">
+            <div class="menu-detail__categories-header info-subset__header">
+              Categories
+            </div>
+            <div class="menu-detail__categories-content info-subset__content">
+              {{ implode(', ', $menu->categories->pluck('name')->toArray()) }}
+            </div>
+          </div>
           <div class="menu-detail__vendor info-subset">
             <div class="menu-detail__vendor__header info-subset__header">
               Vendor

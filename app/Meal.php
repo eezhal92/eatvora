@@ -14,7 +14,7 @@ class Meal extends Model
 
     protected $dates = ['reserved_at'];
 
-    protected $appends = ['final_price', 'nextweek_remaining_qty', 'nextweek_available_qty'];
+    protected $appends = ['final_price', 'categories', 'nextweek_remaining_qty', 'nextweek_available_qty'];
 
     public function scopeAvailable($query)
     {
@@ -24,6 +24,16 @@ class Meal extends Model
     public function menu()
     {
         return $this->belongsTo(Menu::class);
+    }
+
+    public function categories()
+    {
+        return $this->menu->categories();
+    }
+
+    public function getCategoriesAttribute()
+    {
+        return $this->categories()->get()->pluck('name');
     }
 
     public function getNextWeekRemainingQtyAttribute()

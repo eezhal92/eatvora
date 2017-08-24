@@ -15,9 +15,18 @@ const tags = [
 export default {
   props: ['selectedTags'],
   data() {
-    return { tags, selected: this.selectedTags };
+    return { tags: [], selected: this.selectedTags };
+  },
+  mounted() {
+    this.getCategories();
   },
   methods: {
+    getCategories() {
+      return axios.get(`/api/v1/categories`)
+        .then(({ data }) => {
+          this.tags = data;
+        });
+    },
     isSelected(id) {
       return !!this.selected.find(tagId => tagId === id);
     },

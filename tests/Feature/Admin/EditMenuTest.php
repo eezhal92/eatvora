@@ -5,6 +5,7 @@ namespace Tests\Feature\Admin;
 use App\Menu;
 use App\User;
 use App\Vendor;
+use App\Category;
 use Tests\TestCase;
 use Illuminate\Http\Testing\File;
 use Illuminate\Support\Facades\Storage;
@@ -25,6 +26,7 @@ class EditMenuTest extends TestCase
 tempor.',
             'contents' => 'Menu contents',
             'vendor' => factory(Vendor::class)->create()->id,
+            'categories' => null,
         ], $overrides);
     }
 
@@ -105,6 +107,8 @@ tempor.',
 
         $vendor = factory(Vendor::class)->create();
 
+        $category = Category::create(['name' => 'Diet', 'slug' => 'diet']);
+
         $response = $this->actingAs($admin)->patch('/ap/menus/' . $menu->id, [
             'name' => 'New Roasted Beef',
             'price' => 150000,
@@ -112,6 +116,7 @@ tempor.',
             'contents' => 'New french fries, roasted beef',
             'image' => File::image('new-image.jpg', 480, 320),
             'vendor' => $vendor->id,
+            'categories' => [$category->id],
         ]);
 
         $response->assertStatus(302);
@@ -125,6 +130,7 @@ tempor.',
         $this->assertEquals('New french fries, roasted beef', $menu->contents);
         $this->assertNotEquals('/images/menus/old-image.jpg', $menu->image_path);
         $this->assertEquals($vendor->id, $menu->vendor_id);
+        $this->assertEquals([$category->id], $menu->categories->pluck('id')->toArray());
     }
 
     private function updateMenu($menuId, $overrides)
@@ -365,5 +371,32 @@ tempor.',
         $menu->refresh();
 
         $this->assertEquals('/images/menus/old-image.jpg', $menu->image_path);
+    }
+
+    /** @test */
+    public function categories_is_optional()
+    {
+        $this->withExceptionHandling();
+
+        $menu = factory(Menu::class)->create();
+
+        $category = factory(Category::class)->create();
+
+        $menu->categories()->save($category);
+
+        $menu->refresh();
+
+        $this->assertEquals([$category->id], $menu->categories->pluck('id')->toArray());
+
+        $response = $this->updateMenu($menu->id, [
+            'categories' => null,
+        ]);
+
+        $response->assertStatus(302);
+        $response->assertRedirect("/ap/menus/{$menu->id}");
+
+        $menu->refresh();
+
+        $this->assertEquals([], $menu->categories->pluck('id')->toArray());
     }
 }

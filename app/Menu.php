@@ -26,6 +26,11 @@ class Menu extends Model
         return $this->hasMany(Meal::class);
     }
 
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class);
+    }
+
     public function orders($date)
     {
         return Meal::with('menu')->join('orders', 'orders.id', '=', 'meals.order_id')

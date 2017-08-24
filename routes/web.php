@@ -149,6 +149,8 @@ Route::group(['prefix' => 'api/v1', 'namespace' => 'Api\V1', 'middleware' => 'au
 
     Route::get('/my-meals', 'MealController@myMeals');
 
+    Route::get('/categories', 'CategoryController@index');
+
     Route::group(['middleware' => ['eatvora-admin']], function () {
 
         Route::post('/employees', 'EmployeeController@store');

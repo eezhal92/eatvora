@@ -37,6 +37,21 @@
                 @endif
               </div>
 
+              <div class="form-group">
+                <label for="categories">Categories</label>
+                <select name="categories[]" id="categories" class="form-control" multiple>
+                  @foreach ($categories as $categoryId => $categoryName)
+                    @php
+                      $currentCategories = old('categories', $menu->categories->pluck('id')->toArray());
+                      $selected = in_array($categoryId,  $currentCategories) ? 'selected' : '';
+                    @endphp
+                  <option value="{{ $categoryId }}" {{ $selected }}>
+                    {{ $categoryName }}
+                  </option>
+                  @endforeach
+                </select>
+              </div>
+
               <div class="form-group {{ $errors->first('vendor', 'has-error') }}">
                 <label for="vendor">Vendor</label>
                 <select name="vendor" id="vendor" class="form-control">

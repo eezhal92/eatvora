@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Menu;
 use App\Vendor;
+use App\Category;
 use App\Lib\NullFile;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -68,8 +69,9 @@ class MenuController extends Controller
         }
 
         $vendors = Vendor::all()->pluck('name', 'id');
+        $categories = Category::all()->pluck('name', 'id');
 
-        return view('admin.menus.edit', compact('menu', 'vendors'));
+        return view('admin.menus.edit', compact('menu', 'vendors', 'categories'));
     }
 
     public function update(Request $request, $id)
@@ -94,6 +96,12 @@ class MenuController extends Controller
 
         if ($path) {
             $data['image_path'] = $path;
+        }
+
+        if ($categories = $request->get('categories')) {
+            $menu->categories()->sync($categories);
+        } else {
+            $menu->categories()->detach();
         }
 
         $menu->update($data);
