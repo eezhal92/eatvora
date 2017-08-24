@@ -33,7 +33,13 @@ class OrderController extends Controller
 
         $groupedMeals = $order->meals()
             ->join('menus', 'menus.id', '=', 'meals.menu_id')
-            ->select('menus.*', 'meals.date', \DB::raw('count(*) as qty'))
+            ->join('vendors', 'vendors.id', '=', 'menus.vendor_id')
+            ->select(
+                'menus.*',
+                'meals.date',
+                \DB::raw('vendors.name as vendor_name'),
+                \DB::raw('count(*) as qty')
+            )
             ->groupBy('meals.date', 'menus.id')
             ->get()
             ->groupBy('date');

@@ -116,6 +116,16 @@ Route::group(['prefix' => '/ap', 'namespace' => 'Admin'], function () {
         Route::post('/schedules', 'ScheduleController@store');
 
         Route::get('/users/{id}/balances', 'UserController@balance');
+
+        Route::get('/categories', 'CategoryController@index');
+
+        Route::post('/categories', 'CategoryController@store');
+
+        Route::get('/categories/{id}/edit', 'CategoryController@edit');
+
+        Route::patch('/categories/{id}', 'CategoryController@update');
+
+        Route::delete('/categories/{id}', 'CategoryController@destroy');
     });
 });
 

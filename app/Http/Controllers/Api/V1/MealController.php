@@ -66,6 +66,7 @@ class MealController extends Controller
             ->whereBetween('meals.date', [$weekDays->first(), $weekDays->last()])
             ->select('menus.*', \DB::raw('count(*) as qty'), 'meals.date')
             ->groupBy('menus.id', 'meals.date')
+            ->orderBy('meals.date')
             ->get();
 
         return response()->json($meals);

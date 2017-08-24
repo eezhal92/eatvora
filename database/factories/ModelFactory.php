@@ -1,13 +1,14 @@
 <?php
 
 use App\Cart;
+use App\Meal;
 use App\Menu;
 use App\User;
-use App\Meal;
 use App\Order;
+use App\Office;
 use App\Vendor;
 use App\Company;
-use App\Office;
+use App\Category;
 use App\Employee;
 use Carbon\Carbon;
 use App\CompanyPayment;
@@ -169,3 +170,13 @@ $factory->define(Order::class, function (Faker\Generator $faker) {
         'delivery_address' => 'Fake delivery address',
     ];
 });
+
+$factory->define(Category::class, function (Faker\Generator $faker) {
+    $name = $faker->word;
+
+    return [
+        'name' => $name,
+        'slug' => str_slug($name),
+    ];
+});
+
