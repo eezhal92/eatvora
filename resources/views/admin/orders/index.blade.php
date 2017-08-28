@@ -11,6 +11,26 @@
         @include('admin.top-navigation', ['header' => 'Order'])
 
         <div class="col-lg-12">
+          <div class="row">
+            <div class="col-lg-12">
+              This Week Stats
+            </div>
+            <div class="col-lg-4">
+              <h3>Total Order</h3>
+              <div>Rp. 25,000,000</div>
+            </div>
+            <div class="col-lg-4">
+              <h3>Total Vendor Bill</h3>
+              <div>Rp. 20,000,000</div>
+            </div>
+            <div class="col-lg-4">
+              <h3>Total Revenue</h3>
+              <div>Rp. 5,000,000</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-12">
           <div class="action-panel">
             <form class="form-inline" action="{{ url('/ap/orders') }}">
               <div class="form-group">
@@ -40,6 +60,7 @@
                 <th>Amount</th>
                 <th>Vendor Bill</th>
                 <th>Revenue</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -47,9 +68,10 @@
                 <tr>
                   <td>{{ $order->employee->user->name }}</td>
                   <td>{{ $order->delivery_address }}</td>
-                  <td>{{ $order->amount }}</td>
-                  <td>{{ $order->vendor_bill }}</td>
-                  <td>{{ $order->revenue }}</td>
+                  <td>Rp. {{ number_format($order->amount) }}</td>
+                  <td>Rp. {{ number_format($order->vendor_bill) }}</td>
+                  <td>Rp. {{ number_format($order->revenue) }}</td>
+                  <td><a href="{{ url('/ap/orders/' . $order->id) }}">View</a></td>
                 </tr>
               @endforeach
             </tbody>

@@ -10,6 +10,12 @@
 
         @include('admin.top-navigation', ['header' => $vendor->name])
 
+        <div class="col-lg-12">
+          <div class="action-panel">
+            <a class="btn btn-default" href="{{ url(sprintf('/ap/vendors/%s/orders', $vendor->id)) }}">Show Orders</a>
+          </div>
+        </div>
+
         <div class="col-lg-4">
           <div class="vendor-detail">
             <div class="vendor-detail__capacity">

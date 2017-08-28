@@ -14,4 +14,18 @@ class OrderController extends Controller
 
         return view('admin.orders.index', compact('orders'));
     }
+
+    public function show($id)
+    {
+        $order = Order::with('employee.user', 'employee.office.company', 'meals.menu')->find($id);
+
+        $groupedMeals = $order->meals()
+            ->join('menus', 'menus.id', '=', 'meals.menu_id')
+            ->select('menus.*', 'meals.date', \DB::raw('count(*) as qty'))
+            ->groupBy('meals.date', 'menus.id')
+            ->get()
+            ->groupBy('date');
+
+        return view('admin.orders.show', compact('order', 'groupedMeals'));
+    }
 }

@@ -47,4 +47,13 @@ class ScheduleService
 
         return [$dates->first(), $dates->last()];
     }
+
+    public function currentWeekDaysRange()
+    {
+        $dates =  $this->nextWeekDayDates()->map(function ($date) {
+            return $date->subWeek()->format('Y-m-d');
+        });
+
+        return [$dates->first(), $dates->last()];
+    }
 }

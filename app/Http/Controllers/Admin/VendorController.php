@@ -82,18 +82,28 @@ class VendorController extends Controller
         return redirect("/ap/vendors/{$vendor->id}");
     }
 
-    public function order($vendorId)
+    public function order(Request $request, $vendorId)
     {
-        $menus = Menu::with('vendor')
+        $vendor = Vendor::findOrFail($vendorId);
+        $range = app()->make(ScheduleService::class)->currentWeekDaysRange();
+
+        if ($request->get('date_from') && $request->get('date_to')) {
+            $range = [$request->get('date_from'), $request->get('date_to')];
+        }
+
+        $meals = Menu::with('vendor')
             ->join('vendors', 'vendors.id', '=', 'menus.vendor_id')
             ->join('meals', 'menus.id', '=', 'meals.menu_id')
             ->join('orders', 'orders.id', '=', 'meals.order_id')
             ->where('vendors.id', $vendorId)
-            ->whereBetween('meals.date', [app()->make(ScheduleService::class)->nextWeekDaysRange()])
+            ->whereBetween('meals.date', $range)
             ->select('menus.*', \DB::raw('count(*) as qty'), 'meals.date')
             ->groupBy('menus.id', 'meals.date')
             ->get();
 
-        return view('admin.vendors.orders', compact('menus'));
+        $groupedMeals = $meals->groupBy('date');
+        $mealsCount = $meals->count();
+
+        return view('admin.vendors.orders', compact('groupedMeals', 'mealsCount', 'range', 'vendor'));
     }
 }
