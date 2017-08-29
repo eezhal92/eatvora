@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api\V1;
 
 use Auth;
 use App\Meal;
-use App\Menu;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Services\ScheduleService;
@@ -48,34 +47,5 @@ class MealController extends Controller
         $menus = $q->paginate($request->get('limit', 6));
 
         return response()->json($this->decoratePaginatedResponse($menus));
-    }
-
-    public function myMeals(Request $request)
-    {
-        $for = $request->get('for', 'this_week');
-
-        $weekDays = app()->make(ScheduleService::class)
-            ->nextWeekDayDates();
-
-        if ($for === 'next_week') {
-            $weekDays = $weekDays->map->format('Y-m-d');
-        } else {
-            $weekDays = $weekDays->map(function ($day) {
-                return $day->subWeek()->format('Y-m-d');
-            });
-        }
-
-        $user = auth()->user();
-
-        $meals = Menu::with('vendor')->join('meals', 'menus.id', '=', 'meals.menu_id')
-            ->join('orders', 'orders.id', '=', 'meals.order_id')
-            ->where('orders.user_id', auth()->user()->id) // @todo <-- cover in test
-            ->whereBetween('meals.date', [$weekDays->first(), $weekDays->last()])
-            ->select('menus.*', \DB::raw('count(*) as qty'), 'meals.date')
-            ->groupBy('menus.id', 'meals.date')
-            ->orderBy('meals.date')
-            ->get();
-
-        return response()->json($meals);
     }
 }

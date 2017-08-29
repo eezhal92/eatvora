@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Employee;
 
 use App\Balance;
 use Illuminate\Http\Request;
 use App\Services\ScheduleService;
+use App\Http\Controllers\Controller;
 
 class HomeController extends Controller
 {

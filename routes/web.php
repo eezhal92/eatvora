@@ -1,16 +1,5 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
 Route::get('/', function () {
     return view('home');
 });
@@ -23,15 +12,15 @@ Route::get('/register', function () {
 
 Route::get('/logout', 'Auth\LoginController@logout');
 
-Route::group(['middleware' => ['auth', 'company']], function () {
+Route::group(['middleware' => ['auth', 'company'], 'namespace' => 'Employee'], function () {
 
     Route::get('/home', 'HomeController@index')->name('home');
 
-    Route::get('/meals', 'Employee\MealController@index');
+    Route::get('/meals', 'MealController@index');
 
-    Route::get('/meals/{menuId}', 'Employee\MealController@show');
+    Route::get('/meals/{menuId}', 'MealController@show');
 
-    Route::get('/cart', 'Employee\CartController@index');
+    Route::get('/cart', 'CartController@index');
 
     Route::get('/profile', 'ProfileController@show')->name('profile.show');
 
@@ -147,7 +136,7 @@ Route::group(['prefix' => 'api/v1', 'namespace' => 'Api\V1', 'middleware' => 'au
 
     Route::post('/orders', 'OrderController@store');
 
-    Route::get('/my-meals', 'MealController@myMeals');
+    Route::get('/my-meals', 'MyMealController@index');
 
     Route::get('/categories', 'CategoryController@index');
 
