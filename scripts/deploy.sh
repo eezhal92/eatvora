@@ -25,7 +25,7 @@ echo "";
 
 # Pulling Latest Code
 echo "------------------------";
-echo "1. Pulling lates code...";
+echo "1. Pulling latest code...";
 echo "------------------------";
 
 APP_PATH="/var/www/eatvora/${FOLDER}";
@@ -49,7 +49,17 @@ composer install -n --no-dev --prefer-dist
 
 # Build static assets
 echo "-------------------------";
-echo "2. Build static assets...";
+echo "2. Install Laravel Dependencies...";
+echo "-------------------------";
+
+echo "composer install";
+composer install
+
+echo "";
+
+# Build static assets
+echo "-------------------------";
+echo "3. Build static assets...";
 echo "-------------------------";
 
 echo "yarn install";
@@ -57,6 +67,12 @@ yarn install
 
 echo "yarn run production --force";
 yarn run production
+
+# Migrate
+echo "-------------------------";
+echo "4. Migrate Database...";
+echo "-------------------------";
+
 
 echo "php artisan migrate --force";
 php artisan migrate --force
