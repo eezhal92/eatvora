@@ -12,21 +12,21 @@
         <div class="hero__content">
           <div class="col-xs-12 col-sm-6">
 
-            <h2 class="headline headline--white">Have problem with your office lunch?</h2>
-            <p class="description secondary-text secondary-text--white">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quia cum!</p>
+            <h2 class="headline headline--white">Kelola makan siang kantor tanpa ribet</h2>
+            <p class="description secondary-text secondary-text--white">Beragam menu makan siang yang dapat dipilih dan rencanakan  sesuai selera</p>
 
           </div>
 
           <div class="col-xs-12 col-sm-offset-1 col-sm-5">
 
             <div class="form-condensed hero__form">
-              <h3 class="form-condensed__heading form-condensed__heading--white">Find it more</h3>
+              <h3 class="form-condensed__heading form-condensed__heading--white">Cari Tahu Lebih Lanjut</h3>
               <form class="form-condensed" action="" method="post">
-                <input class="form-condensed__input" type="text" name="name" placeholder="Name" autocomplete="off">
+                <input class="form-condensed__input" type="text" name="name" placeholder="Nama" autocomplete="off">
                 <input class="form-condensed__input" type="text" name="email" placeholder="Email" autocomplete="off">
-                <input class="form-condensed__input" type="text" name="company" placeholder="Company" autocomplete="off">
+                <input class="form-condensed__input" type="text" name="company" placeholder="Perusahaan" autocomplete="off">
                 {{ csrf_field() }}
-                <button class="form-condensed__button btn btn--primary">Submit <i class="fa fa-chevron-right form-condensed__chevron"></i></button>
+                <button class="form-condensed__button btn btn--primary">Kirim <i class="fa fa-chevron-right form-condensed__chevron"></i></button>
               </form>
             </div>
         </div>
@@ -41,10 +41,7 @@
 
       <div class="row">
         <div class="col-xs-12">
-        <h3 class="secondary-headline text-center" style="margin-bottom: 60px">It's so simple. How it works</h3>
-        </div>
-        <div class="col-xs-12 col-sm-offset-2 col-sm-8">
-          <p class="secondary-text text-center secondary-text--gray">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis cum odit doloribus quibusdam minima, iste nulla placeat.</p>
+        <h3 class="secondary-headline text-center" style="margin-bottom: 60px">Sangat simple, begini langkahnya</h3>
         </div>
       </div>
 
@@ -55,8 +52,8 @@
               <div class="steps__img-wrapper">
                 <img src="{{ url('/images/tray.png') }}" class="img-responsive steps__img" alt="">
               </div>
-              <h4 class="steps__heading">Make Plan</h4>
-              <p class="secondary-text  steps__item-desc secondary-text--small secondary-text--gray text-center">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis cum odit doloribus quibusdam minima, iste nulla placeat.</p>
+              <h4 class="steps__heading">Susun Rencana Makan Siang</h4>
+              <p class="secondary-text  steps__item-desc secondary-text--small secondary-text--gray text-center">Tentukan menu makan siang untuk minggu depan, pilih sesuai selera dari beragam menu yang tersedia</p>
             </div>
           </div>
 
@@ -66,7 +63,7 @@
                 <img src="{{ url('/images/chef.png') }}" class="img-responsive steps__img" alt="">
               </div>
               <h4 class="steps__heading">Checkout</h4>
-              <p class="secondary-text steps__item-desc secondary-text--small secondary-text--gray text-center">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis cum odit doloribus quibusdam minima, iste nulla placeat.</p>
+              <p class="secondary-text steps__item-desc secondary-text--small secondary-text--gray text-center">Sesudah menyusun rencana makan siang, tinggal lakukan checkout agar untuk reservasi.</p>
             </div>
           </div>
 
@@ -75,8 +72,8 @@
               <div class="steps__img-wrapper">
                 <img src="{{ url('/images/cutlery.png') }}" class="img-responsive steps__img" alt="">
               </div>
-              <h4 class="steps__heading">Enjoy It!</h4>
-              <p class="secondary-text  steps__item-desc secondary-text--small secondary-text--gray text-center">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis cum odit doloribus quibusdam minima, iste nulla placeat.</p>
+              <h4 class="steps__heading">Nikmati</h4>
+              <p class="secondary-text  steps__item-desc secondary-text--small secondary-text--gray text-center">Kami akan mengantar makan siang ke kantor Anda, sesuai rencana yang telah dibuat. Selanjutnya, Anda tinggal menikmati. Mudah!</p>
             </div>
           </div>
         </div>
@@ -92,19 +89,19 @@
     <div class="container">
       <div class="row">
         <div class="col-xs-12 col-sm-offset-5 col-sm-7">
-          <h3 class="secondary-headline benefits__headline">Why using us?</h3>
+          <h3 class="secondary-headline benefits__headline">Mengapa menggunakan Kami?</h3>
 
           <div class="row">
             <div class="col-xs-12 col-sm-6">
               <div class="benefits__item">
-                <h4 class="benefits__item-title">Lotsa Choice</h4>
-                <p class="secondary-text secondary-text--small secondary-text--gray benefits__desc">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis cum odit doloribus quibusdam minima, iste nulla placeat.</p>
+                <h4 class="benefits__item-title">Variatif, Banyak Pilihan</h4>
+                <p class="secondary-text secondary-text--small secondary-text--gray benefits__desc">Makan siangmu, seleramu. Dengan beragam pilihan, tidak perlu harus seragam dengan makan siang rekan kantor yang lain.</p>
               </div>
             </div>
             <div class="col-xs-12 col-sm-6">
               <div class="benefits__item">
-                <h4 class="benefits__item-title">Healthy</h4>
-                <p class="secondary-text secondary-text--small secondary-text--gray benefits__desc">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis cum odit doloribus quibusdam minima, iste nulla placeat.</p>
+                <h4 class="benefits__item-title">Fleksible</h4>
+                <p class="secondary-text secondary-text--small secondary-text--gray benefits__desc">Jadwal makan siang dapat diatur sesuai keinginan.</p>
               </div>
             </div>
           </div>
@@ -112,19 +109,19 @@
           <div class="row">
             <div class="col-xs-12 col-sm-6">
               <div class="benefits__item">
-                <h4 class="benefits__item-title">Fair point system</h4>
-                <p class="secondary-text secondary-text--small secondary-text--gray benefits__desc">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis cum odit doloribus quibusdam minima, iste nulla placeat.</p>
+                <h4 class="benefits__item-title">Fair Point System</h4>
+                <p class="secondary-text secondary-text--small secondary-text--gray benefits__desc">Berapa jumlah yang Anda top-up, begitu pula jumlah hak Anda. Point Anda tidak memiliki masa kadaluarsa.</p>
               </div>
             </div>
             <div class="col-xs-12 col-sm-6">
               <div class="benefits__item">
                 <h4 class="benefits__item-title">Halal</h4>
-                <p class="secondary-text secondary-text--small secondary-text--gray benefits__desc">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis cum odit doloribus quibusdam minima, iste nulla placeat.</p>
+                <p class="secondary-text secondary-text--small secondary-text--gray benefits__desc">Semua makanan yang tersedia dijamin kehalalan-nya. Tak perlu kuatir!</p>
               </div>
             </div>
           </div>
 
-          <a href="#" class="btn btn--secondary benefits__btn">Find It More</a>
+          <a href="#" class="btn btn--secondary benefits__btn">Cari Tahu Lebih Lanjut</a>
         </div>
       </div>
     </div>
@@ -137,54 +134,14 @@
     <div class="container container--small">
       <div class="row featured-meals__row">
         <div class="col-xs-12 col-sm-3">
-          <h3 class="section-heading section-heading--dark featured-meals__heading">Featured Meals</h3>
+          <h3 class="section-heading section-heading--dark featured-meals__heading">Approved Partner</h3>
         </div>
         <div class="col-xs-12 col-sm-6">
-          <p class="secondary-text secondary-text--small secondary-text--dark">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae nobis animi enim at ex! Excepturi libero ab saepe, numquam sequi ullam. Ipsa aut molestiae placeat eum, veniam debitis inventore accusantium.</p>
+          <p class="secondary-text secondary-text--small secondary-text--dark">Seluruh partner Kami yang menyediakan menu makan siang telah di seleksi dan verifikasi terlebih dahulu. Penilaian dimulai dari kebersihan sampai pada pengerjaan makanan, sehingga menu yang ada pada katalog sesuai dengan standar Kami.</p>
         </div>
         <div class="col-xs-12 col-sm-3">
           <div class="text-center">
-            <a href="#" class="btn btn--dark-outline btn--lg">See our featured meals</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="clients">
-    <div class="container container--small">
-      <div class="row">
-        <div class="col-xs-12 col-sm-4">
-          <h3 class="section-heading section-heading--white clients__heading">They Like Us</h3>
-          <p class="secondary-text secondary-text--small secondary-text--white">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae nobis animi enim at ex! Excepturi libero ab saepe, numquam sequi ullam. Ipsa aut molestiae placeat eum.</p>
-          <div class="clients__action">
-            <a href="#" class="btn btn--outline clients__btn">Request Demo</a>
-          </div>
-        </div>
-        <div class="col-xs-12 col-sm-offset-1 col-sm-7">
-          <div class="clients__logos">
-            <div class="clients__logo-row">
-              <div class="clients__logo-item">
-                <img src="{{ url('/images/shirokuma.png') }}" alt="">
-              </div>
-              <div class="clients__logo-item">
-                <img src="{{ url('/images/gunasland.png') }}" alt="">
-              </div>
-              <div class="clients__logo-item">
-                <img src="{{ url('/images/sscx.png') }}" alt="">
-              </div>
-            </div>
-            <div class="clients__logo-row">
-              <div class="clients__logo-item">
-                <img src="{{ url('/images/duitpintar.png') }}" alt="">
-              </div>
-              <div class="clients__logo-item">
-                <img src="{{ url('/images/midtrans.png') }}" alt="">
-              </div>
-              <div class="clients__logo-item">
-                <img src="{{ url('/images/cashlez.png') }}" alt="">
-              </div>
-            </div>
+            <a href="#" class="btn btn--dark-outline btn--lg">Jadi Partner Kami</a>
           </div>
         </div>
       </div>
@@ -201,14 +158,14 @@
           <div class="col-xs-12 col-sm-offset-3 col-sm-6">
             <div class="contact-form">
               <div class="form-condensed">
-                <h3 class="form-condensed__heading form-condensed__heading--white">Find it more</h3>
+                <h3 class="form-condensed__heading form-condensed__heading--white">Cari Tahu Lebih Lanjut</h3>
                 <form class="form-condensed" action="" method="post">
-                  <input class="form-condensed__input" type="text" name="name" placeholder="Name" autocomplete="off">
+                  <input class="form-condensed__input" type="text" name="name" placeholder="Nama" autocomplete="off">
                   <input class="form-condensed__input" type="text" name="email" placeholder="Email" autocomplete="off">
-                  <input class="form-condensed__input" type="text" name="company" placeholder="Company" autocomplete="off">
-                  <textarea row="6" class="form-condensed__textarea" type="text" name="message" placeholder="Message" autocomplete="off"></textarea>
+                  <input class="form-condensed__input" type="text" name="company" placeholder="Perusahaan" autocomplete="off">
+                  <textarea row="6" class="form-condensed__textarea" type="text" name="message" placeholder="Pesan" autocomplete="off"></textarea>
                   {{ csrf_field() }}
-                  <button class="form-condensed__button btn btn--primary">Submit <i class="fa fa-chevron-right form-condensed__chevron"></i></button>
+                  <button class="form-condensed__button btn btn--primary">Kirim <i class="fa fa-chevron-right form-condensed__chevron"></i></button>
                 </form>
               </div>
             </div>

@@ -70,8 +70,6 @@ class DatabaseSeeder extends Seeder
 
     private function setUpCompany()
     {
-        factory(User::class)->states('admin')->create(['email' => 'admin@mail.com', 'password' => bcrypt('password')]);
-
         $userA = factory(User::class)->create(['email' => 'john@mail.com', 'password' => bcrypt('password')]);
         $userB = factory(User::class)->create(['email' => 'jane@mail.com', 'password' => bcrypt('password')]);
 
@@ -129,6 +127,21 @@ class DatabaseSeeder extends Seeder
         Balance::employeeTopUp($employeeB, 150000);
     }
 
+    public function setupAdminUser()
+    {
+        factory(User::class)->states('admin')->create([
+            'name' => 'Satria Rahmadi',
+            'email' => 'satrahmadi@gmail.com',
+            'password' => bcrypt('eatvora123password'),
+        ]);
+
+        factory(User::class)->states('admin')->create([
+            'name' => 'Muhammad Rizki Rijal',
+            'email' => 'arkinthesky.69@gmail.com',
+            'password' => bcrypt('eatvora123password'),
+        ]);
+    }
+
     /**
      * Run the database seeds.
      *
@@ -136,8 +149,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->setUpCompany();
+        $this->setupAdminUser();
 
-        $this->setUpVendor();
+        if (env('IS_STAGING')) {
+            $this->setUpCompany();
+
+            $this->setUpVendor();
+        }
     }
 }
