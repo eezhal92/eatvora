@@ -1,4 +1,4 @@
-<header class="navigation">
+<header class="navigation {{ session()->has('notif') ? 'navigation--has-notif' : '' }}">
   <div class="container container--small">
     <nav class="navigation__nav clearfix">
       <div class="navigation__logo">

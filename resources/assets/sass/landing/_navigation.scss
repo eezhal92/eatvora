@@ -7,6 +7,10 @@
   height: 100px;
   background-color: transparent;
 
+  &--has-notif {
+    top: 70px;
+  }
+
   &__nav {
     padding: 40px 0;
   }

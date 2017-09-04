@@ -1,0 +1,9 @@
+.notif {
+  padding: 25px;
+
+  &--success {
+    background: #4caf50;
+    color: #fff;
+    font-weight: bold;
+  }
+}

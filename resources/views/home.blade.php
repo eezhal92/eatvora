@@ -3,6 +3,13 @@
 @section('title', 'eatvora - Your office lunch solution')
 
 @section('content')
+  @if (session()->has('notif'))
+  <div class="notif notif--{{ session('notif-type') }}">
+    {{ session('notif') }}
+  </div>
+  @endif
+
+  @include('navigation')
 
   <section id="hero">
     <div class="overlay"></div>
@@ -21,7 +28,7 @@
 
             <div class="form-condensed hero__form">
               <h3 class="form-condensed__heading form-condensed__heading--white">Cari Tahu Lebih Lanjut</h3>
-              <form class="form-condensed" action="" method="post">
+              <form class="form-condensed" action="{{ url('/landing-form') }}" method="post">
                 <input class="form-condensed__input" type="text" name="name" placeholder="Nama" autocomplete="off">
                 <input class="form-condensed__input" type="text" name="email" placeholder="Email" autocomplete="off">
                 <input class="form-condensed__input" type="text" name="company" placeholder="Perusahaan" autocomplete="off">
@@ -159,7 +166,7 @@
             <div class="contact-form">
               <div class="form-condensed">
                 <h3 class="form-condensed__heading form-condensed__heading--white">Cari Tahu Lebih Lanjut</h3>
-                <form class="form-condensed" action="" method="post">
+                <form class="form-condensed" action="{{ url('/landing-form') }}" method="post">
                   <input class="form-condensed__input" type="text" name="name" placeholder="Nama" autocomplete="off">
                   <input class="form-condensed__input" type="text" name="email" placeholder="Email" autocomplete="off">
                   <input class="form-condensed__input" type="text" name="company" placeholder="Perusahaan" autocomplete="off">

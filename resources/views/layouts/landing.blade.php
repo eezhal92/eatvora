@@ -10,8 +10,6 @@
     <link rel="stylesheet" href="{{ mix('css/style.css') }}">
   </head>
   <body>
-    @include('navigation')
-
     @yield('content')
   </body>
 </html>
