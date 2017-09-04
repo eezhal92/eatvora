@@ -45,15 +45,13 @@ git reset --hard FETCH_HEAD
 echo "git clean -df";
 git clean -df
 
-composer install -n --no-dev --prefer-dist
-
 # Build static assets
 echo "-------------------------";
 echo "2. Install Laravel Dependencies...";
 echo "-------------------------";
 
 echo "composer install";
-composer install
+composer install -n --no-dev --prefer-dist
 
 echo "";
 
