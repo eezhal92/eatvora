@@ -14,4 +14,8 @@ window.$ = window.jQuery = require('jquery');
   $('.sidebar__overlay').on('click', function () {
     $('.sidebar').removeClass('sidebar--open');
   });
+
+  $('.find-it-more').on('click', function () {
+    window.scrollTo(0, document.body.scrollHeight);
+  });
 })(jQuery)
