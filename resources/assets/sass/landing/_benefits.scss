@@ -32,7 +32,12 @@
     left: 0;
     height: 100%;
     width: 100%;
+    opacity: 0.5;
     background: url('/images/plate.png') no-repeat;
+
+    @media (min-width: 768px) {
+      opacity: 1;
+    }
   }
 
   &__desc {

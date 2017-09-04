@@ -11,5 +11,8 @@
   </head>
   <body>
     @yield('content')
+
+    <script src="{{ mix('/js/manifest.js') }}"></script>
+    <script src="{{ mix('/js/landing.js') }}"></script>
   </body>
 </html>

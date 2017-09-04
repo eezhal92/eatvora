@@ -128,7 +128,7 @@
             </div>
           </div>
 
-          <a href="#" class="btn btn--secondary benefits__btn">Cari Tahu Lebih Lanjut</a>
+          <a href="#find-it-more" class="btn btn--secondary benefits__btn">Cari Tahu Lebih Lanjut</a>
         </div>
       </div>
     </div>
@@ -148,7 +148,7 @@
         </div>
         <div class="col-xs-12 col-sm-3">
           <div class="text-center">
-            <a href="#" class="btn btn--dark-outline btn--lg">Jadi Partner Kami</a>
+            <a href="#become-partner" class="btn btn--dark-outline btn--lg">Jadi Partner Kami</a>
           </div>
         </div>
       </div>
