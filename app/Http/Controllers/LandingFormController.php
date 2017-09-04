@@ -18,7 +18,7 @@ class LandingFormController extends Controller
 
         $message = $request->get('message', 'Yang bersangkutan tidak meninggalkan pesan');
 
-        Mail::to(request('email'))->send(
+        Mail::to(env('EMAIL_SATRIA'))->cc([env('EMAIL_IJAL')])->send(
             new LandingPageFormEmail(request('name'), request('email'), request('company'), $message)
         );
 

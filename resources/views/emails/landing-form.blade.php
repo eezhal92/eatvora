@@ -5,5 +5,5 @@
 <p>Berikut pesan yang bersangkutan:</p>
 
 <div>
-  {{ $formMessage }}
+  {!! nl2br($formMessage) !!}
 </div>
