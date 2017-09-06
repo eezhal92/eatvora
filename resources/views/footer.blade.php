@@ -9,9 +9,7 @@
       <div class="col-xs-6">
         <div class="clearfix">
           <ul class="footer__socials pull-right">
-            <li class="footer__socials-item"><a href="#"><i class="fa fa-facebook"></i></a></li>
-            <li class="footer__socials-item"><a href="#"><i class="fa fa-twitter"></i></a></li>
-            <li class="footer__socials-item"><a href="#"><i class="fa fa-instagram"></i></a></li>
+            <li class="footer__socials-item"><a href="https://www.facebook.com/eatvora" target="_blank"><i class="fa fa-facebook"></i></a></li>
           </ul>
         </div>
       </div>
