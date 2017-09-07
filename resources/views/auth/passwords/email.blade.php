@@ -1,5 +1,7 @@
 @extends('layouts.employee-auth')
 
+@section('title', 'Reset Password - Eatvora')
+
 @section('content')
   <div class="container">
     <div class="row">

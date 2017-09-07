@@ -1,5 +1,7 @@
 @extends('layouts.employee-auth')
 
+@section('title', 'Reset Password - Eatvora')
+
 @section('content')
   <div class="container">
     <div class="row">
@@ -18,7 +20,7 @@
               <input type="hidden" name="token" value="{{ $token }}">
 
               <div class="form-group {{ $errors->first('email', 'has-error') }}">
-                  <label for="email">E-Mail Address</label>
+                  <label for="email">E-Mail</label>
                   <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
                   @if ($errors->has('email'))
                     <span class="help-block">
@@ -38,7 +40,7 @@
               </div>
 
               <div class="form-group{{ $errors->first('password_confirmation', ' has-error') }}">
-                <label for="password_confirmation">Confirm Password</label>
+                <label for="password_confirmation">Konfirmasi Password</label>
                   <input id="password_confirmation" type="password" class="form-control" name="password_confirmation" required>
                   @if ($errors->has('password_confirmation'))
                     <span class="help-block">

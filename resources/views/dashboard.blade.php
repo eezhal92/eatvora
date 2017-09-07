@@ -1,5 +1,7 @@
 @extends('layouts.employee')
 
+@section('title' , 'Beranda - Eatvora')
+
 @push('head')
   <style>
     .no-plan {

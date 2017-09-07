@@ -1,5 +1,7 @@
 @extends('layouts.employee')
 
+@section('title' , $menu->name . ' - Eatvora')
+
 @section('body')
 
   <section style="padding: 22px 0">

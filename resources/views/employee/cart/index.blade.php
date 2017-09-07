@@ -1,5 +1,7 @@
 @extends('layouts.employee')
 
+@section('title', 'Keranjang - Eatvora')
+
 @section('body')
   <div class="cart-items">
     <div class="container container--small">

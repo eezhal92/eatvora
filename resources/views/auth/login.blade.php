@@ -1,5 +1,7 @@
 @extends('layouts.employee-auth')
 
+@section('title', 'Log In - Eatvora')
+
 @section('content')
   <div class="container">
     <div class="row">
@@ -12,7 +14,7 @@
               {{ csrf_field() }}
 
               <div class="form-group {{ $errors->first('email', 'has-error') }}">
-                  <label for="email">E-Mail Address</label>
+                  <label for="email">E-Mail</label>
                   <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
                   @if ($errors->has('email'))
                     <span class="help-block">
@@ -34,7 +36,7 @@
               <div class="form-group">
                 <div class="checkbox">
                   <label>
-                      <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
+                      <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Ingat Saya
                   </label>
                 </div>
               </div>

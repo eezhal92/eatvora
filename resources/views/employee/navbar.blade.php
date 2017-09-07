@@ -2,7 +2,7 @@
     <div class="container container--small">
       <div class="navbar__container">
         <div class="navbar__logo">
-          <a href="#logo" rel="nofollow">
+          <a href="{{ url('/') }}" rel="nofollow">
             eatvora
           </a>
         </div>

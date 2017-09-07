@@ -1,5 +1,7 @@
 @extends('layouts.employee')
 
+@section('title', 'Katalog Makan Siang - Eatvora')
+
 @section('body')
   <div class="meal-list" style="padding: 22px 0">
     <div class="container container--small">
