@@ -44,8 +44,12 @@ class MealController extends Controller
                 ->whereIn('category_menu.category_id', $request->get('category'));
         }
 
-        $menus = $q->paginate($request->get('limit', 6));
+        $meals = $q->paginate($request->get('limit', 6));
+        $meals->each(function ($meal) {
+            $meal->setHidden(['final_price', 'price']);
+            $meal->menu->setHidden(['final_price', 'price']);
+        });
 
-        return response()->json($this->decoratePaginatedResponse($menus));
+        return response()->json($this->decoratePaginatedResponse($meals));
     }
 }

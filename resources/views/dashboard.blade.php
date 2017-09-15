@@ -160,7 +160,7 @@
         <div class="current-balance">
           <h2 class="home-panel__heading">Balance</h2>
           <p>Jumlah balance Anda sekarang</p>
-          <p style="font-size: 28px; margin: 0">Rp. {{ number_format(auth()->user()->balance()) }}</p>
+          <p style="font-size: 28px; margin: 0">{{ auth()->user()->balance() / config('eatvora.rupiah_per_point') }} Poin</p>
         </div>
         <hr style="margin: 0">
         <div class="balance-logs">
@@ -175,9 +175,9 @@
                 </td>
                 <td>
                   @if ($balance->amount > 0)
-                    <span class="balance-added">{{ $balance->formattedAmount() }}</span>
+                    <span class="balance-added">{{ $balance->amountInPoint() }}</span>
                   @else
-                    <span>{{ $balance->formattedAmount() }}</span>
+                    <span>{{ $balance->amountInPoint() }}</span>
                   @endif
                 </td>
               </tr>

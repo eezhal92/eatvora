@@ -27,7 +27,9 @@ class CartController extends Controller
             return response()->json([]);
         }
 
-        $items = $cart->items()->sortByDesc('date')->groupBy('date');
+        $items = $cart->items();
+        $items->each->setHidden(['price', 'final_price']);
+        $items = $items->sortByDesc('date')->groupBy('date');
 
         return response()->json([
             'already_placed_order' => $cart->already_placed_order,
@@ -55,7 +57,10 @@ class CartController extends Controller
             return response()->json(['message' => $e->getMessage()], 422);
         }
 
-        return response()->json($cart->items());
+        $items = $cart->items();
+        $items->each->setHidden(['price', 'final_price']);
+
+        return response()->json($items);
     }
 
     public function update(Request $request)
@@ -76,7 +81,10 @@ class CartController extends Controller
             return response()->json(['message' => $e->getMessage()], 422);
         }
 
-        return response()->json($cart->items());
+        $items = $cart->items();
+        $items->each->setHidden(['price', 'final_price']);
+
+        return response()->json($items);
     }
 
     public function remove()
@@ -93,6 +101,9 @@ class CartController extends Controller
             return response()->json(['message' => $e->getMessage()], 422);
         }
 
-        return response()->json($cart->items());
+        $items = $cart->items();
+        $items->each->setHidden(['price', 'final_price']);
+
+        return response()->json($items);
     }
 }

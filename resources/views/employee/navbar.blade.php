@@ -17,7 +17,7 @@
             <a href="/cart" class="cart-container">
               <cart-count></cart-count>
             </a>
-            <a id="balance" href="#">Rp. {{ number_format(auth()->user()->balance()) }}</a>
+            <a id="balance" href="#">{{ auth()->user()->balance() / config('eatvora.rupiah_per_point') }} Poin</a>
           </li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle avatar-container" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">

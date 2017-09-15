@@ -3,7 +3,7 @@
     <div class="meal-card">
       <a
         class="meal-card-cover"
-        :href="'/meals/' + meal.id"
+        :href="`/meals/${meal.id}?date=${date}`"
         :style="{ color: 'red', 'background-image': `url(${meal.image_url})` }"
       >
         <div class="meal-card-cover__overlay">
@@ -14,7 +14,7 @@
       </a>
       <div class="meal-card__detail">
         <div class="meal-card__point">
-          {{ meal.final_price | rupiah }}
+          {{ meal.point }} Poin
         </div>
         <div class="meal-card-info clearfix">
           <div class="meal-card-info__vendor">
@@ -72,7 +72,7 @@ export default {
         this.$store.commit('@cart/ADD_CART_ITEM', {
           date: this.date,
           meal,
-        })
+        });
       }).catch(err => {
         this.adding = false;
 

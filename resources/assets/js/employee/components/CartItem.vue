@@ -22,7 +22,7 @@
           </div>
         </div>
         <div class="col-xs-2">
-          <div class="menu-price">{{ meal.qty * meal.final_price | rupiah }}</div>
+          <div class="menu-price">{{ meal.qty * meal.point }} Poin</div>
         </div>
       </div>
     </div>

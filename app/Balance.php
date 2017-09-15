@@ -43,4 +43,15 @@ class Balance extends Model
 
         return sprintf('+ Rp. %s', $formattedAmount);
     }
+
+    public function amountInPoint()
+    {
+        $amount = (string) abs($this->amount) / config('eatvora.rupiah_per_point');
+
+        if ($this->amount < 0) {
+            return sprintf('- %s Poin', $amount);
+        }
+
+        return sprintf('+ %s Poin', $amount);
+    }
 }

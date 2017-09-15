@@ -14,7 +14,7 @@ class Meal extends Model
 
     protected $dates = ['reserved_at'];
 
-    protected $appends = ['final_price', 'image_url', 'categories', 'nextweek_remaining_qty', 'nextweek_available_qty'];
+    protected $appends = ['point', 'final_price', 'image_url', 'categories', 'nextweek_remaining_qty', 'nextweek_available_qty'];
 
     public function scopeAvailable($query)
     {

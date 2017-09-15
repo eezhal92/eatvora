@@ -47,12 +47,12 @@
           <div class="menu-detail__panel">
             <div class="menu-detail__panel-body">
               <div style="color: #86919F;font-size: 16px; font-weight: bold">Harga</div>
-              <div class="menu-detail__price">{{ $menu->formattedFinalPrice() }}</div>
+              <div class="menu-detail__price">{{ $menu->point }} Poin</div>
             </div>
           </div>
           <br>
           @if ($renderAddToCartButton && $menu->nextweek_remaining_qty)
-            <button class="btn btn-block btn--primary">Ingin Ini</button>
+            <add-menu-button :meal="{{ $menu }}" date="{{ request('date') }}"></add-menu-button>
           @endif
         </div>
       </div>

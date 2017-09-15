@@ -3,10 +3,10 @@
     <div v-if="!alreadyPlacedOrder">
       <div class="cart-summary__total">
         <div class="cart-summary__total-heading">Total</div>
-        <div class="cart-summary__total-amount">{{ cartTotal | rupiah }}</div>
+        <div class="cart-summary__total-amount">{{ cartTotal }} Poin</div>
       </div>
       <br>
-      <button @click="checkout" :disabled="processing" class="btn btn--primary btn-block">
+      <button @click="checkout" :disabled="isCartEmpty || processing" class="btn btn--primary btn-block">
         Checkout <i v-show="processing" class="fa fa-circle-o-notch icon-spin"></i>
       </button>
     </div>
@@ -22,7 +22,10 @@ export default {
     return { processing: false };
   },
   computed: {
-    ...mapGetters(['cartTotal', 'alreadyPlacedOrder'])
+    ...mapGetters(['cartTotal', 'alreadyPlacedOrder']),
+    isCartEmpty() {
+      return this.cartTotal === 0;
+    },
   },
   methods: {
     ...mapActions(['setAlreadyPlacedOrder']),

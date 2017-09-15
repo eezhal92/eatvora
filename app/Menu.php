@@ -14,7 +14,7 @@ class Menu extends Model
 
     protected $guarded = [];
 
-    protected $appends = ['final_price', 'image_url', 'nextweek_remaining_qty', 'nextweek_available_qty'];
+    protected $appends = ['point', 'final_price', 'image_url', 'nextweek_remaining_qty', 'nextweek_available_qty'];
 
     public function vendor()
     {
